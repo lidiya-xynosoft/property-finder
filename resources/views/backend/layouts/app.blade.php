@@ -111,7 +111,7 @@
         <script src="https://unpkg.com/sweetalert2@7.19.3/dist/sweetalert2.all.js"></script>
 
         <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-        {!! Toastr::message() !!}
+        {{-- {!! toastr::message() !!} --}}
 
         <script>
             @if ($errors->any())

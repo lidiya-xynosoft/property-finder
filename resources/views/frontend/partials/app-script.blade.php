@@ -35,11 +35,20 @@
          $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
      });
  </script>
- 
+
  <!-- Slider Revolution scripts -->
  <script src="{{ asset('frontend/findhouse/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
  <script src="{{ asset('frontend/findhouse/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
-
+ <script>
+     @if ($errors->any())
+         @foreach ($errors->all() as $error)
+             toastr.error('{{ $error }}', 'Error', {
+                 closeButtor: true,
+                 progressBar: true
+             });
+         @endforeach
+     @endif
+ </script>
  <script>
      var typed = new Typed('.typed', {
          strings: ["House ^2000", "Apartment ^2000", "Plaza ^4000"],

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,88 +11,57 @@
 
     <title>{{ config('app.name', 'Laravel Real Estate') }}</title>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link href="{{ asset('frontend/css/materialize.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
-
-    @yield('styles')
-    
-    <link href="{{ asset('frontend/css/styles.css') }}" rel="stylesheet">
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/jquery-ui.css') }}">
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/font-awesome.min.css') }}">
+    <!-- ARCHIVES CSS -->
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/aos.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/aos2.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/magnific-popup.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/lightcase.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/styles.css') }}">
+    <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/maps.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/colors/pink.css') }}">
 </head>
 
-    <body>
-        
+<body class="homepage-9 hp-6 homepage-1 mh">
+    <div id="wrapper">
         {{-- MAIN NAVIGATION BAR --}}
         @include('frontend.partials.navbar')
 
         {{-- SLIDER SECTION --}}
-        @if(Request::is('/'))
-            @include('frontend.partials.slider')
-        @endif
+        {{-- @if (Request::is('/'))
+        @include('frontend.partials.slider')
+    @endif --}}
 
         {{-- SEARCH BAR --}}
         @include('frontend.partials.search')
-        
+
         {{-- MAIN CONTENT --}}
-        <div class="main">
-            @yield('content')
-        </div>
+        @yield('content')
 
         {{-- FOOTER --}}
         @include('frontend.partials.footer')
 
+        @include('frontend.partials.app-script')
 
-        <!--JavaScript at end of body for optimized loading-->
-        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="{{ asset('frontend/js/jquery.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('frontend/js/materialize.min.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         {{-- {!! toastr::message() !!} --}}
-        <script>
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    toastr.error('{{ $error }}','Error',{
-                        closeButtor: true,
-                        progressBar: true 
-                    });
-                @endforeach
-            @endif
-        </script>
 
-        @yield('scripts')
 
-        <script>
-        $(document).ready(function(){
-            $('.sidenav').sidenav();
+        {{-- @yield('scripts') --}}
+    </div>
+</body>
 
-            $('.carousel.carousel-slider').carousel({
-                fullWidth: true,
-                indicators: true,
-            });
-
-            $('.carousel.testimonials').carousel({
-                indicators: true,
-            });
-
-            var city_list =<?php echo json_encode($citylist);?>;
-            $('input.autocomplete').autocomplete({
-                data: city_list
-            });
-
-            $(".dropdown-trigger").dropdown({
-                top: '65px'
-            });
-
-            $('.tooltipped').tooltip();
-
-        });
-        </script>
-
-    </body>
-  </html>
+</html>

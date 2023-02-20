@@ -31,9 +31,9 @@
 <body class="inner-pages hd-white">
     <!-- Wrapper -->
     <div id="wrapper">
-        <div class="preloader">
+        {{-- <div class="preloader">
             <div class="loading" id="loading"><span></span><span></span><span></span><span></span></div>
-        </div>
+        </div> --}}
         {{-- MAIN NAVIGATION BAR --}}
         @include('frontend.partials.navbar')
 
