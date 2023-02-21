@@ -21,8 +21,9 @@ class FrontpageController extends Controller
         $testimonials   = Testimonial::latest()->get();
         $agents          = User::latest()->where('role_id', 2)->take(6)->get();
         $posts          = Post::latest()->where('status', 1)->take(6)->get();
+        $cities = Property::select('city', 'city_slug')->distinct('city_slug')->get();
 
-        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents'));
+        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents', 'cities'));
     }
 
 

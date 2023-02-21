@@ -28,7 +28,7 @@
                        </button>
                    </div>
                    <!-- Main Navigation -->
-                   <nav id="navigation" class="{{ Request::is('search') ? 'style-1' : 'style-1 head-tr' }}">
+                   <nav id="navigation" class="{{ Request::is('/') ? 'style-1 head-tr' : 'style-1' }}">
                        <ul id="responsive">
                            <li class="{{ Request::is('/') ? 'active' : '' }}">
                                <a href="{{ route('home') }}">Home</a>

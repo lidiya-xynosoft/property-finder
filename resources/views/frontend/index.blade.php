@@ -16,18 +16,21 @@
             </div>
             <div class="row">
                 <!-- Single category -->
-                <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
-                    <div class="small-category-2">
-                        <div class="small-category-2-thumb img-1">
-                            <a href="properties-full-grid-1.html"><img src="images/popular-places/12.jpg"
-                                    alt=""></a>
+               
+                    @foreach ($cities as $city)
+                     <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
+                        <div class="small-category-2">
+                            <div class="small-category-2-thumb img-1">
+                                <a href="{{ route('property.city',$city->city_slug) }}"><img src="images/popular-places/12.jpg"
+                                        alt=""></a>
+                            </div>
+                            <div class="sc-2-detail">
+                                <h4 class="sc-jb-title"><a href="{{ route('property.city',$city->city_slug) }}">{{ $city->city }}</a></h4>
+                                <span>203 Properties</span>
+                            </div>
                         </div>
-                        <div class="sc-2-detail">
-                            <h4 class="sc-jb-title"><a href="properties-full-grid-1.html">New York</a></h4>
-                            <span>203 Properties</span>
-                        </div>
-                    </div>
-                </div>
+                </div> 
+                @endforeach
                 <!-- Single category -->
 
             </div>
@@ -183,8 +186,8 @@
                                         <div class="button-effect">
                                             <a href="{{ route('property.show', $property->slug) }}" class="btn"><i
                                                     class="fa fa-link"></i></a>
-                                            <a href="{{ $property->video }}"
-                                                class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                                            <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
+                                                    class="fas fa-video"></i></a>
                                             <a href="single-property-2.html" class="img-poppu btn"><i
                                                     class="fa fa-photo"></i></a>
                                         </div>
@@ -192,7 +195,8 @@
                                     <!-- homes content -->
                                     <div class="homes-content">
                                         <!-- homes address -->
-                                        <h3><a href="{{ route('property.show', $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
+                                        <h3><a
+                                                href="{{ route('property.show', $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
                                         </h3>
                                         <p class="homes-address mb-3">
                                             <a href="{{ route('property.show', $property->slug) }}">
@@ -220,7 +224,8 @@
                                         </ul>
                                         <div class="price-properties footer pt-3 pb-0">
                                             <h3 class="title mt-3">
-                                                <a href="{{ route('property.show', $property->slug) }}">$ {{ number_format($property->price) }}</a>
+                                                <a href="{{ route('property.show', $property->slug) }}">$
+                                                    {{ number_format($property->price) }}</a>
                                             </h3>
                                             <div class="compare">
                                                 {{-- <a href="#" title="Compare">
@@ -312,34 +317,52 @@
         </div>
     </section>
     <!-- END SECTION TESTIMONIALS -->
-@endsection
-@section('scripts')
-    <script>
-        $(function() {
-            var js_properties = <?php echo json_encode($properties); ?>;
-            js_properties.forEach(element => {
-                if (element.rating) {
-                    var elmt = element.rating;
-                    var sum = 0;
-                    for (var i = 0; i < elmt.length; i++) {
-                        sum += parseFloat(elmt[i].rating);
+    @push('script')
+        <script src="{{ asset('frontend/findhouse/js/rangeSlider.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/moment.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/aos.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/aos2.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/animate.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/jquery.waypoints.min.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/jquery.counterup.min.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/typed.min.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/imagesloaded.pkgd.min.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/isotope.pkgd.min.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/owl.carousel.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/jquery.form.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/searched.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/forms-2.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/map-style2.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/range.js') }}"></script>
+
+        <script>
+            $(function() {
+                var js_properties = <?php echo json_encode($properties); ?>;
+                js_properties.forEach(element => {
+                    if (element.rating) {
+                        var elmt = element.rating;
+                        var sum = 0;
+                        for (var i = 0; i < elmt.length; i++) {
+                            sum += parseFloat(elmt[i].rating);
+                        }
+                        var avg = sum / elmt.length;
+                        if (isNaN(avg) == false) {
+                            $("#propertyrating-" + element.id).rateYo({
+                                rating: avg,
+                                starWidth: "20px",
+                                readOnly: true
+                            });
+                        } else {
+                            $("#propertyrating-" + element.id).rateYo({
+                                rating: 0,
+                                starWidth: "20px",
+                                readOnly: true
+                            });
+                        }
                     }
-                    var avg = sum / elmt.length;
-                    if (isNaN(avg) == false) {
-                        $("#propertyrating-" + element.id).rateYo({
-                            rating: avg,
-                            starWidth: "20px",
-                            readOnly: true
-                        });
-                    } else {
-                        $("#propertyrating-" + element.id).rateYo({
-                            rating: 0,
-                            starWidth: "20px",
-                            readOnly: true
-                        });
-                    }
-                }
-            });
-        })
-    </script>
+                });
+            })
+        </script>
+    @endpush
 @endsection
