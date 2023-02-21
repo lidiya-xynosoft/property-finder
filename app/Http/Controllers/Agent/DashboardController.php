@@ -91,12 +91,18 @@ class DashboardController extends Controller
     {
         if (!(Hash::check($request->get('currentpassword'), Auth::user()->password))) {
 
-            Toastr::error('message', 'Your current password does not matches with the password you provided! Please try again.');
+            // Toastr::error('message', 'Your current password does not matches with the password you provided! Please try again.');
+            $flash = array('type' => 'error', 'msg' => 'Your current password does not matches with the password you provided! Please try again.');
+            $request->session()->flash('flash', $flash);
             return redirect()->back();
+
         }
         if(strcmp($request->get('currentpassword'), $request->get('newpassword')) == 0){
 
-            Toastr::error('message', 'New Password cannot be same as your current password! Please choose a different password.');
+            // Toastr::error('message', 'New Password cannot be same as your current password! Please choose a different password.');
+            $flash = array('type' => 'error', 'msg' =>
+            'New Password cannot be same as your current password! Please choose a different password.');
+            $request->session()->flash('flash', $flash);
             return redirect()->back();
         }
 
@@ -109,7 +115,9 @@ class DashboardController extends Controller
         $user->password = bcrypt($request->get('newpassword'));
         $user->save();
 
-        Toastr::success('message', 'Password changed successfully.');
+        $flash = array('type' => 'sucess', 'msg' =>
+        'Password change successfully');
+        $request->session()->flash('flash', $flash);
         return redirect()->back();
     }
 

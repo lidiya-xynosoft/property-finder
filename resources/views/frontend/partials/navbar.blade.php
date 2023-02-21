@@ -1,14 +1,23 @@
-   <header id="header-container" class="header head-tr">
+   <header id="header-container" class="{{ Request::is('/') ? 'header head-tr' : '' }}">
        <!-- Header -->
-       <div id="header" class="head-tr bottom">
+       <div id="header" class="{{ Request::is('/') ? 'head-tr bottom' : '' }}">
            <div class="container container-header">
                <!-- Left Side Content -->
                <div class="left-side">
                    <!-- Logo -->
                    <div id="logo">
-                       <a href="{{ route('home') }}"><img src="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
-                               data-sticky-logo="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
-                               alt=""></a>
+                       <a href="{{ route('home') }}">
+                           @if (Request::is('/'))
+                               <img src="{{ asset('frontend/findhouse/images/logo-red.svg') }}"
+                                   data-sticky-logo="{{ asset('frontend/findhouse/images/logo-red.svg') }}"
+                                   alt="">
+                           @else
+                               <img src="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
+                                   data-sticky-logo="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
+                                   alt="">
+                           @endif
+
+                       </a>
                    </div>
                    <!-- Mobile Navigation -->
                    <div class="mmenu-trigger">
@@ -19,7 +28,7 @@
                        </button>
                    </div>
                    <!-- Main Navigation -->
-                   <nav id="navigation" class="style-1 head-tr">
+                   <nav id="navigation" class="{{ Request::is('search') ? 'style-1' : 'style-1 head-tr' }}">
                        <ul id="responsive">
                            <li class="{{ Request::is('/') ? 'active' : '' }}">
                                <a href="{{ route('home') }}">Home</a>
@@ -125,7 +134,7 @@
                    <div class="right-side d-none d-none d-lg-none d-xl-flex sign ml-0">
                        <!-- Header Widget -->
                        <div class="header-widget sign-in">
-                           <div ><a href="{{ route('login') }}">Sign In</a></div>
+                           <div><a href="{{ route('login') }}">Sign In</a></div>
                        </div>
                        <!-- Header Widget / End -->
                    </div>

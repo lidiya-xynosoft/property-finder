@@ -25,8 +25,9 @@ class PagesController extends Controller
     {
         $cities     = Property::select('city','city_slug')->distinct('city_slug')->get();
         $properties = Property::latest()->with('rating')->withCount('comments')->paginate(12);
+        $recent_properties     = Property::latest()->where('featured', 0)->with('rating')->withCount('comments')->take(3)->get();
 
-        return view('pages.properties.property', compact('properties','cities'));
+        return view('pages.properties.property', compact('properties', 'cities', 'recent_properties'));
     }
 
     public function propertieshow($slug)

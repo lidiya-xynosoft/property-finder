@@ -4,6 +4,13 @@
 @endsection
 
 @section('content')
+@push('head')
+   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
+
+    @endpush
     <section class="user-page section-padding">
         <div class="container-fluid">
             <div class="row">
@@ -19,50 +26,43 @@
                                     Navigation</button>
                                 <ul id="myDropdown" class="dropdown-content">
                                     <li>
-                                        <a class="active" href="dashboard.html">
+                                        <a class="{{ Request::is('agent/dashboard') ? 'active' : '' }}"
+                                            href="{{ route('agent.dashboard') }}">
                                             <i class="fa fa-map-marker mr-3"></i> Dashboard
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="user-profile.html">
+                                        <a class="{{ Request::is('agent/profile') ? 'active' : '' }}"
+                                            href="{{ route('agent.profile') }}">
+
                                             <i class="fa fa-user mr-3"></i>Profile
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="my-listings.html">
+                                        <a class="{{ Request::is('agent/properties') ? 'active' : '' }}"
+                                            href="{{ route('agent.properties.index') }}">
                                             <i class="fa fa-list mr-3" aria-hidden="true"></i>My Properties
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="favorited-listings.html">
+                                        <a href="{{ route('agent.profile') }}">
                                             <i class="fa fa-heart mr-3" aria-hidden="true"></i>Favorited Properties
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="add-property.html">
+                                        <a class="{{ Request::is('agent/properties/create') ? 'active' : '' }}"
+                                            href="{{ route('agent.properties.create') }}">
                                             <i class="fa fa-list mr-3" aria-hidden="true"></i>Add Property
                                         </a>
                                     </li>
+
                                     <li>
-                                        <a href="payment-method.html">
-                                            <i class="fas fa-credit-card mr-3"></i>Payments
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="invoice.html">
-                                            <i class="fas fa-paste mr-3"></i>Invoices
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="change-password.html">
+                                        <a class="{{ Request::is('agent/changepassword') ? 'active' : '' }}"
+                                            href="{{ route('agent.changepassword') }}">
                                             <i class="fa fa-lock mr-3"></i>Change Password
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="index.html">
-                                            <i class="fas fa-sign-out-alt mr-3"></i>Log Out
-                                        </a>
-                                    </li>
+
                                 </ul>
                             </div>
                         </div>
@@ -133,7 +133,7 @@
                         <h4 class="title">Message</h4>
                         <div class="section-body">
                             <div class="messages">
-                                   @foreach ($messages as $message)
+                                @foreach ($messages as $message)
                                     <div class="message">
                                         <div class="thumb">
                                             <img class="img-fluid" src="images/testimonials/ts-1.jpg" alt="">
@@ -151,7 +151,7 @@
                                         </div>
                                     </div>
                                 @endforeach
-                            
+
                             </div>
                         </div>
                     </div>

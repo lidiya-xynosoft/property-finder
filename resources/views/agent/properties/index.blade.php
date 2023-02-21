@@ -1,91 +1,139 @@
-@extends('frontend.layouts.app')
+@extends('frontend.layouts.profile')
 
-@section('styles')
-@endsection
+
 
 @section('content')
+@push('head')
+   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
 
-    <section class="section">
-        <div class="container">
+    @endpush
+    <section class="user-page section-padding pt-5">
+        <div class="container-fluid">
             <div class="row">
 
-                <div class="col s12 m3">
-                    <div class="agent-sidebar">
-                        @include('agent.sidebar')
+
+                @include('agent.sidebar')
+
+                <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
+                    <div class="col-lg-12 mobile-dashbord dashbord">
+                        <div class="dashboard_navigationbar dashxl">
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i> Dashboard
+                                    Navigation</button>
+                                <ul id="myDropdown" class="dropdown-content">
+                                    <li>
+                                        <a class="{{ Request::is('agent/dashboard') ? 'active' : '' }}"
+                                            href="{{ route('agent.dashboard') }}">
+                                            <i class="fa fa-map-marker mr-3"></i> Dashboard
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ Request::is('agent/profile') ? 'active' : '' }}"
+                                            href="{{ route('agent.profile') }}">
+
+                                            <i class="fa fa-user mr-3"></i>Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ Request::is('agent/properties') ? 'active' : '' }}"
+                                            href="{{ route('agent.properties.index') }}">
+                                            <i class="fa fa-list mr-3" aria-hidden="true"></i>My Properties
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('agent.profile') }}">
+                                            <i class="fa fa-heart mr-3" aria-hidden="true"></i>Favorited Properties
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ Request::is('agent/properties/create') ? 'active' : '' }}"
+                                            href="{{ route('agent.properties.create') }}">
+                                            <i class="fa fa-list mr-3" aria-hidden="true"></i>Add Property
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="{{ Request::is('agent/changepassword') ? 'active' : '' }}"
+                                            href="{{ route('agent.changepassword') }}">
+                                            <i class="fa fa-lock mr-3"></i>Change Password
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col s12 m9">
-
-                    <h4 class="agent-title">PROPERTY LIST</h4>
-                    
-                    <div class="agent-content">
-                        <table class="striped responsive-table">
+                    <div class="my-properties">
+                        <table class="table-responsive">
                             <thead>
                                 <tr>
-                                    <th>SL.</th>
-                                    <th>Title</th>
-                                    <th>Type</th>
-                                    <th>City</th>
-                                    <th><i class="material-icons small-star p-t-10">comment</i></th>
-                                    <th><i class="material-icons small-star p-t-10">stars</i></th>
-                                    <th>Action</th>
+                                    <th class="pl-2">My Properties</th>
+                                    <th class="p-0"></th>
+                                    <th>Date Added</th>
+                                    <th>Views</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
-                    
                             <tbody>
-                                @foreach( $properties as $key => $property )
+                                @foreach ($properties as $key => $property)
                                     <tr>
-                                        <td class="right-align">{{$key+1}}.</td>
+                                        <td class="image myelist">
+                                            <a href="single-property-1.html">
+                                                <img alt="my-properties-3" src="images/feature-properties/fp-1.jpg"
+                                                    class="img-fluid"></a>
+                                        </td>
                                         <td>
-                                            <span class="tooltipped" data-position="bottom" data-tooltip="{{$property->title}}">
-                                                {{ str_limit($property->title,30) }}
-                                            </span>
+                                            <div class="inner">
+                                                <a href="single-property-1.html">
+                                                    <h2> {{ str_limit($property->title, 30) }}</h2>
+                                                </a>
+                                                <figure><i class="lni-map-marker"></i> {{ ucfirst($property->address) }}
+                                                </figure>
+                                                <ul class="starts text-left mb-0">
+                                                    <li class="mb-0"><i class="fa fa-star"></i>
+                                                    </li>
+                                                    <li class="mb-0"><i class="fa fa-star"></i>
+                                                    </li>
+                                                    <li class="mb-0"><i class="fa fa-star"></i>
+                                                    </li>
+                                                    <li class="mb-0"><i class="fa fa-star"></i>
+                                                    </li>
+                                                    <li class="mb-0"><i class="fa fa-star"></i>
+                                                    </li>
+                                                    <li class="ml-3">(6 Reviews)</li>
+                                                </ul>
+                                            </div>
                                         </td>
-                                        
-                                        <td>{{ ucfirst($property->type) }}</td>
-                                        <td>{{ ucfirst($property->city) }}</td>
-
-                                        <td class="center">
-                                            <span><i class="material-icons small-comment left">comment</i>{{ $property->comments_count }}</span>
-                                        </td>
-
-                                        <td class="center">
-                                            @if($property->featured == true)
-                                                <span class="indigo-text"><i class="material-icons small-star">stars</i></span>
-                                            @endif
-                                        </td>
-    
-                                        <td class="center">
-                                            <a href="{{route('property.show',$property->slug)}}" target="_blank" class="btn btn-small green waves-effect">
-                                                <i class="material-icons">visibility</i>
-                                            </a>
-                                            <a href="{{route('agent.properties.edit',$property->slug)}}" class="btn btn-small orange waves-effect">
-                                                <i class="material-icons">edit</i>
-                                            </a>
-                                            <button type="button" class="btn btn-small deep-orange accent-3 waves-effect" onclick="deleteProperty({{$property->id}})">
-                                                <i class="material-icons">delete</i>
+                                        <td>{{ $property->created_at }}</td>
+                                        <td>{{ $property->price }}</td>
+                                        <td class="actions">
+                                            <a href="{{ route('agent.properties.edit', $property->slug) }}"
+                                                class="edit"><i class="lni-pencil"></i>Edit</a>
+                                            <button type="button" class="btn btn-small deep-orange accent-3 waves-effect"
+                                                onclick="deleteProperty({{ $property->id }})">
+                                                <i class="far fa-trash-alt"></i>
                                             </button>
-                                            <form action="{{route('agent.properties.destroy',$property->slug)}}" method="POST" id="del-property-{{$property->id}}" style="display:none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="center">
-                            {{ $properties->links() }}
+                        <div class="pagination-container">
+                            <nav>
+                                <ul class="pagination">
+                                    {{ $properties->links() }}
+                                </ul>
+                            </nav>
                         </div>
                     </div>
-        
                 </div>
 
             </div>
         </div>
     </section>
-
 @endsection
 
 @section('scripts')

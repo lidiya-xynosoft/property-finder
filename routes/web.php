@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'FrontpageController@index')->name('home');
 Route::get('/slider', 'FrontpageController@slider')->name('slider.index');
 
-Route::get('/search', 'FrontpageController@search')->name('search');
+Route::post('/search', 'FrontpageController@search')->name('search');
 
 Route::get('/property', 'PagesController@properties')->name('property');
 Route::get('/property/{id}', 'PagesController@propertieshow')->name('property.show');
