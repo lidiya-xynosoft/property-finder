@@ -2,6 +2,8 @@
 
 @section('content')
     @push('head')
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/magnific-popup.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/aos.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/aos2.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/maps.css') }}">
@@ -16,20 +18,21 @@
             </div>
             <div class="row">
                 <!-- Single category -->
-               
-                    @foreach ($cities as $city)
-                     <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
+
+                @foreach ($cities as $city)
+                    <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
                         <div class="small-category-2">
                             <div class="small-category-2-thumb img-1">
-                                <a href="{{ route('property.city',$city->city_slug) }}"><img src="images/popular-places/12.jpg"
-                                        alt=""></a>
+                                <a href="{{ route('property.city', $city->city_slug) }}"><img
+                                        src="images/popular-places/12.jpg" alt=""></a>
                             </div>
                             <div class="sc-2-detail">
-                                <h4 class="sc-jb-title"><a href="{{ route('property.city',$city->city_slug) }}">{{ $city->city }}</a></h4>
+                                <h4 class="sc-jb-title"><a
+                                        href="{{ route('property.city', $city->city_slug) }}">{{ $city->city }}</a></h4>
                                 <span>203 Properties</span>
                             </div>
                         </div>
-                </div> 
+                    </div>
                 @endforeach
                 <!-- Single category -->
 
@@ -337,32 +340,125 @@
         <script src="{{ asset('frontend/findhouse/js/range.js') }}"></script>
 
         <script>
-            $(function() {
-                var js_properties = <?php echo json_encode($properties); ?>;
-                js_properties.forEach(element => {
-                    if (element.rating) {
-                        var elmt = element.rating;
-                        var sum = 0;
-                        for (var i = 0; i < elmt.length; i++) {
-                            sum += parseFloat(elmt[i].rating);
-                        }
-                        var avg = sum / elmt.length;
-                        if (isNaN(avg) == false) {
-                            $("#propertyrating-" + element.id).rateYo({
-                                rating: avg,
-                                starWidth: "20px",
-                                readOnly: true
-                            });
-                        } else {
-                            $("#propertyrating-" + element.id).rateYo({
-                                rating: 0,
-                                starWidth: "20px",
-                                readOnly: true
-                            });
-                        }
+            $(window).on('scroll load', function() {
+                $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
+            });
+        </script>
+
+        <script>
+            var typed = new Typed('.typed', {
+                strings: ["House ^2000", "Apartment ^2000", "Plaza ^4000"],
+                smartBackspace: false,
+                loop: true,
+                showCursor: true,
+                cursorChar: "|",
+                typeSpeed: 50,
+                backSpeed: 30,
+                startDelay: 800
+            });
+        </script>
+
+        <script>
+            $('.slick-lancers').slick({
+                infinite: false,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                dots: true,
+                arrows: false,
+                adaptiveHeight: true,
+                responsive: [{
+                    breakpoint: 1292,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                        dots: true,
+                        arrows: false
                     }
-                });
-            })
+                }, {
+                    breakpoint: 993,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2,
+                        dots: true,
+                        arrows: false
+                    }
+                }, {
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        dots: true,
+                        arrows: false
+                    }
+                }]
+            });
+        </script>
+
+        <script>
+            $('.job_clientSlide').owlCarousel({
+                items: 2,
+                loop: true,
+                margin: 30,
+                autoplay: false,
+                nav: true,
+                smartSpeed: 1000,
+                slideSpeed: 1000,
+                navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    991: {
+                        items: 3
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            $('.style2').owlCarousel({
+                loop: true,
+                margin: 0,
+                dots: false,
+                autoWidth: false,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                responsive: {
+                    0: {
+                        items: 2,
+                        margin: 20
+                    },
+                    400: {
+                        items: 2,
+                        margin: 20
+                    },
+                    500: {
+                        items: 3,
+                        margin: 20
+                    },
+                    768: {
+                        items: 4,
+                        margin: 20
+                    },
+                    992: {
+                        items: 5,
+                        margin: 20
+                    },
+                    1000: {
+                        items: 7,
+                        margin: 20
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            $(".dropdown-filter").on('click', function() {
+
+                $(".explore__form-checkbox-list").toggleClass("filter-block");
+
+            });
         </script>
     @endpush
 @endsection

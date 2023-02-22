@@ -5,9 +5,11 @@
     <title>@yield('title', '') | Laravel Real Estate</title>
     @include('frontend.partials.head')
 </head>
-<body
-    class="{{ Request::is('/') ? 'homepage-9 hp-6 homepage-1 mh' : 'inner-pages listing homepage-4 agents hd-white' }}">
-
+@if(Request::is('contact'))
+<body class="inner-pages hd-white">
+@else
+<body class="{{ Request::is('/') ? 'homepage-9 hp-6 homepage-1 mh' : 'inner-pages listing homepage-4 agents hd-white' }}">
+@endif
     <div id="wrapper">
         {{-- MAIN NAVIGATION BAR --}}
         @include('frontend.partials.navbar')

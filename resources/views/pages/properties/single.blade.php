@@ -5,7 +5,8 @@
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/font/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/fontawesome-5-all.min.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
-
+   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/magnific-popup.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet-gesture-handling.min.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.markercluster.css') }}">
@@ -919,7 +920,7 @@
     <!-- push external js -->
     @push('script')
         <script src="{{ asset('frontend/findhouse/js/jquery-ui.js') }}"></script>
-        <script src="js/range-slider.js"></script>
+        <script src="{{ asset('frontend/findhouse/js/range-slider.js') }}"></script>
 
         <script src="{{ asset('frontend/findhouse/js/popper.min.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/slick4.js') }}"></script>

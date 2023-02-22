@@ -35,53 +35,11 @@
          @endforeach
      @endif
  </script>
- 
-
- <script>
-     $('.style2').owlCarousel({
-         loop: true,
-         margin: 0,
-         dots: false,
-         autoWidth: false,
-         autoplay: true,
-         autoplayTimeout: 5000,
-         responsive: {
-             0: {
-                 items: 2,
-                 margin: 20
-             },
-             400: {
-                 items: 2,
-                 margin: 20
-             },
-             500: {
-                 items: 3,
-                 margin: 20
-             },
-             768: {
-                 items: 4,
-                 margin: 20
-             },
-             992: {
-                 items: 5,
-                 margin: 20
-             },
-             1000: {
-                 items: 7,
-                 margin: 20
-             }
-         }
-     });
- </script>
-
- <script>
-     $(".dropdown-filter").on('click', function() {
-
-         $(".explore__form-checkbox-list").toggleClass("filter-block");
-
-     });
- </script>
-
+ @if(Session::has('message'))
+    <script>
+        toastr.success("{{ Session::get('message') }}");
+    </script>
+@endif
  <!-- MAIN JS -->
  <script src="{{ asset('frontend/findhouse/js/script.js') }}"></script>
  <script src="{{ asset('frontend/findhouse/js/toastr.min.js') }}"></script>

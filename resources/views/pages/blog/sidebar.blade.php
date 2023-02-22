@@ -1,68 +1,49 @@
-<div class="card">
-    <div class="card-content">
-        <h3 class="font-18 m-t-0 bold uppercase">Popular Posts</h3>
-        <ul class="collection">
-            @foreach($popularposts as $post)
-                <li class="collection-item">
-                    <a href="{{ route('blog.show',$post->slug) }}" class="indigo-text text-darken-4">
-                        <span class="truncate tooltipped" data-position="bottom" data-tooltip="{{ $post->title }}">{{ $post->title }}</span>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
-    
-<div class="card">
-    <div class="card-content">
-        <h3 class="font-18 m-t-0 bold uppercase">Categories</h3>
-        <ul>
-            @foreach($categories as $category)
-                <li class="category-bg-image" style="background-image:url({{Storage::url('category/slider/'.$category->image)}});">
+  <aside class="col-lg-3 col-md-12">
+      <div class="widget">
+          <h5 class="font-weight-bold mb-4">Search</h5>
+          <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+              </span>
+          </div>
+          <div class="recent-post py-5">
+              <h5 class="font-weight-bold">Category</h5>
+              <ul>
+                  @foreach ($categories as $category)
+                      <li><a href="{{ route('blog.categories', $category->slug) }}"><i class="fa fa-caret-right"
+                                  aria-hidden="true"></i>{{ $category->name }} ( {{ $category->posts_count }})</a></li>
+                  @endforeach
+              </ul>
+          </div>
+          <div class="recent-post">
+              <h5 class="font-weight-bold mb-4">Popular Tags</h5>
+              @foreach ($tags as $tag)
+                  <div class="tags">
+                      <span><a href="{{ route('blog.tags', $tag->slug) }}"
+                              class="btn btn-outline-primary">{{ $tag->name }}</a></span>
+                  </div>
+              @endforeach
+          </div>
+          <div class="recent-post pt-5">
+              <h5 class="font-weight-bold mb-4">Popular Posts</h5>
+              @foreach ($popularposts as $post)
+                  <div class="recent-main">
+                      @if (Storage::disk('public')->exists('posts/' . $post->image) && $post->image)
+                          <div class="recent-img">
+                              <a href="{{ route('blog.show', $post->slug) }}"><img
+                                      src="{{ Storage::url('posts/' . $post->image) }}" alt="{{ $post->title }}"></a>
+                          </div>
+                      @endif
 
-                    <a href="{{ route('blog.categories',$category->slug) }}">
-
-                        <span class="left">{{ $category->name }}</span>
-
-                        <span class="right">{{ $category->posts_count }}</span>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="font-18 m-t-0 bold uppercase">Archives</h3>
-        <ul class="collection">
-            @foreach($archives as $stats)
-                <li class="collection-item">
-
-                    <a href="/blog/?month={{ $stats['month'] }}&year={{ $stats['year'] }}" class="indigo-text text-darken-4">
-
-                        {{ $stats['month'] . ' ' . $stats['year'] }}
-
-                        <span class="badge indigo darken-1 white-text">{{ $stats['published'] }}</span>
-                    </a>
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="font-18 m-t-0 bold uppercase">Tags</h3>
-
-        @foreach($tags as $tag)
-
-            <a href="{{ route('blog.tags',$tag->slug) }}">
-
-                <span class="btn-small indigo white-text m-b-5 card-no-shadow">{{ $tag->name }}</span>
-
-            </a>
-
-        @endforeach
-    </div>
-</div>
+                      <div class="info-img">
+                          <a href="blog-details.html">
+                              <h6>{{ $post->title }}</h6>
+                          </a>
+                          <p>{{ $post->created_at->diffForHumans() }}</p>
+                      </div>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+  </aside>

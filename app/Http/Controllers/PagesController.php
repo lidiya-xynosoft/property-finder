@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Contact;
+use Illuminate\Support\Facades\Validator;
 
 use App\Property;
 use App\Message;
@@ -196,13 +197,21 @@ class PagesController extends Controller
 
     public function messageContact(Request $request)
     {
-        $request->validate([
+
+        $rules = [
             'name'      => 'required',
             'email'     => 'required',
             'phone'     => 'required',
             'message'   => 'required'
-        ]);
+        ];
 
+        $request->validate($rules);
+      
+        // if ($validator->fails()) {
+        //     return response()->json($request->validate($rules));
+        // } else {
+        //     return response()->json(['message' => 'Thank you, We have recieved your enquiry.']);
+        // }
         $message  = $request->message;
         $mailfrom = $request->email;
         
@@ -217,10 +226,14 @@ class PagesController extends Controller
         $adminname  = User::find(1)->name;
         $mailto     = $request->mailto;
 
-        Mail::to($mailto)->send(new Contact($message,$adminname,$mailfrom));
+        // Mail::to($mailto)->send(new Contact($message,$adminname,$mailfrom));
+
+        // $flash = array('type' => 'success', 'msg' => 'Thank you, We have recieved your enquiry.');
+        // $request->session()->flash('flash', $flash);
+        // return back();
 
         if($request->ajax()){
-            return response()->json(['message' => 'Message send successfully.']);
+            return response()->json(['message' => 'Thank you, We have recieved your enquiry.']);
         }
 
     }

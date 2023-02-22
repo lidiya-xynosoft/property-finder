@@ -63,8 +63,8 @@ class CategoryController extends Controller
         $category->slug = $slug;
         $category->image = $imagename;
         $category->save();
-
-        // Toastr::success('message', 'Category created successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Category created successfully.');
+        session()->flash('flash', $flash);
         return redirect()->route('admin.categories.index');
     }
 
@@ -123,8 +123,8 @@ class CategoryController extends Controller
         $category->slug = $slug;
         $category->image = $imagename;
         $category->save();
-
-        Toastr::success('message', 'Category updated successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Category updated successfully.');
+        session()->flash('flash', $flash);
         return redirect()->route('admin.categories.index');
     }
 

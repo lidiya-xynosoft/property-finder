@@ -14,9 +14,9 @@
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/font-awesome.min.css') }}">
     <!-- ARCHIVES CSS -->
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/magnific-popup.css') }}">
+  
+       <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/animate.css') }}">
+
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/lightcase.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/bootstrap.min.css') }}">

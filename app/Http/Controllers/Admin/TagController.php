@@ -35,8 +35,8 @@ class TagController extends Controller
         $tag->name = $request->name;
         $tag->slug = str_slug($request->name);
         $tag->save();
-
-        // Toastr::success('message', 'Tag created successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Tag created successfully.');
+        session()->flash('flash', $flash);
         return redirect()->route('admin.tags.index');
     }
 
@@ -51,7 +51,7 @@ class TagController extends Controller
     {
         $tag = Tag::find($id);
 
-        return view('admin.tags.edit',compact('tag'));
+        return view('admin.tags.edit', compact('tag'));
     }
 
 
@@ -66,7 +66,8 @@ class TagController extends Controller
         $tag->slug = str_slug($request->name);
         $tag->save();
 
-        Toastr::success('message', 'Tag updated successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Tag updated successfully.');
+        session()->flash('flash', $flash);
         return redirect()->route('admin.tags.index');
     }
 

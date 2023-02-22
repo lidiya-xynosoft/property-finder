@@ -1,165 +1,137 @@
 @extends('frontend.layouts.app')
-
-@section('styles')
-
-@endsection
-
+@section('title', 'Blog Details')
 @section('content')
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/font/flaticon.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/fontawesome-5-all.min.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
 
-    <section class="section">
-        <div class="container">
-            <div class="row">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet-gesture-handling.min.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.markercluster.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.markercluster.default.css') }}">
+    @endpush
 
-                <div class="col s12 m8">
 
-                    <div class="card">
-                        <div class="card-image">
-                            @if(Storage::disk('public')->exists('posts/'.$post->image))
-                                <img src="{{Storage::url('posts/'.$post->image)}}" alt="{{$post->title}}">
-                            @endif
-                        </div>
-                        <div class="card-content">
-                            <span class="card-title" title="{{$post->title}}">{{ $post->title }}</span>
-                            {!! $post->body !!}
-                        </div>
-                        <div class="card-action blog-action">
-                            <a href="{{ route('blog.author',$post->user->username) }}" class="btn-flat">
-                                <i class="material-icons">person</i>
-                                <span>{{$post->user->name}}</span>
-                            </a>
-                            <a href="#" class="btn-flat disabled">
-                                <i class="material-icons">watch_later</i>
-                                <span>{{$post->created_at->diffForHumans()}}</span>
-                            </a>
-                            @foreach($post->categories as $key => $category)
-                                <a href="{{ route('blog.categories',$category->slug) }}" class="btn-flat">
-                                    <i class="material-icons">folder</i>
-                                    <span>{{$category->name}}</span>
-                                </a>
-                            @endforeach
-                            @foreach($post->tags as $key => $tag)
-                                <a href="{{ route('blog.tags',$tag->slug) }}" class="btn-flat">
-                                    <i class="material-icons">label</i>
-                                    <span>{{$tag->name}}</span>
-                                </a>
-                            @endforeach
-
-                            <a href="#" class="btn-flat disabled">
-                                <i class="material-icons">visibility</i>
-                                <span>{{$post->view_count}}</span>
-                            </a>
-                        </div>
-
-                    </div>
-
-                    <div class="card" id="comments">
-                        <div class="p-15 grey lighten-4">
-                            <h5 class="m-0">{{ $post->comments_count }} Comments</h5>
-                        </div>
-                        <div class="single-narebay p-15">
-
-                            @foreach($post->comments as $comment)
-
-                                @if($comment->parent_id == null)
-                                    <div class="comment">
-                                        <div class="author-image">
-                                            <span style="background-image:url({{ Storage::url('users/'.$comment->users->image) }});"></span>
-                                        </div>
-                                        <div class="content">
-                                            <div class="author-name">
-                                                <strong>{{ $comment->users->name }}</strong>
-                                                <span class="time">{{ $comment->created_at->diffForHumans() }}</span>
-
-                                                @auth
-                                                    <span class="right replay" data-commentid="{{ $comment->id }}">Replay</span>
-                                                @endauth
-
-                                            </div>
-                                            <div class="author-comment">
-                                                {{ $comment->body }}
-                                            </div>
-                                        </div>
-                                        <div id="comment-{{$comment->id}}"></div>
-                                    </div>
-                                @endif
-
-                                @if($comment->children->count() > 0)
-                                    @foreach($comment->children as $comment)
-                                        <div class="comment children">
-                                            <div class="author-image">
-                                                <span style="background-image:url({{ Storage::url('users/'.$comment->users->image) }});"></span>
-                                            </div>
-                                            <div class="content">
-                                                <div class="author-name">
-                                                    <strong>{{ $comment->users->name }}</strong>
-                                                    <span class="time">{{ $comment->created_at->diffForHumans() }}</span>
-                                                </div>
-                                                <div class="author-comment">
-                                                    {{ $comment->body }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-
-                            @endforeach
-
-                            @auth
-                                <div class="comment-box">
-                                    <h6>Leave a comment</h6>
-                                    <form action="{{ route('blog.comment',$post->id) }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="parent" value="0">
-
-                                        <textarea name="body" class="box"></textarea>
-                                        <input type="submit" class="btn indigo" value="Comment">
-                                    </form>
-                                </div>
-                            @endauth
-
-                            @guest 
-                                <div class="comment-login">
-                                    <h6>Please Login to comment</h6>
-                                    <a href="{{ route('login') }}" class="btn indigo">Login</a>
-                                </div>
-                            @endguest
-                            
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="col s12 m4">
-
-                    @include('pages.blog.sidebar')
-                    
-                </div>
-
+    <section class="headings">
+        <div class="text-heading text-center">
+            <div class="container">
+                <h1>Blog Details</h1>
+                <h2><a href="{{ route('home') }}">Home </a> &nbsp;/&nbsp; Blog Details</h2>
             </div>
         </div>
     </section>
+    <!-- END SECTION HEADINGS -->
 
-@endsection
+    <!-- START SECTION BLOG -->
+    <section class="blog blog-section bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-12 blog-pots">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <div class="news-item details no-mb2">
+                                @if (Storage::disk('public')->exists('posts/' . $post->image))
+                                    <a href="blog-details.html" class="news-img-link">
+                                        <div class="news-item-img">
+                                            <img class="img-responsive" src="{{ Storage::url('posts/' . $post->image) }}"
+                                                alt="{{ $post->title }}">
+                                        </div>
+                                    </a>
+                                @endif
+                                <div class="news-item-text details pb-0">
+                                    <a href="blog-details.html">
+                                        <h3> {{ $post->title }}</h3>
+                                    </a>
+                                    <div class="dates">
+                                        <span class="date">{{ $post->created_at->diffForHumans() }} &nbsp;/</span>
+                                        <ul class="action-list pl-0">
+                                            <li class="action-item pl-2"><i class="fa fa-heart"></i> <span>306</span></li>
+                                            <li class="action-item"><i class="fa fa-comment"></i>
+                                                <span>{{ $post->comments_count }}</span></li>
+                                            <li class="action-item"><i class="fa fa-eye"></i>
+                                                <span>{{ $post->view_count }}</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="news-item-descr big-news details visib mb-0">
+                                        <p class="mb-3"> {!! $post->body !!}</p>
 
-@section('scripts')
-<script>
-    $(document).on('click','span.right.replay',function(e){
-        e.preventDefault();
-        
-        var commentid = $(this).data('commentid');
+                                        <p class="d-none d-sm-none d-lg-block d-md-block">{!! $post->body !!}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="comments">
+                       
 
-        $('#comment-'+commentid).empty().append(
-            `<div class="comment-box">
-                <form action="{{ route('blog.comment',$post->id) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="parent" value="1">
-                    <input type="hidden" name="parent_id" value="`+commentid+`">
-                    
-                    <textarea name="body" class="box" placeholder="Leave a comment"></textarea>
-                    <input type="submit" class="btn indigo" value="Comment">
-                </form>
-            </div>`
-        );
-    });
-</script>
+                        @foreach ($post->comments as $comment)
+                         <h3 class="mb-5">{{ count($post->comments) }} Comments</h3>
+                            <div class="row my-4">
+                                <ul class="col-12 commented">
+                                    <li class="comm-inf">
+                                        <div class="col-md-2">
+                                            <img src="{{ Storage::url('users/'.$comment->users->image) }}" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="col-md-10 comments-info no-mb">
+                                            <h5 class="mb-1">{{ $comment->users->name }}</h5>
+                                            <p class="mb-4">{{ $comment->created_at->diffForHumans() }}</p>
+                                            <p>{{ $comment->body }}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endforeach
+                    </section>
+                    @auth
+                        <section class="leve-comments wpb">
+                            <h3 class="mb-5">Leave a Comment</h3>
+                            <div class="row">
+                                <div class="col-md-12 data">
+                                    <form action="#">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" name="name" class="form-control"
+                                                    placeholder="First Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="text" name="name" class="form-control"
+                                                    placeholder="Last Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="email" name="email" class="form-control" placeholder="Email"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 form-group">
+                                            <textarea class="form-control" id="exampleTextarea" rows="8" placeholder="Message" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-lg mt-2">Submit Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </section>
+                    @endauth
+                    @guest
+                        <div class="comment-login">
+                            <h6>Please Login to comment</h6>
+                            <a href="{{ route('login') }}" class="btn indigo">Login</a>
+                        </div>
+                    @endguest
+                </div>
+                @include('pages.blog.sidebar')
+            </div>
+        </div>
+    </section>
+    <!-- END SECTION BLOG -->
+
+
+    <!-- push external js -->
+    @push('script')
+        <script src="{{ asset('frontend/findhouse/js/jquery-ui.js') }}"></script>
+    @endpush
 @endsection
