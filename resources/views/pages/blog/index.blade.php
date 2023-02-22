@@ -22,14 +22,16 @@
         </div>
     </section>
     <!-- END SECTION HEADINGS -->
-
+    @php
+        $counter = 1;
+    @endphp
     <!-- START SECTION BLOG -->
     <section class="blog blog-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12 col-xs-12">
-                    @foreach ($posts as $key => $post)
-                        <div class="row">
+                    <div class="row">
+                        @foreach ($posts as $key => $post)
                             <div class="col-md-6 col-xs-12 no-mb wpt-2">
                                 <div class="news-item nomb">
                                     <a href="{{ route('blog.show', $post->slug) }}" class="news-img-link">
@@ -49,9 +51,10 @@
                                         <div class="dates">
                                             <span class="date">{{ $post->created_at->diffForHumans() }}/</span>
                                             <ul class="action-list pl-0">
-                                                <li class="action-item pl-2"><i class="fa fa-heart"></i> <span>306</span>
+                                                <li class="action-item pl-2"><i class="fa fa-heart"></i>
+                                                    <span>306</span>
                                                 </li>
-                                               
+
                                                 <li class="action-item"><i class="fa fa-comment"></i>
                                                     <span>{{ $post->comments_count }}</span>
                                                 </li>
@@ -75,20 +78,21 @@
                                     </div>
                                 </div>
                             </div>
+                            @if ($counter % 2 === 0)
+                    </div>
+                    <div class="row space2 port">
+                        @endif
+                        @php
+                            $counter++;
+                        @endphp
+                        @endforeach
 
-                        </div>
-                    @endforeach
-                    {{-- <div class="row space2 port">
-                            
-                        </div>
-                         --}}
+                    </div>
                 </div>
-              @include('pages.blog.sidebar')
+                @include('pages.blog.sidebar')
             </div>
-            <nav aria-label="..." class="pt-5">
-                <ul class="pagination">
-                    {{ $posts->appends(['month' => Request::get('month'), 'year' => Request::get('year')])->links() }}
-                </ul>
+            <nav aria-label="..." class="pt-5">                  
+                {{ $posts->appends(['month' => Request::get('month'), 'year' => Request::get('year')])->links('pagination::bootstrap-4') }}
             </nav>
         </div>
     </section>

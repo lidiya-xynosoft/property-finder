@@ -1,12 +1,12 @@
   <aside class="col-lg-3 col-md-12">
       <div class="widget">
-          <h5 class="font-weight-bold mb-4">Search</h5>
+          {{-- <h5 class="font-weight-bold mb-4">Search</h5>
           <div class="input-group">
               <input type="text" class="form-control" placeholder="Search for...">
               <span class="input-group-btn">
                   <button class="btn btn-primary" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
               </span>
-          </div>
+          </div> --}}
           <div class="recent-post py-5">
               <h5 class="font-weight-bold">Category</h5>
               <ul>
@@ -17,13 +17,27 @@
               </ul>
           </div>
           <div class="recent-post">
+              @php
+                  $counter = 1;
+              @endphp
               <h5 class="font-weight-bold mb-4">Popular Tags</h5>
-              @foreach ($tags as $tag)
-                  <div class="tags">
+
+              <div class="tags">
+
+                  @foreach ($tags as $tag)
                       <span><a href="{{ route('blog.tags', $tag->slug) }}"
                               class="btn btn-outline-primary">{{ $tag->name }}</a></span>
-                  </div>
-              @endforeach
+
+                      @if ($counter % 2 === 0)
+              </div>
+              <div class="tags">
+                  @endif
+                  @php
+                      $counter++;
+                  @endphp
+                  @endforeach
+
+              </div>
           </div>
           <div class="recent-post pt-5">
               <h5 class="font-weight-bold mb-4">Popular Posts</h5>

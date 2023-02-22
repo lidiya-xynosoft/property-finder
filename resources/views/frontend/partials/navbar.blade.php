@@ -64,7 +64,7 @@
                        <!-- Header Widget -->
                        @if (Auth::user()->role->id == 2)
                            <div class="header-widget">
-                               <a href="add-property.html" class="button border">Add Listing<i
+                               <a href="{{ route('agent.properties.create') }}" class="button border">Add Listing<i
                                        class="fas fa-laptop-house ml-2"></i></a>
                            </div>
                        @endif
@@ -84,14 +84,23 @@
                            <ul>
                                @if (Auth::user()->role->id == 1)
                                    <li><a href="{{ route('admin.dashboard') }}">
+                                           Dashboard
+                                       </a></li>
+                                   <li><a href="{{ route('admin.profile') }}">
                                            Profile
                                        </a></li>
                                @elseif(Auth::user()->role->id == 2)
-                                   <li><a href="{{ route('agent.dashboard') }}">
+                               <li><a href="{{ route('agent.dashboard') }}">
+                                           Dashboard
+                                       </a></li>
+                                   <li><a href="{{ route('agent.profile') }}">
                                            Profile
                                        </a></li>
                                @elseif(Auth::user()->role->id == 3)
-                                   <li><a href="{{ route('user.dashboard') }}">
+                               <li><a href="{{ route('user.dashboard') }}">
+                                           Dashboard
+                                       </a></li>
+                                   <li><a href="{{ route('user.profile') }}">
                                            Profile
                                        </a></li>
                                @endif

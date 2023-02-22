@@ -25,7 +25,7 @@ class PagesController extends Controller
     public function properties()
     {
         $cities     = Property::select('city','city_slug')->distinct('city_slug')->get();
-        $properties = Property::latest()->with('rating')->withCount('comments')->paginate(12);
+        $properties = Property::latest()->with('rating')->withCount('comments')->paginate(6);
         $recent_properties     = Property::latest()->where('featured', 0)->with('rating')->withCount('comments')->take(3)->get();
 
         return view('pages.properties.property', compact('properties', 'cities', 'recent_properties'));
@@ -87,7 +87,7 @@ class PagesController extends Controller
                                     return $query->whereYear('created_at', $year);
                                 })
                                 ->where('status',1)
-                                ->paginate(10);
+            ->paginate(2);
 
         return view('pages.blog.index', compact('posts'));
     }

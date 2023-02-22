@@ -69,13 +69,22 @@
                                  <li><a href="{{ route('admin.dashboard') }}">
                                          Profile
                                      </a></li>
+                                 <li><a href="{{ route('admin.changepassword') }}">
+                                         Change password
+                                     </a></li>
                              @elseif(Auth::user()->role->id == 2)
                                  <li><a href="{{ route('agent.dashboard') }}">
                                          Profile
                                      </a></li>
+                                       <li><a href="{{ route('agent.changepassword') }}">
+                                         Change password
+                                     </a></li>
                              @elseif(Auth::user()->role->id == 3)
                                  <li><a href="{{ route('user.dashboard') }}">
                                          Profile
+                                     </a></li>
+                                       <li><a href="{{ route('user.changepassword') }}">
+                                         Change password
                                      </a></li>
                              @endif
                              <li>

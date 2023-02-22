@@ -21,7 +21,7 @@ class PropertyController extends Controller
         $properties = Property::latest()
                               ->withCount('comments')
                               ->where('agent_id', Auth::id())
-                              ->paginate(10);
+            ->paginate(2);
         
         return view('agent.properties.index',compact('properties'));
     }
