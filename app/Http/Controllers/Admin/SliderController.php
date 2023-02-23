@@ -115,7 +115,7 @@ class SliderController extends Controller
 
         $slider->delete();
 
-        Toastr::success('message', 'Slider deleted successfully.');
+        // Toastr::success('message', 'Slider deleted successfully.');
         return back();
     }
 }

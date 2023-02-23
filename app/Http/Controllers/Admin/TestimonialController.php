@@ -116,7 +116,7 @@ class TestimonialController extends Controller
 
         $testimonial->delete();
 
-        Toastr::success('message', 'Testimonial deleted successfully.');
+        // Toastr::success('message', 'Testimonial deleted successfully.');
         return back();
     }
 }

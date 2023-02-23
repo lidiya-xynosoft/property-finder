@@ -78,7 +78,7 @@ class TagController extends Controller
         $tag->delete();
         $tag->posts()->detach();
 
-        Toastr::success('message', 'Tag deleted successfully.');
+        // Toastr::success('message', 'Tag deleted successfully.');
         return back();
     }
 }

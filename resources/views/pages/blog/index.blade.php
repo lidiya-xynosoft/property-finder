@@ -72,7 +72,11 @@
                                                 more...</a>
                                             <div class="admin">
                                                 <p>By, {{ $post->user->name }}</p>
-                                                <img src="images/testimonials/ts-1.jpg" alt="">
+                                                @if (Storage::disk('public')->exists('users/' . $post->user->image) && $post->user->image)
+                                                        <img 
+                                                            src="{{ Storage::url('users/' . $post->user->image) }}"
+                                                            alt="{{ $post->user->name }}">
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -91,7 +95,7 @@
                 </div>
                 @include('pages.blog.sidebar')
             </div>
-            <nav aria-label="..." class="pt-5">                  
+            <nav aria-label="..." class="pt-5">
                 {{ $posts->appends(['month' => Request::get('month'), 'year' => Request::get('year')])->links('pagination::bootstrap-4') }}
             </nav>
         </div>

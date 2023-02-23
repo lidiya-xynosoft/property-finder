@@ -24,7 +24,7 @@
                     <h2>CREATE SERVICE</h2>
                 </div>
                 <div class="body">
-                    <form action="{{route('admin.services.store')}}" method="POST">
+                    <form action="{{route('admin.services.store')}}" method="POST"  enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group form-float">
@@ -40,13 +40,9 @@
                                 <label class="form-label">Description</label>
                             </div>
                         </div>
-
-                        <div class="form-group form-float">
-                            <div class="form-line">
-                                <input type="text" name="icon" class="form-control">
-                                <label class="form-label">Service Icon</label>
-                            </div>
-                            <small>To get icons name list just click the link: <a href="https://materializecss.com/icons.html" target="_blank">Materialize Icon</a></small>
+                       <div class="form-group">
+                            <input type="file" name="image">
+                             <label class="form-label">Service Icon</label>
                         </div>
 
                         <div class="form-group form-float">

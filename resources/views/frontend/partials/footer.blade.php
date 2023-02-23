@@ -76,24 +76,29 @@
                          <h3>Recent Properties</h3>
                          <div class="twitter-widget contuct">
                              <div class="twitter-area">
-                                 @foreach ($footerproperties as $property)
-                                     <li class="collection-item transparent clearfix p-0 border0">
-                                         <span class="card-image-bg m-r-10"
-                                             style="background-image:url({{ Storage::url('property/' . $property->image) }});width:60px;height:45px;float:left;"></span>
-                                         <div class="float-left">
-                                             <h5 class="font-18 m-b-0 m-t-5">
-                                                 <a href="{{ route('property.show', $property->slug) }}"
-                                                     class="white-text">{{ str_limit($property->title, 40) }}</a>
-                                             </h5>
-                                             <p class="m-t-0 m-b-5 grey-text text-lighten-1">Bedroom:
-                                                 {{ $property->bedroom }} Bathroom: {{ $property->bathroom }} </p>
+                                 @foreach ($footerproperties as $post)
+                                     <div class="recent-main">
+                                         @if (Storage::disk('public')->exists('property/' . $post->image) && $post->image)
+                                             <div class="recent-img">
+                                                 <a href="{{ route('blog.show', $post->slug) }}"><img
+                                                         src="{{ Storage::url('property/' . $post->image) }}"
+                                                         alt="{{ $post->title }}"></a>
+                                             </div>
+                                         @endif
+
+                                         <div class="info-img">
+                                             <a href="blog-details.html">
+                                                 <h6>{{ $post->title }}</h6>
+                                             </a>
+                                             <p>{{ $post->created_at->diffForHumans() }}</p>
                                          </div>
-                                     </li>
+                                     </div>
                                  @endforeach
 
                              </div>
                          </div>
                      </div>
+
                  </div>
                  <div class="col-lg-3 col-md-6">
                      <div class="newsletters">
@@ -130,15 +135,15 @@
                                  aria-hidden="true"></i></a></li>
                  @endif
                  @if (isset($footersettings[0]) && $footersettings[0]['linkedin'])
-                     <li><a href="{{ $footersettings[0]['linkedin'] }}"
-                     target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                     <li><a href="{{ $footersettings[0]['linkedin'] }}" target="_blank"><i
+                                 class="fa fa-linkedin"></i></a></li>
                  @endif
                  @if (isset($footersettings[0]) && $footersettings[0]['youtube'])
-                     <li><a href="{{ $footersettings[0]['youtube'] }}"
-                     target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+                     <li><a href="{{ $footersettings[0]['youtube'] }}" target="_blank"><i class="fa fa-youtube"
+                                 aria-hidden="true"></i></a></li>
                  @endif
              </ul>
-             
+
          </div>
      </div>
  </footer>

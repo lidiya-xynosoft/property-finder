@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', 'Create Categories')
+@section('title', 'Create Category')
 
 @push('styles')
 

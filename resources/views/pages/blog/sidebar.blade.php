@@ -57,6 +57,7 @@
                           <p>{{ $post->created_at->diffForHumans() }}</p>
                       </div>
                   </div>
+                  <br/>
               @endforeach
           </div>
       </div>

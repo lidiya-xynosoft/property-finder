@@ -20,7 +20,7 @@ use App\Message;
 use App\User;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
-use Hash;
+use hash;
 
 class DashboardController extends Controller
 {
@@ -37,8 +37,14 @@ class DashboardController extends Controller
         $comments      = Comment::with('users')->take(5)->get();
 
         return view('admin.dashboard', compact(
-            'propertycount', 'postcount', 'commentcount', 'usercount',
-            'properties',    'posts',     'users',        'comments'
+            'propertycount',
+            'postcount',
+            'commentcount',
+            'usercount',
+            'properties',
+            'posts',
+            'users',
+            'comments'
         ));
     }
 
@@ -47,7 +53,7 @@ class DashboardController extends Controller
     {
         $settings = Setting::first();
 
-        return view('admin.settings.setting',compact('settings'));
+        return view('admin.settings.setting', compact('settings'));
     }
 
     public function settingStore(Request $request)
@@ -66,23 +72,23 @@ class DashboardController extends Controller
         ]);
 
         Setting::updateOrCreate(
-            [ 'id'       => 1 ],
+            ['id'       => 1],
             [
-              'name'     => $request->name,
-              'email'    => $request->email,
-              'phone'    => $request->phone,
-              'address'  => $request->address,
-              'footer'   => $request->footer,
-              'aboutus'  => $request->aboutus,
-              'facebook' => $request->facebook,
-              'twitter'  => $request->twitter,
-              'linkedin' => $request->linkedin
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'phone'    => $request->phone,
+                'address'  => $request->address,
+                'footer'   => $request->footer,
+                'aboutus'  => $request->aboutus,
+                'facebook' => $request->facebook,
+                'twitter'  => $request->twitter,
+                'linkedin' => $request->linkedin
             ]
         );
 
         $settings = Setting::first();
-
-        Toastr::success('message', 'Updated successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Updated successfully.');
+        $request->session()->flash('flash', $flash);
         return back();
     }
 
@@ -90,19 +96,18 @@ class DashboardController extends Controller
     public function changePassword()
     {
         return view('admin.settings.changepassword');
-
     }
 
     public function changePasswordUpdate(Request $request)
     {
         if (!(Hash::check($request->get('currentpassword'), Auth::user()->password))) {
-
-            Toastr::error('message', 'Your current password does not matches with the password you provided! Please try again.');
+            $flash = array('type' => 'success', 'msg' => 'Your current password does not matches with the password you provided! Please try again.');
+            session()->flash('flash', $flash);
             return redirect()->back();
         }
-        if(strcmp($request->get('currentpassword'), $request->get('newpassword')) == 0){
-
-            Toastr::error('message', 'New Password cannot be same as your current password! Please choose a different password.');
+        if (strcmp($request->get('currentpassword'), $request->get('newpassword')) == 0) {
+            $flash = array('type' => 'success', 'msg' => 'New Password cannot be same as your current password! Please choose a different password.');
+            session()->flash('flash', $flash);
             return redirect()->back();
         }
 
@@ -114,8 +119,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         $user->password = bcrypt($request->get('newpassword'));
         $user->save();
-
-        Toastr::success('message', 'Password changed successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Password changed successfully.');
+        session()->flash('flash', $flash);
         return redirect()->back();
     }
 
@@ -124,7 +129,7 @@ class DashboardController extends Controller
     {
         $profile = Auth::user();
 
-        return view('admin.settings.profile',compact('profile'));
+        return view('admin.settings.profile', compact('profile'));
     }
 
     public function profileUpdate(Request $request)
@@ -142,20 +147,19 @@ class DashboardController extends Controller
         $image = $request->file('image');
         $slug  = str_slug($request->name);
 
-        if(isset($image)){
+        if (isset($image)) {
             $currentDate = Carbon::now()->toDateString();
-            $imagename = $slug.'-admin-'.Auth::id().'-'.$currentDate.'.'.$image->getClientOriginalExtension();
+            $imagename = $slug . '-admin-' . Auth::id() . '-' . $currentDate . '.' . $image->getClientOriginalExtension();
 
-            if(!Storage::disk('public')->exists('users')){
+            if (!Storage::disk('public')->exists('users')) {
                 Storage::disk('public')->makeDirectory('users');
             }
-            if(Storage::disk('public')->exists('users/'.$user->image) && $user->image != 'default.png' ){
-                Storage::disk('public')->delete('users/'.$user->image);
+            if (Storage::disk('public')->exists('users/' . $user->image) && $user->image != 'default.png') {
+                Storage::disk('public')->delete('users/' . $user->image);
             }
             $userimage = Image::make($image)->stream();
-            Storage::disk('public')->put('users/'.$imagename, $userimage);
-            
-        }else{
+            Storage::disk('public')->put('users/' . $imagename, $userimage);
+        } else {
             $imagename = $user->image;
         }
 
@@ -176,21 +180,21 @@ class DashboardController extends Controller
     {
         $messages = Message::latest()->where('agent_id', Auth::id())->get();
 
-        return view('admin.settings.messages.index',compact('messages'));
+        return view('admin.settings.messages.index', compact('messages'));
     }
 
     public function messageRead($id)
     {
         $message = Message::findOrFail($id);
 
-        return view('admin.settings.messages.readmessage',compact('message'));
+        return view('admin.settings.messages.readmessage', compact('message'));
     }
 
     public function messageReplay($id)
     {
         $message = Message::findOrFail($id);
 
-        return view('admin.settings.messages.replaymessage',compact('message'));
+        return view('admin.settings.messages.replaymessage', compact('message'));
     }
 
     public function messageSend(Request $request)
@@ -205,10 +209,10 @@ class DashboardController extends Controller
         ]);
 
         Message::create($request->all());
-
-        Toastr::success('message', 'Message send successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Message send successfully.');
+        session()->flash('flash', $flash);
+        // Toastr::success('message', 'Message send successfully.');
         return back();
-
     }
 
     public function messageReadUnread(Request $request)
@@ -216,9 +220,9 @@ class DashboardController extends Controller
         $status = $request->status;
         $msgid  = $request->messageid;
 
-        if($status){
+        if ($status) {
             $status = 0;
-        }else{
+        } else {
             $status = 1;
         }
 
@@ -233,8 +237,8 @@ class DashboardController extends Controller
     {
         $message = Message::findOrFail($id);
         $message->delete();
-
-        Toastr::success('message', 'Message deleted successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Message deleted successfully.');
+        session()->flash('flash', $flash);
         return back();
     }
 
@@ -244,9 +248,9 @@ class DashboardController extends Controller
         $name     = $request->name;
         $mailfrom = $request->mailfrom;
 
-        Mail::to($request->email)->send(new Contact($message,$name,$mailfrom));
-
-        Toastr::success('message', 'Mail send successfully.');
+        Mail::to($request->email)->send(new Contact($message, $name, $mailfrom));
+        $flash = array('type' => 'success', 'msg' => 'Mail send successfully.');
+        session()->flash('flash', $flash);
         return back();
     }
 }

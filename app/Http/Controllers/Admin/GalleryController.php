@@ -26,7 +26,7 @@ class GalleryController extends Controller
     {
         Album::create([
             'name' => $request->name,
-            'user_id' => \Auth::id()
+            'user_id' => Auth::id()
         ]);
         return back();
     }
@@ -71,9 +71,8 @@ class GalleryController extends Controller
             ]);
         }
 
-        Toastr::success('message', 'Images uploaded successfully.');
+        // Toastr::success('message', 'Images uploaded successfully.');
 
         return back();
     }
-
 }

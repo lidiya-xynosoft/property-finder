@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title', 'Home')
 
 @section('content')
     @push('head')
@@ -83,7 +84,7 @@
                                 </h3>
                                 <p class="homes-address mb-3">
                                     <a href="{{ route('property.show', $property->slug) }}">
-                                        <i class="fa fa-map-marker"></i><span>{{ ucfirst($property->city) }}</span>
+                                        <i class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
                                     </a>
                                 </p>
                                 <!-- homes List -->
@@ -131,7 +132,7 @@
 
             </div>
             <div class="bg-all">
-                <a href="properties-full-grid-1.html" class="btn btn-outline-light">View More</a>
+                <a href="{{ route('property') }}" class="btn btn-outline-light">View More</a>
             </div>
         </div>
     </section>
@@ -149,7 +150,7 @@
                     <article class="col-lg-3 col-md-6 col-xs-12 serv" data-aos="fade-up" data-aos-delay="150">
                         <div class="serv-flex">
                             <div class="art-1 img-13">
-                                <img src="images/icons/icon-4.svg" alt="">
+                                <img src="{{ Storage::url('service/' . $service->icon) }}" alt="{{ $service->title }}">
 
                                 <h3>{{ $service->title }}</h3>
                             </div>
@@ -183,7 +184,8 @@
                                             <!-- homes img -->
                                             <a href="{{ route('property.show', $property->slug) }}" class="homes-img">
                                                 <div class="homes-tag button sale rent">For {{ $property->purpose }}</div>
-                                                <img src="images/blog/b-12.jpg" alt="home-1" class="img-responsive">
+                                                 <img src="{{ Storage::url('property/' . $property->image) }}"
+                                            alt="{{ $property->title }}" class="img-responsive">
                                             </a>
                                         </div>
                                         <div class="button-effect">
@@ -203,7 +205,7 @@
                                         </h3>
                                         <p class="homes-address mb-3">
                                             <a href="{{ route('property.show', $property->slug) }}">
-                                                <i class="fa fa-map-marker"></i><span>{{ $property->city }}</span>
+                                                <i class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30)  }}</span>
                                             </a>
                                         </p>
                                         <!-- homes List -->
