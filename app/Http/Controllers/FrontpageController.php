@@ -17,7 +17,7 @@ class FrontpageController extends Controller
     {
         $sliders        = Slider::latest()->get();
         $properties     = Property::latest()->where('featured', 0)->with('rating')->withCount('comments')->take(6)->get();
-        $services       = Service::orderBy('service_order')->get();
+        $services       = Service::orderBy('service_order')->take(4)->get();
         $testimonials   = Testimonial::latest()->get();
         $agents          = User::latest()->where('role_id', 2)->take(6)->get();
         $posts          = Post::latest()->where('status', 1)->take(6)->get();

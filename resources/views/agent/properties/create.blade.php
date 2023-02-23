@@ -1,5 +1,6 @@
 @extends('frontend.layouts.profile')
 
+@section('title', 'Create Property')
 
 @section('content')
 @push('head')

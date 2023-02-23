@@ -1,4 +1,5 @@
 @extends('frontend.layouts.profile')
+@section('title', 'Agent profile')
 
 @section('content')
     @push('head')

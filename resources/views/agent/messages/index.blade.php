@@ -1,7 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('styles')
-@endsection
+@section('title', 'Messages')
 
 @section('content')
 

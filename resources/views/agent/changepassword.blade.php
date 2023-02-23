@@ -1,4 +1,6 @@
 @extends('frontend.layouts.profile')
+@section('title', 'Change Password')
+
 @section('content')
 @push('head')
    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">

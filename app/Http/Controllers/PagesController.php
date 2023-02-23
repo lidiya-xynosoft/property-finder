@@ -25,10 +25,11 @@ class PagesController extends Controller
     public function properties()
     {
         $cities     = Property::select('city','city_slug')->distinct('city_slug')->get();
+        $types     = Property::select('type')->distinct('type')->get();
         $properties = Property::latest()->with('rating')->withCount('comments')->paginate(6);
         $recent_properties     = Property::latest()->where('featured', 0)->with('rating')->withCount('comments')->take(3)->get();
 
-        return view('pages.properties.property', compact('properties', 'cities', 'recent_properties'));
+        return view('pages.properties.property', compact('properties', 'cities', 'recent_properties', 'types'));
     }
 
     public function propertieshow($slug)
@@ -303,6 +304,19 @@ class PagesController extends Controller
                         ->paginate(12);
 
         return view('pages.properties.property', compact('properties','cities'));
+    }
+
+    // PROPERTY CITIES
+    public function propertyTypes()
+    {
+        $types     = Property::select('type')->distinct('type')->get();
+        $cities     = Property::select('city', 'city_slug')->distinct('city_slug')->get();
+
+        $properties = Property::latest()->with('rating')->withCount('comments')
+        ->where('type', request('type'))
+        ->paginate(12);
+
+        return view('pages.properties.property', compact('properties', 'cities', 'types'));
     }
 
 

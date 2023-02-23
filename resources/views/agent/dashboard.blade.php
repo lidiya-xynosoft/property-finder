@@ -1,4 +1,5 @@
 @extends('frontend.layouts.profile')
+@section('title', 'Agent dashboard')
 
 @section('styles')
 @endsection

@@ -1,5 +1,6 @@
 @extends('frontend.layouts.profile')
 
+@section('title', 'Edit Property')
 
 
 @section('content')
