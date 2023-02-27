@@ -39,6 +39,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        return $request;
         $request->validate([
             'title'     => 'required|unique:properties|max:255',
             'price'     => 'required',

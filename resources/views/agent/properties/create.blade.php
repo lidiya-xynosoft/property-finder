@@ -1,6 +1,6 @@
 @extends('frontend.layouts.profile')
 
-@section('title', 'Create Property')
+@section('title', 'Add Property')
 
 @section('content')
     @push('head')
@@ -9,17 +9,6 @@
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
-        <style>
-            .error {
-                color: red;
-                font-weight: 400;
-                display: block;
-                padding: 6px 0;
-                font-size: 14px;
-                border-color: red;
-                padding: .375rem .75rem;
-            }
-        </style>
     @endpush
     <section class="user-page section-padding">
         <div class="container-fluid">
@@ -75,15 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+
                     <form action="{{ route('agent.properties.store') }}" name="propertyForm" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -91,16 +72,17 @@
                             <h3>Property description and price</h3>
                             <div class="property-form-group">
                                 <div class="row">
-                                    <div class="col-md-12 form-group">
+                                    <div class="col-md-12">
                                         <p>
-                                            <label for="title">Property Title <span class="error">*</span> </label>
+                                            <label for="validationCustom01" class="form-label">Property Title</label>
                                             <input type="text" name="title" id="title"
-                                               class="form-control @error('title') is-valid @enderror"
-                                                placeholder="Enter your property title" data-length="200">
+                                                class="form-control @error('title') is-invalid @enderror"
+                                                id="validationCustom01" placeholder="Enter your property title"
+                                                data-length="200">
                                         </p>
                                     </div>
                                     @error('title')
-                                        <span class="valid-feedback" role="alert">
+                                        <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
@@ -125,15 +107,27 @@
                                     <div class="col-lg-6 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">Price</label>
-                                            <input type="text" name="price" class="form-control" placeholder="USD"
+                                            <input type="text" name="price"
+                                                class="form-control @error('price') is-invalid @enderror" placeholder="USD"
                                                 id="price">
                                         </p>
+                                        @error('price')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         <p class="no-mb last">
                                             <label for="area">Floor Area</label>
-                                            <input type="text" name="area" placeholder="Sqft" id="area">
+                                            <input type="text" name="area" placeholder="Sqft"
+                                                class="form-control @error('area') is-invalid @enderror" id="area">
                                         </p>
+                                        @error('area')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -142,22 +136,37 @@
                                         <p class="no-mb">
                                             <label for="price">Bedroom</label>
                                             <input type="text" id="bedroom" name="bedroom" type="number"
-                                                class="validate">
+                                                class="form-control @error('bedroom') is-invalid @enderror">
                                         </p>
+                                        @error('bedroom')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb last">
                                             <label for="area">Bathroom</label>
                                             <input type="text" id="bathroom" name="bathroom" type="number"
-                                                class="validate">
+                                                class="form-control @error('bathroom') is-invalid @enderror">
                                         </p>
+                                        @error('bathroom')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">Garage</label>
                                             <input type="text" id="garage" name="garage" type="number"
-                                                class="validate">
+                                                class="form-control @error('garage') is-invalid @enderror">
                                         </p>
+                                        @error('garage')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -165,15 +174,19 @@
                                         <p class="no-mb">
                                             <label for="price">Built Year</label>
                                             <input type="text" id="built_year" name="built_year" type="number"
-                                                class="validate">
+                                                class="form-control @error('built_year') is-invalid @enderror">
                                         </p>
+                                        @error('built_year')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <br />
                                         {{-- <div class="select-option"> --}}
                                         {{-- <i class="ti-angle-down"></i> --}}
-                                        <select name="type" class="validate">
-                                            <option selected>Property Types</option>
+                                        <select name="type">
                                             @foreach ($types as $type)
                                                 <option value="{{ $type->slug }}" class="option">{{ $type->name }}
                                                 </option>
@@ -184,8 +197,7 @@
                                     <div class="col-lg-4 col-md-12">
                                         <br />
 
-                                        <select name="purpose" class="validate">
-                                            <option selected>Property Purpose</option>
+                                        <select name="purpose">
                                             @foreach ($purposes as $purpose)
                                                 <option value="{{ $purpose->slug }}" class="option">{{ $purpose->name }}
                                                 </option>
@@ -224,18 +236,125 @@
                             <h3>property Location</h3>
                             <div class="property-form-group">
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="property-nearby">
+                                            <div class="nearby-info mb-4 repeater">
+                                                <div data-repeater-list="group-a">
+                                                    <span class="nearby-title mb-3 d-block text-info">
+                                                        <i class="fas fa-graduation-cap mr-2"></i><b
+                                                            class="title">Education</b>
+
+
+                                                        <button data-repeater-create type="button"
+                                                            class="btn btn-success ml-0"><i
+                                                                class="fa fa-plus mr-3"></i></i></button>
+                                                    </span>
+
+                                                    <div data-repeater-item class="d-flex mb-2">
+
+                                                        <label class="sr-only"
+                                                            for="inlineFormInputGroup1">{{ __('Users') }}</label>
+
+                                                        <input type="text" class="form-control" name="education_name"
+                                                            placeholder="Enter item name">
+
+                                                        <input type="text" class="form-control"
+                                                            name="education_distance" placeholder="Enter distance ">
+
+                                                        <button data-repeater-delete type="button"
+                                                            class="btn btn-danger btn-icon ml-2"><i
+                                                                class="fa fa-remove mr-3"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="nearby-info mb-4 repeater">
+                                                <div data-repeater-list="group-b">
+                                                    <span class="nearby-title mb-3 d-block text-success">
+                                                        <i class="fas fa-graduation-cap mr-2"></i><b
+                                                            class="title">Health & Medical</b>
+
+
+                                                        <button data-repeater-create type="button"
+                                                            class="btn btn-success ml-0"><i
+                                                                class="fa fa-plus mr-3"></i></i></button>
+                                                    </span>
+
+                                                    <div data-repeater-item class="d-flex mb-2">
+
+                                                        <label class="sr-only"
+                                                            for="inlineFormInputGroup1">{{ __('Users') }}</label>
+
+                                                        <input type="text" class="form-control" name="health_name"
+                                                            placeholder="Enter item name">
+
+                                                        <input type="text" class="form-control"
+                                                            name="education_distance" placeholder="Enter distance ">
+
+                                                        <button data-repeater-delete type="button"
+                                                            class="btn btn-danger btn-icon ml-2"><i
+                                                                class="fa fa-remove mr-3"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                             <div class="nearby-info mb-4 repeater">
+                                                <div data-repeater-list="group-c">
+                                                     <span class="nearby-title mb-3 d-block text-danger">
+                                                <i class="fas fa-car mr-2"></i><b class="title">Transportation</b>
+
+
+                                                        <button data-repeater-create type="button"
+                                                            class="btn btn-success ml-0"><i
+                                                                class="fa fa-plus mr-3"></i></i></button>
+                                                    </span>
+
+                                                    <div data-repeater-item class="d-flex mb-2">
+
+                                                        <label class="sr-only"
+                                                            for="inlineFormInputGroup1">{{ __('Users') }}</label>
+
+                                                        <input type="text" class="form-control" name="health_name"
+                                                            placeholder="Enter item name">
+
+                                                        <input type="text" class="form-control"
+                                                            name="education_distance" placeholder="Enter distance ">
+
+                                                        <button data-repeater-delete type="button"
+                                                            class="btn btn-danger btn-icon ml-2"><i
+                                                                class="fa fa-remove mr-3"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="single-add-property">
+                            <h3>property Location</h3>
+                            <div class="property-form-group">
+                                <div class="row">
                                     <div class="col-lg-6 col-md-12">
                                         <p>
                                             <label for="address">Address</label>
                                             <input type="text" id="address" name="address"
-                                                placeholder="Enter Your Address">
+                                                placeholder="Enter Your Address"
+                                                class=" @error('address') is-invalid @enderror">
                                         </p>
+                                        @error('address')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         <p>
                                             <label for="city">City</label>
                                             <input type="text" id="city" name="city" type="text"
-                                                class="validate" placeholder="Enter Your City">
+                                                placeholder="Enter Your City">
                                         </p>
                                     </div>
                                 </div>
@@ -245,7 +364,7 @@
                                         <p class="no-mb first">
                                             <label for="latitude">Latitude</label>
                                             <input id="location_latitude" name="location_latitude" type="text"
-                                                class="validate" placeholder="Google Maps latitude">
+                                                placeholder="Google Maps latitude">
                                         </p>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
@@ -258,6 +377,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="single-add-property">
                             <h3>Extra Information</h3>
                             <div class="property-form-group">
@@ -265,7 +385,8 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p>
                                             <label for="address">Youtube Link</label>
-                                            <input id="video" name="video" type="text" class="validate"
+                                            <input id="video" name="video"
+                                                type="text"class="form-control @error('title') is-invalid @enderror"
                                                 placeholder="Enter youtube link">
                                         </p>
                                     </div>
@@ -273,8 +394,14 @@
                                         <p>
                                             <label for="address">Featured Image</label>
 
-                                            <input type="file" name="image">
+                                            <input type="file" name="image"
+                                                class="form-control @error('image') is-invalid @enderror">
                                         </p>
+                                        @error('image')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         <p>
@@ -312,31 +439,53 @@
         </div>
     </section>
     @push('script')
-        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
         <script>
+            $('.repeater').repeater({
+                defaultValues: {
+                    'this_id': '1',
+                    'this_name': 'foo'
+                }
+            });
             $(document).ready(function() {
                 $(function() {
                     $("form[name='propertyForm']").validate({
                         // Define validation rules
                         rules: {
-                            title: "required",
-                            description: "required",
+
                             title: {
                                 required: true
                             },
-                        
                             description: {
                                 required: true
                             },
-                           
+                            price: {
+                                required: true
+                            },
+                            area: {
+                                required: true
+                            },
+                            bathroom: {
+                                required: true
+                            },
+                            bedroom: {
+                                required: true
+                            },
+
+                            address: {
+                                required: true
+                            },
+                            image: {
+                                required: true
+                            },
+
                         },
                         // Specify validation error messages
                         messages: {
                             title: "Please provide a valid Property Title.",
                             description: "Please enter description",
                         },
-                        
+
                         submitHandler: function(form) {
                             console.log(form);
                             form.submit();

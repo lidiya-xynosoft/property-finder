@@ -23,7 +23,7 @@
   <script src="{{ asset('frontend/findhouse/js/jquery.magnific-popup.min.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/ajaxchimp.min.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/newsletter.js') }}"></script>
-  {{-- <script src="{{ asset('frontend/findhouse/js/jquery.validate.min.js') }}"></script> --}}
+  <script src="{{ asset('frontend/findhouse/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/searched.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/dashbord-mobile-menu.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/forms-2.js') }}"></script>
@@ -31,6 +31,7 @@
   <script src="{{ asset('frontend/findhouse/js/dropzone.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/script.js') }}"></script>
  <script src="{{ asset('frontend/findhouse/js/toastr.min.js') }}"></script>
+
  @stack('script')
 
   <!-- MAIN JS -->
