@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,60 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
 
+
+        DB::table('types')->insert([
+            [
+                'name'          => 'Rent',
+                'slug'          => 'rent',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Sale',
+                'slug'          => 'sale',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Commercial',
+                'slug'          => 'commercial',
+                'created_at'    => date("Y-m-d H:i:s")
+            ]
+        ]);
+
+        DB::table('purposes')->insert([
+            [
+                'name'          => 'House',
+                'slug'          => 'house',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Apartment',
+                'slug'          => 'apartment',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Villa',
+                'slug'          => 'villa',
+                'created_at'    => date("Y-m-d H:i:s")
+            ]
+        ]);
+        DB::table('countries')->insert([
+            [
+                'name'          => 'India',
+                'code'          => 'IN',
+                'phone'          => '91',
+                'timezone'          => 'UTC +3',
+                'currency'          => 'in',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Dubai',
+                'code'          => 'DXB',
+                'phone'          => '974',
+                'timezone'          => 'UTC +3',
+                'currency'          => 'DHR',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+        ]);
         DB::table('users')->insert([
             [
                 'role_id'       => 1,
@@ -47,7 +102,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        DB::table('roles')->    insert([
+        DB::table('roles')->insert([
             [
                 'name'          => 'Admin',
                 'slug'          => 'admin',
@@ -65,5 +120,25 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-    }   
-}   
+        DB::table('nearby_categories')->insert([
+            [
+                'name'          => 'Education',
+                'class'         => 'text-info',
+                'icon'          => 'fas fa-graduation-cap mr-2',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Health & Medical',
+                'class'         => 'text-success',
+                'icon'          => 'fas fa-user-md mr-2',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Transportation',
+                'class'         => 'text-danger',
+                'icon'          => 'fas fa-car mr-2',
+                'created_at'    => date("Y-m-d H:i:s")
+            ]
+        ]);
+    }
+}

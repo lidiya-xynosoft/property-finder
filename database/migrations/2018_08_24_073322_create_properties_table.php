@@ -14,13 +14,15 @@ class CreatePropertiesTable extends Migration
     public function up()
     {
         Schema::create('properties', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('title');
+            $table->foreignId('country_id')->constrained('countries');
+            $table->foreignId('purpose_id')->constrained('purposes');
+            $table->foreignId('type_id')->constrained('types');
+            $table->foreignId('city_id')->constrained('cities');
             $table->string('slug')->unique();
             $table->double('price', 8, 2);
             $table->boolean('featured')->default(false);
-            $table->enum('purpose', ['sale', 'rent']);
-            $table->enum('type', ['house', 'apartment']);
             $table->string('image')->nullable();
             $table->integer('bedroom');
             $table->integer('bathroom');
@@ -34,7 +36,6 @@ class CreatePropertiesTable extends Migration
             $table->string('floor_plan')->nullable();
             $table->string('location_latitude');
             $table->string('location_longitude');
-            $table->text('nearby')->nullable();
             $table->timestamps();
         });
     }

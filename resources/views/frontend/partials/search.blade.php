@@ -1,5 +1,5 @@
    <!-- STAR HEADER SEARCH -->
-   <section id="hero-area" class="parallax-searchs home15 overlay thome-6 thome-1" data-stellar-background-ratio="0.5">
+   <section id="hero-area" class="parallax-searchs home15 overlay thome-6" data-stellar-background-ratio="0.5">
        <div class="hero-main">
            <div class="container" data-aos="zoom-in">
                <div class="row">

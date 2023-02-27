@@ -14,7 +14,7 @@ class CreatePropertyImageGalleriesTable extends Migration
     public function up()
     {
         Schema::create('property_image_galleries', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->integer('property_id')->unsigned();
             $table->string('name');
             $table->string('size')->nullable();

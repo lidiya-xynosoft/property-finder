@@ -302,8 +302,9 @@ class PagesController extends Controller
         $properties = Property::latest()->with('rating')->withCount('comments')
                         ->where('city_slug', request('cityslug'))
                         ->paginate(12);
+        $types     = Property::select('type')->distinct('type')->get();
 
-        return view('pages.properties.property', compact('properties','cities'));
+        return view('pages.properties.property', compact('properties', 'cities', 'types'));
     }
 
     // PROPERTY CITIES

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,11 +17,10 @@ class CreateCountriesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->string('capital');
-            $table->string('phone');
-            $table->boolean('is_active')->default(true);
-            $table->string('timezone')->nullable();
             $table->string('currency')->nullable();
+            $table->string('phone');
+            $table->string('is_active')->default('0');
+            $table->string('timezone')->nullable();
             $table->timestamps();
         });
     }

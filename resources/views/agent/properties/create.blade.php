@@ -3,25 +3,34 @@
 @section('title', 'Create Property')
 
 @section('content')
-@push('head')
-   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
-
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
+        <style>
+            .error {
+                color: red;
+                font-weight: 400;
+                display: block;
+                padding: 6px 0;
+                font-size: 14px;
+                border-color: red;
+                padding: .375rem .75rem;
+            }
+        </style>
     @endpush
     <section class="user-page section-padding">
         <div class="container-fluid">
             <div class="row">
-
-
                 @include('agent.sidebar')
-
                 <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
                     <div class="col-lg-12 mobile-dashbord dashbord">
                         <div class="dashboard_navigationbar dashxl">
                             <div class="dropdown">
-                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i> Dashboard
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i>
+                                    Dashboard
                                     Navigation</button>
                                 <ul id="myDropdown" class="dropdown-content">
                                     <li>
@@ -66,34 +75,58 @@
                             </div>
                         </div>
                     </div>
-                <form action="{{route('agent.properties.store')}}" method="POST" enctype="multipart/form-data">
-                            @csrf
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form action="{{ route('agent.properties.store') }}" name="propertyForm" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
                         <div class="single-add-property">
                             <h3>Property description and price</h3>
                             <div class="property-form-group">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 form-group">
                                         <p>
-                                            <label for="title">Property Title</label>
+                                            <label for="title">Property Title <span class="error">*</span> </label>
                                             <input type="text" name="title" id="title"
+                                               class="form-control @error('title') is-valid @enderror"
                                                 placeholder="Enter your property title" data-length="200">
                                         </p>
                                     </div>
+                                    @error('title')
+                                        <span class="valid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
                                             <label for="description">Property Description</label>
-                                            <textarea id="description" name="description" placeholder="Describe about your property"></textarea>
+                                            <textarea id="description" name="description" placeholder="Describe about your property"
+                                                class="form-control html-editor h-205 @error('description') is-invalid @enderror"></textarea>
                                         </p>
                                     </div>
+                                    @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">Price</label>
-                                            <input type="text" name="price" placeholder="USD" id="price">
+                                            <input type="text" name="price" class="form-control" placeholder="USD"
+                                                id="price">
                                         </p>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
@@ -121,40 +154,44 @@
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
-                                            <label for="price">Near By</label>
-                                            <input type="text" id="nearby" name="nearby" type="number"
+                                            <label for="price">Garage</label>
+                                            <input type="text" id="garage" name="garage" type="number"
                                                 class="validate">
                                         </p>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-12 dropdown faq-drop">
-                                        <div class="form-group categories">
-                                            <div class="nice-select form-control wide" tabindex="0"><span
-                                                    class="current">Select status</span>
-                                                <select class="list" name="purpose">
-                                                    <option value="rent" class="option">
-                                                        Rent
-                                                    </option>
-                                                    <option value="sale" class="option">
-                                                        Sale
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <p class="no-mb">
+                                            <label for="price">Built Year</label>
+                                            <input type="text" id="built_year" name="built_year" type="number"
+                                                class="validate">
+                                        </p>
                                     </div>
-                                    <div class="col-lg-6 col-md-12 dropdown faq-drop">
-                                        <div class="form-group categories">
-                                            <div class="nice-select form-control wide" tabindex="0"><span
-                                                    class="current">Type</span>
-                                                <select class="list" name="type">
-                                                    <option value="house" class="option">
-                                                        house</option>
-                                                    <option value="commercial" class="option">commercial</option>
-                                                    <option value="apartment" class="option">apartment</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <br />
+                                        {{-- <div class="select-option"> --}}
+                                        {{-- <i class="ti-angle-down"></i> --}}
+                                        <select name="type" class="validate">
+                                            <option selected>Property Types</option>
+                                            @foreach ($types as $type)
+                                                <option value="{{ $type->slug }}" class="option">{{ $type->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        {{-- </div> --}}
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <br />
+
+                                        <select name="purpose" class="validate">
+                                            <option selected>Property Purpose</option>
+                                            @foreach ($purposes as $purpose)
+                                                <option value="{{ $purpose->slug }}" class="option">{{ $purpose->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        {{-- </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -166,17 +203,18 @@
                                     <div class="col-md-12">
                                         <ul class="pro-feature-add pl-0">
 
-                                              @foreach($features as $feature)
+                                            @foreach ($features as $feature)
                                                 <li class="fl-wrap filter-tags clearfix">
                                                     <div class="checkboxes float-left">
                                                         <div class="filter-tags-wrap">
-                                                            <input id="check-k" type="checkbox" name="features[]"
-                                                                value="{{$feature->id}}">
-                                                            <label for="check-k">{{$feature->name}}</label>
+                                                            <input id="check-{{ $feature->id }}" type="checkbox"
+                                                                name="features[]" value="{{ $feature->id }}">
+                                                            <label
+                                                                for="check-{{ $feature->id }}">{{ $feature->name }}</label>
                                                         </div>
                                                     </div>
                                                 </li>
-                                           @endforeach
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
@@ -273,4 +311,39 @@
             </div>
         </div>
     </section>
+    @push('script')
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $(function() {
+                    $("form[name='propertyForm']").validate({
+                        // Define validation rules
+                        rules: {
+                            title: "required",
+                            description: "required",
+                            title: {
+                                required: true
+                            },
+                        
+                            description: {
+                                required: true
+                            },
+                           
+                        },
+                        // Specify validation error messages
+                        messages: {
+                            title: "Please provide a valid Property Title.",
+                            description: "Please enter description",
+                        },
+                        
+                        submitHandler: function(form) {
+                            console.log(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

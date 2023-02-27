@@ -43,11 +43,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('categories', 'CategoryController');
     Route::resource('posts', 'PostController');
     Route::resource('features', 'FeatureController');
+    Route::resource('purposes', 'PurposeController');
+    Route::resource('types', 'TypeController');
     Route::resource('properties', 'PropertyController');
     Route::post('properties/gallery/delete', 'PropertyController@galleryImageDelete')->name('gallery-delete');
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
+    Route::resource('countries', 'CountryController');
     Route::resource('testimonials', 'TestimonialController');
 
     Route::get('galleries/album', 'GalleryController@album')->name('album');

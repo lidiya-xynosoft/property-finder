@@ -73,32 +73,32 @@
                  </div>
                  <div class="col-lg-3 col-md-6">
                      <div class="widget">
-                         <h3>Recent Properties</h3>
+                         <h3>Recent Feeds</h3>
                          <div class="twitter-widget contuct">
                              <div class="twitter-area">
                                  @foreach ($footerproperties as $post)
-                                     <div class="recent-main">
-                                         @if (Storage::disk('public')->exists('property/' . $post->image) && $post->image)
-                                             <div class="recent-img">
-                                                 <a href="{{ route('blog.show', $post->slug) }}"><img
-                                                         src="{{ Storage::url('property/' . $post->image) }}"
-                                                         alt="{{ $post->title }}"></a>
-                                             </div>
-                                         @endif
+                                     <div class="single-item">
+                                         <div class="icon-holder">
+                                             @if (Storage::disk('public')->exists('property/' . $post->image) && $post->image)
+                                                  
+                                                      <a href="{{ route('property.show', $post->slug) }}">
+                                                   
+                                                     <i class="fa fa-post" aria-hidden="true"></i>
 
-                                         <div class="info-img">
-                                             <a href="blog-details.html">
-                                                 <h6>{{ $post->title }}</h6>
-                                             </a>
-                                             <p>{{ $post->created_at->diffForHumans() }}</p>
+                                                 </a>
+                                                  
+                                             @endif
+
+                                         </div>
+                                         <div class="text">
+                                             <h5><a href="#">@findhouses</a> {{ $post->title }}</h5>
+                                             <h4>about {{ $post->created_at->diffForHumans() }}</h4>
                                          </div>
                                      </div>
                                  @endforeach
-
                              </div>
                          </div>
                      </div>
-
                  </div>
                  <div class="col-lg-3 col-md-6">
                      <div class="newsletters">

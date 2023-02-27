@@ -10,8 +10,11 @@ use App\Property;
 use App\Post;
 use App\Tag;
 use App\Category;
+use App\Country;
 use App\Setting;
 use App\Message;
+use App\Purpose;
+use App\Type;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,8 +55,11 @@ class AppServiceProvider extends ServiceProvider
 
             view()->composer('frontend.partials.navbar', function($view) {
                 $view->with('navbarsettings', Setting::select('name')->get());
+                $view->with('types', Type::all());
+                $view->with('purposes', Purpose::all());
+                $view->with('countries', Country::all());
             });
-
+        
             view()->composer('backend.partials.navbar', function($view) {
                 $view->with('countmessages', Message::latest()->where('agent_id', Auth::id())->count());
                 $view->with('navbarmessages', Message::latest()->where('agent_id', Auth::id())->take(5)->get());

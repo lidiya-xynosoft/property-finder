@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
-
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
     @endpush
     <section class="user-page section-padding">
         <div class="container-fluid">

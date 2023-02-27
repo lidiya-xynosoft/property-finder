@@ -10495,7 +10495,7 @@ a.button {
 /*---------------------------------------*/
 .parallax-searchs.home15 {
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url("../images/bg/bg-15.jpg") no-repeat center top;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/bg/bg-15.jpg") no-repeat center top;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/bg/theme-6.jpg") no-repeat center top;
   background-size: cover;
   background-attachment: fixed !important;
   width: 100%;
@@ -10504,7 +10504,7 @@ a.button {
 
 .parallax-searchs.home15.thome-6 {
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url(../images/bg/thome-6.jpg) no-repeat center top;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/bg/thome-6.jpg) no-repeat center top;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../images/bg/bg-15.jpg) no-repeat center top;
   background-size: cover;
   background-attachment: fixed !important;
   width: 100%;
@@ -13127,7 +13127,7 @@ label {
 form label.error {
   display: block;
   color: #ff0000;
-  font-size: 14px !important;
+  font-size: 12px !important;
   opacity: 1 !important;
 }
 

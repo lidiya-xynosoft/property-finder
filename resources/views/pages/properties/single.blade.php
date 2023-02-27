@@ -51,7 +51,7 @@
                                 <h5 class="mb-4">Gallery</h5>
                                 <div class="carousel-inner">
                                      @foreach($property->gallery as $gallery)
-                                    <div class="active item carousel-item" data-slide-number="0">
+                                    <div class="active item carousel-item" data-slide-number="{{ $gallery->id }}">
                                         <img src="{{Storage::url('property/gallery/'.$gallery->name)}}"
                                             class="img-fluid" alt="slider-listing">
                                     </div>
@@ -67,7 +67,7 @@
                                 <ul class="carousel-indicators smail-listing list-inline">
                                       @foreach($property->gallery as $gallery)
                                     <li class="list-inline-item active">
-                                        <a id="carousel-selector-0" class="selected" data-slide-to="0"
+                                        <a id="carousel-selector-{{ $gallery->id }}" class="selected" data-slide-to="{{ $gallery->id }}"
                                             data-target="#listingDetailsSlider">
                                             <img src="{{Storage::url('property/gallery/'.$gallery->name)}}"
                                                 class="img-fluid" alt="listing-small">
@@ -1002,21 +1002,10 @@
         <script src="{{ asset('frontend/findhouse/js/leaflet-providers.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/leaflet.markercluster.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/map-single.js') }}"></script>
+        <script src="{{ asset('frontend/findhouse/js/popup.js') }}"></script>
 
-        <!-- Date Dropper Script-->
-        <script>
-            $('#reservation-date').dateDropper();
-        </script>
-        <!-- Time Dropper Script-->
-        <script>
-            this.$('#reservation-time').timeDropper({
-                setCurrentTime: false,
-                meridians: true,
-                primaryColor: "#e8212a",
-                borderColor: "#e8212a",
-                minutesInterval: '15'
-            });
-        </script>
+     <!-- Date Dropper Script-->
+      
 
         <script>
             $(document).ready(function() {
@@ -1029,6 +1018,7 @@
                     fixedContentPos: false
                 });
             });
+
         </script>
 
         <script>
@@ -1049,6 +1039,7 @@
                     slider.slick('slickNext');
                 });
             });
+
         </script>
     @endpush
 @endsection

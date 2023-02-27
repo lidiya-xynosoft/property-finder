@@ -5,7 +5,7 @@
             <ul class="list">
 
                 <li class="header">MAIN NAVIGATION</li>
-                
+
                 <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
                     <a href="{{ route('admin.dashboard') }}">
                         <i class="material-icons">dashboard</i>
@@ -16,6 +16,18 @@
                     <a href="{{ route('admin.sliders.index') }}">
                         <i class="material-icons">burst_mode</i>
                         <span>Sliders</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/types*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.types.index') }}">
+                        <i class="material-icons">abc</i>
+                        <span>Types</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/purposes*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.purposes.index') }}">
+                        <i class="material-icons">grading</i>
+                        <span>Purpose</span>
                     </a>
                 </li>
                 <li class="{{ Request::is('admin/properties*') ? 'active' : '' }}">
@@ -72,13 +84,18 @@
                         <span>Gallery</span>
                     </a>
                 </li>
- 
+
                 <li class="{{ Request::is('admin/settings*') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">settings</i>
                         <span>Settings</span>
                     </a>
                     <ul class="ml-menu">
+                        <li class="{{ Request::is('admin/countries*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.countries.index') }}">
+                                <span>Country</span>
+                            </a>
+                        </li>
                         <li class="{{ Request::is('admin/settings') ? 'active' : '' }}">
                             <a href="{{ route('admin.settings') }}">
                                 <span>Settings</span>
@@ -101,10 +118,10 @@
                         </li>
                     </ul>
                 </li>
-                
+
 
             </ul>
         </div>
         <!-- #Menu -->
-        
+
     </aside>

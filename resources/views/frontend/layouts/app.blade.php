@@ -14,10 +14,6 @@
         {{-- MAIN NAVIGATION BAR --}}
         @include('frontend.partials.navbar')
 
-        {{-- SLIDER SECTION --}}
-        {{-- @if (Request::is('/'))
-        @include('frontend.partials.slider')
-    @endif --}}
         @if (Request::is('/'))
          {{-- SEARCH BAR --}}
             @include('frontend.partials.search')

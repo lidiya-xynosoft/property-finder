@@ -23,13 +23,9 @@
                 @foreach ($cities as $city)
                     <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
                         <div class="small-category-2">
-                            <div class="small-category-2-thumb img-1">
-                                <a href="{{ route('property.city', $city->city_slug) }}"><img
-                                        src="images/popular-places/12.jpg" alt=""></a>
-                            </div>
+                           
                             <div class="sc-2-detail">
-                                <h4 class="sc-jb-title"><a
-                                        href="{{ route('property.city', $city->city_slug) }}">{{ $city->city }}</a></h4>
+                                <a href="{{ route('property.city', $city->city_slug) }}">{{ $city->city }}</a>
                                 <span>203 Properties</span>
                             </div>
                         </div>
@@ -83,7 +79,7 @@
                                         href="{{ route('property.show', $property->slug) }}">{{ str_limit($property->title, 25) }}</a>
                                 </h3>
                                 <p class="homes-address mb-3">
-                                    <a href="{{ route('property.show', $property->slug) }}">
+                                    <a href="{{ route('property.city', $property->city) }}">
                                         <i class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
                                     </a>
                                 </p>

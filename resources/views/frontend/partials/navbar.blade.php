@@ -8,12 +8,13 @@
                    <div id="logo">
                        <a href="{{ route('home') }}">
                            @if (Request::is('/'))
-                               <img src="{{ asset('frontend/findhouse/images/logo-red.svg') }}"
-                                   data-sticky-logo="{{ asset('frontend/findhouse/images/logo-red.svg') }}"
-                                   alt="">
-                           @else
-                               <img src="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
+                            <img src="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
                                    data-sticky-logo="{{ asset('frontend/findhouse/images/logo-white-1.svg') }}"
+                                   alt="">
+                               
+                           @else
+                              <img src="{{ asset('frontend/findhouse/images/logo-red.svg') }}"
+                                   data-sticky-logo="{{ asset('frontend/findhouse/images/logo-red.svg') }}"
                                    alt="">
                            @endif
 
@@ -42,9 +43,9 @@
                                <a href="{{ route('agents') }}">Agents</a>
                            </li>
 
-                           <li class="{{ Request::is('gallery') ? 'active' : '' }}">
+                           {{-- <li class="{{ Request::is('gallery') ? 'active' : '' }}">
                                <a href="{{ route('gallery') }}">Gallery</a>
-                           </li>
+                           </li> --}}
 
                            <li class="{{ Request::is('blog*') ? 'active' : '' }}">
                                <a href="{{ route('blog') }}">Blog</a>

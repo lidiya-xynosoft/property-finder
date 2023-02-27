@@ -9,9 +9,8 @@ class Property extends Model
     protected $fillable = [
         'title',    'price',        'featured',     'purpose',  'type',         'image',
         'slug',     'bedroom',      'bathroom',     'city',     'city_slug',    'address',
-        'area',     'agent_id',     'description',  'video',    'floor_plan',   
-        'location_latitude',        'location_longitude',       'nearby',
-        
+        'area',     'agent_id',     'description',  'video',    'floor_plan', 'country_id',
+        'location_latitude',        'location_longitude', 'city_id'
     ];
 
     public function features()
@@ -21,7 +20,7 @@ class Property extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'agent_id');
+        return $this->belongsTo(User::class, 'agent_id');
     }
 
     public function gallery()
@@ -38,5 +37,4 @@ class Property extends Model
     {
         return $this->hasMany(Rating::class, 'property_id');
     }
-
 }

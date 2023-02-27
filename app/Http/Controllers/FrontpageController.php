@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use App\Testimonial;
 use App\Property;
@@ -23,7 +24,9 @@ class FrontpageController extends Controller
         $posts          = Post::latest()->where('status', 1)->take(6)->get();
         $cities = Property::select('city', 'city_slug')->distinct('city_slug')->get();
 
-        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents', 'cities'));
+        $categories   = Category::has('posts')->withCount('posts')->get();
+
+        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents', 'cities', 'categories'));
     }
 
 

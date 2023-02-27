@@ -4,12 +4,11 @@
 
 
 @section('content')
-@push('head')
-   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
-
     @endpush
     <section class="user-page section-padding pt-5">
         <div class="container-fluid">
@@ -22,7 +21,8 @@
                     <div class="col-lg-12 mobile-dashbord dashbord">
                         <div class="dashboard_navigationbar dashxl">
                             <div class="dropdown">
-                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i> Dashboard
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i>
+                                    Dashboard
                                     Navigation</button>
                                 <ul id="myDropdown" class="dropdown-content">
                                     <li>
@@ -75,6 +75,7 @@
                                     <th class="p-0"></th>
                                     <th>Date Added</th>
                                     <th>Views</th>
+
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -82,9 +83,13 @@
                                 @foreach ($properties as $key => $property)
                                     <tr>
                                         <td class="image myelist">
-                                            <a href="single-property-1.html">
-                                                <img alt="my-properties-3" src="images/feature-properties/fp-1.jpg"
-                                                    class="img-fluid"></a>
+                                            @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
+                                                <a href="{{ route('property.show', $property->slug) }}" class="img-fluid">
+                                                    <img src="{{ Storage::url('property/' . $property->image) }}"
+                                                        alt="{{ $property->title }}"></a>
+                                            @else
+                                            @endif
+
                                         </td>
                                         <td>
                                             <div class="inner">
@@ -112,11 +117,10 @@
                                         <td>{{ $property->price }}</td>
                                         <td class="actions">
                                             <a href="{{ route('agent.properties.edit', $property->slug) }}"
-                                                class="edit"><i class="lni-pencil"></i>Edit</a>
-                                            <button type="button" class="btn btn-small deep-orange accent-3 waves-effect"
-                                                onclick="deleteProperty({{ $property->id }})">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
+                                                class="edit"><i class="fa fa-list mr-3"></i></a>
+
+                                            <a href="#" onclick="deleteProperty({{ $property->id }})"
+                                                class="edit"><i class="fa fa-remove mr-3"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -140,25 +144,24 @@
 @section('scripts')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-        function deleteProperty(id){
+        function deleteProperty(id) {
             swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-            buttons: ["Cancel", "Yes, delete it!"]
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+                buttons: ["Cancel", "Yes, delete it!"]
             }).then((value) => {
                 if (value) {
-                    document.getElementById('del-property-'+id).submit();
+                    document.getElementById('del-property-' + id).submit();
                     swal(
-                    'Deleted!',
-                    'Property has been deleted.',
-                    'success',
-                    {
-                        buttons: false,
-                        timer: 1000,
-                    })
+                        'Deleted!',
+                        'Property has been deleted.',
+                        'success', {
+                            buttons: false,
+                            timer: 1000,
+                        })
                 }
             })
         }
