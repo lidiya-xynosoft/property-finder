@@ -55,6 +55,8 @@ class AppServiceProvider extends ServiceProvider
 
             view()->composer('frontend.partials.navbar', function($view) {
                 $view->with('navbarsettings', Setting::select('name')->get());
+            });
+            view()->composer('frontend.partials.search', function ($view) {
                 $view->with('types', Type::all());
                 $view->with('purposes', Purpose::all());
                 $view->with('countries', Country::all());

@@ -20,12 +20,14 @@
                                <div class="col-12">
                                    <div class="banner-search-wrap">
                                        <ul class="nav nav-tabs rld-banner-tab">
+                                        @foreach($types as $purpose)
+                                           {{-- <li class="nav-item">
+                                               <a class="nav-link active" data-toggle="tab" href="#tabs_1">For {{ $purpose->name }}</a>
+                                           </li> --}}
                                            <li class="nav-item">
-                                               <a class="nav-link active" data-toggle="tab" href="#tabs_1">For Sale</a>
+                                               <a class="nav-link" data-toggle="tab" href="#tabs_2">For {{ $purpose->name }}</a>
                                            </li>
-                                           <li class="nav-item">
-                                               <a class="nav-link" data-toggle="tab" href="#tabs_2">For Rent</a>
-                                           </li>
+                                           @endforeach
                                        </ul>
                                        <div class="tab-content">
                                            <div class="tab-pane fade show active" id="tabs_1">

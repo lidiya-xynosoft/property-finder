@@ -239,7 +239,7 @@
                                     <div class="col-md-12">
                                         <div class="property-nearby">
                                             <div class="nearby-info mb-4 repeater">
-                                                <div data-repeater-list="group-a">
+                                                <div data-repeater-list="group_a">
                                                     <span class="nearby-title mb-3 d-block text-info">
                                                         <i class="fas fa-graduation-cap mr-2"></i><b
                                                             class="title">Education</b>
@@ -269,7 +269,7 @@
                                             </div>
 
                                             <div class="nearby-info mb-4 repeater">
-                                                <div data-repeater-list="group-b">
+                                                <div data-repeater-list="group_b">
                                                     <span class="nearby-title mb-3 d-block text-success">
                                                         <i class="fas fa-graduation-cap mr-2"></i><b
                                                             class="title">Health & Medical</b>
@@ -299,7 +299,7 @@
                                             </div>
 
                                              <div class="nearby-info mb-4 repeater">
-                                                <div data-repeater-list="group-c">
+                                                <div data-repeater-list="group_c">
                                                      <span class="nearby-title mb-3 d-block text-danger">
                                                 <i class="fas fa-car mr-2"></i><b class="title">Transportation</b>
 

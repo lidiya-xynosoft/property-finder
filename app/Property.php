@@ -17,6 +17,10 @@ class Property extends Model
     {
         return $this->belongsToMany(Feature::class)->withTimestamps();
     }
+    public function nearbyItems()
+    {
+        return $this->belongsToMany(NearbyItems::class)->withTimestamps();
+    }
 
     public function user()
     {
