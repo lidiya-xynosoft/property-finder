@@ -55,6 +55,12 @@
                         </div>
                         <div class="form-group">
                             <div class="form-line">
+                                <input type="text" name="currency" class="form-control" value="{{ $settings->currency  }}">
+                                <label class="form-label">Currency</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-line">
                                 <input type="text" name="footer" class="form-control" value="{{ $settings->footer  }}">
                                 <label class="form-label">Footer</label>
                             </div>

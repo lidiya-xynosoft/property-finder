@@ -35,48 +35,28 @@
                                     <div class="single detail-wrapper mr-2">
                                         <div class="detail-wrapper-body">
                                             <div class="listing-title-bar">
-                                                <h4>$ {{ number_format($property->price) }}</h4>
-                                                <div class="mt-0">
+                                                <h4>{{ $currency }} {{ number_format($property->price) }}</h4>
+                                                {{-- <div class="mt-0">
                                                     <a href="#listing-location" class="listing-address">
                                                         <p>$ 1,200 / sq ft</p>
                                                     </a>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </section>
-                            <!-- main slider carousel items -->
-                            <div id="listingDetailsSlider" class="carousel listing-details-sliders slide mb-30">
-                                <h5 class="mb-4">Gallery</h5>
-                                <div class="carousel-inner">
-                                     @foreach($property->gallery as $gallery)
-                                    <div class="active item carousel-item" data-slide-number="{{ $gallery->id }}">
-                                        <img src="{{Storage::url('property/gallery/'.$gallery->name)}}"
-                                            class="img-fluid" alt="slider-listing">
-                                    </div>
-                                     @endforeach
-
-                                    <a class="carousel-control left" href="#listingDetailsSlider" data-slide="prev"><i
-                                            class="fa fa-angle-left"></i></a>
-                                    <a class="carousel-control right" href="#listingDetailsSlider" data-slide="next"><i
-                                            class="fa fa-angle-right"></i></a>
-
-                                </div>
-                                <!-- main slider carousel nav controls -->
-                                <ul class="carousel-indicators smail-listing list-inline">
-                                      @foreach($property->gallery as $gallery)
-                                    <li class="list-inline-item active">
-                                        <a id="carousel-selector-{{ $gallery->id }}" class="selected" data-slide-to="{{ $gallery->id }}"
-                                            data-target="#listingDetailsSlider">
-                                            <img src="{{Storage::url('property/gallery/'.$gallery->name)}}"
-                                                class="img-fluid" alt="listing-small">
-                                        </a>
-                                    </li>
-                                   @endforeach
-                                </ul>
-                                <!-- main slider carousel items -->
-                            </div>
+                           @if(!$property->gallery->isEmpty())
+                        <div class="single-slider">
+                            @include('pages.properties.slider')
+                        </div>
+                    @else
+                        <div class="single-image">
+                            @if(Storage::disk('public')->exists('property/'.$property->image) && $property->image)
+                                <img src="{{Storage::url('property/'.$property->image)}}" alt="{{$property->title}}" class="imgresponsive">
+                            @endif
+                        </div>
+                    @endif
                             <div class="blog-info details mb-30">
                                 <h5 class="mb-4">Description</h5>
                                 <p class="mb-3"> {!! $property->description !!}</p>
@@ -102,7 +82,7 @@
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Property Price:</span>
-                                <span class="det">${{number_format($property->price)}}</span>
+                                <span class="det">{{ $currency }} {{number_format($property->price)}}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Area:</span>

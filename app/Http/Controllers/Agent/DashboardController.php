@@ -11,6 +11,7 @@ use App\Mail\Contact;
 use Carbon\Carbon;
 use App\Property;
 use App\Message;
+use App\Setting;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Hash;
@@ -25,8 +26,13 @@ class DashboardController extends Controller
 
         $messages      = Message::latest()->where('agent_id', Auth::id())->take(5)->get();
         $messagetotal  = Message::latest()->where('agent_id', Auth::id())->count();
-
-        return view('agent.dashboard',compact('properties','propertytotal','messages','messagetotal'));
+        if (Auth::user()) {
+            $user_data = User::with('country')->where('id', Auth::id())->first();
+            $currency = $user_data->country->currency;
+        } else {
+            $currency = Setting::find(1)->currency;
+        }
+        return view('agent.dashboard', compact('properties', 'propertytotal', 'messages', 'messagetotal', 'currency'));
     }
 
     public function profile()

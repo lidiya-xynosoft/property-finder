@@ -20,13 +20,14 @@
                                <div class="col-12">
                                    <div class="banner-search-wrap">
                                        <ul class="nav nav-tabs rld-banner-tab">
-                                        @foreach($types as $purpose)
-                                           {{-- <li class="nav-item">
+                                           @foreach ($types as $key => $purpose)
+                                               {{-- <li class="nav-item">
                                                <a class="nav-link active" data-toggle="tab" href="#tabs_1">For {{ $purpose->name }}</a>
                                            </li> --}}
-                                           <li class="nav-item">
-                                               <a class="nav-link" data-toggle="tab" href="#tabs_2">For {{ $purpose->name }}</a>
-                                           </li>
+                                               <li class="nav-item">
+                                                   <a class="nav-link @if ($key == 0) ? active : '' @endif"
+                                                       data-toggle="tab" href="#tabs_2">For {{ $purpose->name }}</a>
+                                               </li>
                                            @endforeach
                                        </ul>
                                        <div class="tab-content">

@@ -16,5 +16,6 @@ class Setting extends Model
         'facebook',
         'twitter',
         'linkedin',
+        'currency'
     ];
 }

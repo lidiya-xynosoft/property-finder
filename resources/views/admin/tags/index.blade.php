@@ -31,7 +31,8 @@
                                 <tr>
                                     <th>SL.</th>
                                     <th>Name</th>
-                                    <th>Post Count</th>
+                                    {{-- <th>Post Count</th> --}}
+                                    <th>Type</th>
                                     <th>Slug</th>
                                     <th>Action</th>
                                 </tr>
@@ -40,7 +41,7 @@
                                 <tr>
                                     <th>SL.</th>
                                     <th>Name</th>
-                                    <th>Post Count</th>
+                                    <th>Type</th>
                                     <th>Slug</th>
                                     <th>Action</th>
                                 </tr>
@@ -50,7 +51,8 @@
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$tag->name}}</td>
-                                    <td>{{$tag->posts->count()}}</td>
+                                    {{-- <td>{{$tag->posts->count()}}</td> --}}
+                                    <td>{{$tag->type}}</td>
                                     <td>{{$tag->slug}}</td>
                                     <td class="text-center">
                                         <a href="{{route('admin.tags.edit',$tag->id)}}" class="btn btn-info btn-sm waves-effect">

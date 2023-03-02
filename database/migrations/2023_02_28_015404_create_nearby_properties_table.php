@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNearbyCategoriesTable extends Migration
+class CreateNearbyPropertiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateNearbyCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('nearby_categories', function (Blueprint $table) {
+        Schema::create('nearby_properties', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->string('class');
-            $table->string('icon');
+            $table->foreignId('nearby_category_id')->constrained('nearby_categories');
+            $table->foreignId('property_id')->constrained('properties');
+            $table->string('title');
+            $table->string('distance');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateNearbyCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nearby_categories');
+        Schema::dropIfExists('nearby_properties');
     }
 }

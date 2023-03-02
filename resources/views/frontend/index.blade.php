@@ -20,13 +20,18 @@
             <div class="row">
                 <!-- Single category -->
 
-                @foreach ($cities as $city)
+                @foreach ($processed_cities as $key => $city)
                     <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
                         <div class="small-category-2">
-                           
+                            <div class="small-category-2-thumb img-1">
+                                <a href="{{ route('property.city', $city['city_slug']) }}">
+                                    <img src="{{ Storage::url('city/' . $city['image']) }}"
+                                        alt="{{ $city['city_name'] }}"></a>
+                            </div>
                             <div class="sc-2-detail">
-                                <a href="{{ route('property.city', $city->city_slug) }}">{{ $city->city }}</a>
-                                <span>203 Properties</span>
+                                <h4 class="sc-jb-title"><a href="properties-full-grid-1.html">{{ $city['city_name'] }}</a>
+                                </h4>
+                                <span>{{ $city['total_property'] }} Properties</span>
                             </div>
                         </div>
                     </div>
@@ -53,7 +58,7 @@
                             <div class="project-inner project-head">
                                 <div class="homes">
                                     <!-- homes img -->
-                                    <a href="{{ route('property.show', $property->slug) }}" class="homes-img">
+                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="homes-img">
                                         @if ($property->featured == 1)
                                             <div class="homes-tag button alt featured">Featured</div>
                                         @endif
@@ -64,11 +69,11 @@
                                     </a>
                                 </div>
                                 <div class="button-effect">
-                                    <a href="{{ route('property.show', $property->slug) }}" class="btn"><i
+                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="btn"><i
                                             class="fa fa-link"></i></a>
                                     <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
                                             class="fas fa-video"></i></a>
-                                    <a href="{{ route('property.show', $property->slug) }}" class="img-poppu btn"><i
+                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="img-poppu btn"><i
                                             class="fa fa-photo"></i></a>
                                 </div>
                             </div>
@@ -76,11 +81,12 @@
                             <div class="homes-content">
                                 <!-- homes address -->
                                 <h3><a
-                                        href="{{ route('property.show', $property->slug) }}">{{ str_limit($property->title, 25) }}</a>
+                                        href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ str_limit($property->title, 25) }}</a>
                                 </h3>
                                 <p class="homes-address mb-3">
                                     <a href="{{ route('property.city', $property->city) }}">
-                                        <i class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
+                                        <i
+                                            class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
                                     </a>
                                 </p>
                                 <!-- homes List -->
@@ -104,8 +110,8 @@
                                 </ul>
                                 <div class="price-properties footer pt-3 pb-0">
                                     <h3 class="title mt-3">
-                                        <a
-                                            href="{{ route('property.show', $property->slug) }}">{{ number_format($property->price) }}</a>
+                                        <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"> {{ $currency }}
+                                            {{ number_format($property->price) }}</a>
                                     </h3>
                                     <div class="compare">
                                         <a href="#" title="Compare">
@@ -178,14 +184,14 @@
                                     <div class="project-inner project-head">
                                         <div class="homes">
                                             <!-- homes img -->
-                                            <a href="{{ route('property.show', $property->slug) }}" class="homes-img">
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="homes-img">
                                                 <div class="homes-tag button sale rent">For {{ $property->purpose }}</div>
-                                                 <img src="{{ Storage::url('property/' . $property->image) }}"
-                                            alt="{{ $property->title }}" class="img-responsive">
+                                                <img src="{{ Storage::url('property/' . $property->image) }}"
+                                                    alt="{{ $property->title }}" class="img-responsive">
                                             </a>
                                         </div>
                                         <div class="button-effect">
-                                            <a href="{{ route('property.show', $property->slug) }}" class="btn"><i
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="btn"><i
                                                     class="fa fa-link"></i></a>
                                             <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
                                                     class="fas fa-video"></i></a>
@@ -197,11 +203,12 @@
                                     <div class="homes-content">
                                         <!-- homes address -->
                                         <h3><a
-                                                href="{{ route('property.show', $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
+                                                href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
                                         </h3>
                                         <p class="homes-address mb-3">
-                                            <a href="{{ route('property.show', $property->slug) }}">
-                                                <i class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30)  }}</span>
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
+                                                <i
+                                                    class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
                                             </a>
                                         </p>
                                         <!-- homes List -->
@@ -225,7 +232,7 @@
                                         </ul>
                                         <div class="price-properties footer pt-3 pb-0">
                                             <h3 class="title mt-3">
-                                                <a href="{{ route('property.show', $property->slug) }}">$
+                                                <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ $currency }}
                                                     {{ number_format($property->price) }}</a>
                                             </h3>
                                             <div class="compare">

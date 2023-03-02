@@ -47,7 +47,6 @@ class ServiceController extends Controller
         } else {
             $imagename = 'default.png';
         }
-        return $imagename;
         $service = new Service();
         $service->title = $request->title;
         $service->description = $request->description;

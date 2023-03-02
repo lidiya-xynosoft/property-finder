@@ -15,6 +15,7 @@ use App\Setting;
 use App\Message;
 use App\Purpose;
 use App\Type;
+use App\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,34 +27,38 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-
-        if (! $this->app->runningInConsole()) {
+        if (!$this->app->runningInConsole()) {
 
             // SHARE TO ALL ROUTES
             $bedroomdistinct  = Property::select('bedroom')->distinct()->get();
             view()->share('bedroomdistinct', $bedroomdistinct);
+
             $bathroomdistinct  = Property::select('bathroom')->distinct()->get();
             view()->share('bathroomdistinct', $bathroomdistinct);
 
+            $currency = Setting::find(1)->currency;
+
+            view()->share('currency', $currency);
+
             $cities   = Property::select('city')->distinct()->get();
             $citylist = array();
-            foreach($cities as $city){
+            foreach ($cities as $city) {
                 $citylist[$city['city']] = NULL;
             }
             view()->share('citylist', $citylist);
 
 
             // SHARE WITH SPECIFIC VIEW
-            view()->composer('pages.search', function($view) {
+            view()->composer('pages.search', function ($view) {
                 $view->with('bathroomdistinct', Property::select('bathroom')->distinct()->get());
             });
 
-            view()->composer('frontend.partials.footer', function($view) {
+            view()->composer('frontend.partials.footer', function ($view) {
                 $view->with('footerproperties', Property::latest()->take(3)->get());
-                $view->with('footersettings', Setting::select('footer','aboutus','facebook','twitter','linkedin')->get());
+                $view->with('footersettings', Setting::select('footer', 'aboutus', 'facebook', 'twitter', 'linkedin')->get());
             });
 
-            view()->composer('frontend.partials.navbar', function($view) {
+            view()->composer('frontend.partials.navbar', function ($view) {
                 $view->with('navbarsettings', Setting::select('name')->get());
             });
             view()->composer('frontend.partials.search', function ($view) {
@@ -61,26 +66,50 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('purposes', Purpose::all());
                 $view->with('countries', Country::all());
             });
-        
-            view()->composer('backend.partials.navbar', function($view) {
+
+            view()->composer('backend.partials.navbar', function ($view) {
                 $view->with('countmessages', Message::latest()->where('agent_id', Auth::id())->count());
                 $view->with('navbarmessages', Message::latest()->where('agent_id', Auth::id())->take(5)->get());
             });
 
-            view()->composer('pages.contact', function($view) {
-                $view->with('contactsettings', Setting::select('phone','email','address')->get());
+            view()->composer('pages.contact', function ($view) {
+                $view->with('contactsettings', Setting::select('phone', 'email', 'address')->get());
             });
 
-            view()->composer('pages.blog.sidebar', function($view) {
+            view()->composer(
+                'pages.blog.sidebar',
+                function ($view) {
 
-                $archives     = Post::archives();
-                $categories   = Category::has('posts')->withCount('posts')->get();
-                $tags         = Tag::has('posts')->get();
-                $popularposts = Post::orderBy('view_count','desc')->take(5)->get();
+                    $archives     = Post::archives();
+                    $categories   = Category::has('posts')->withCount('posts')->get();
+                    $tags         = Tag::has('posts')->get();
+                    $popularposts = Post::orderBy('view_count', 'desc')->take(5)->get();
 
-                $view->with(compact('archives','categories','tags','popularposts'));
-            });
+                    $view->with(compact(
+                        'archives',
+                        'categories',
+                        'tags',
+                        'popularposts'
+                    ));
+                }
+            );
+            view()->composer(
+                'pages.properties.sidebar',
+                function ($view) {
 
+                    $archives     = Post::archives();
+                    $categories   = Category::has('posts')->withCount('posts')->get();
+                    $tags         = Tag::has('property')->get();
+                    $recent_properties = Property::latest()->take(3)->get();
+
+                    $view->with(compact(
+                        'archives',
+                        'categories',
+                        'tags',
+                        'recent_properties'
+                    ));
+                }
+            );
         }
     }
 

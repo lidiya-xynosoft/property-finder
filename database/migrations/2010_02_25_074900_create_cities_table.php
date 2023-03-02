@@ -18,6 +18,8 @@ class CreateCitiesTable extends Migration
             $table->foreignId('country_id')->constrained('countries');
             $table->string('name');
             $table->string('slug');
+            $table->string('image');
+            $table->integer('city_order')->default(0);
             $table->string('latitude');
             $table->string('longitude');
             $table->timestamps();

@@ -9,7 +9,7 @@
 @section('content')
 
     <div class="block-header">
-        <a href="{{ route('admin.testimonials.index') }}" class="waves-effect waves-light btn btn-danger right m-b-15">
+        <a href="{{ route('admin.services.index') }}" class="waves-effect waves-light btn btn-danger right m-b-15">
             <i class="material-icons left">arrow_back</i>
             <span>BACK</span>
         </a>

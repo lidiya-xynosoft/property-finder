@@ -20,6 +20,7 @@ class CreatePropertiesTable extends Migration
             $table->foreignId('purpose_id')->constrained('purposes');
             $table->foreignId('type_id')->constrained('types');
             $table->foreignId('city_id')->constrained('cities');
+            $table->string('product_code')->nullable()->default('0');
             $table->string('slug')->unique();
             $table->double('price', 8, 2);
             $table->boolean('featured')->default(false);
@@ -28,6 +29,8 @@ class CreatePropertiesTable extends Migration
             $table->integer('bathroom');
             $table->string('city');
             $table->string('city_slug');
+            $table->string('garage');
+            $table->string('built_year');
             $table->string('address');
             $table->integer('area');
             $table->integer('agent_id');

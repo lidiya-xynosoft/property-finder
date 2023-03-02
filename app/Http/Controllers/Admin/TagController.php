@@ -33,6 +33,7 @@ class TagController extends Controller
 
         $tag = new Tag();
         $tag->name = $request->name;
+        $tag->type = $request->type;
         $tag->slug = str_slug($request->name);
         $tag->save();
         $flash = array('type' => 'success', 'msg' => 'Tag created successfully.');
@@ -57,12 +58,13 @@ class TagController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:255'
+        $request->validate(['name' => 'required|max:255',
+            'type' => 'required'
         ]);
 
         $tag = Tag::find($id);
         $tag->name = $request->name;
+        $tag->type = $request->type;
         $tag->slug = str_slug($request->name);
         $tag->save();
 
@@ -75,10 +77,14 @@ class TagController extends Controller
     public function destroy($id)
     {
         $tag = Tag::find($id);
+        if ($tag->type == 'property') {
+            $flash = array('type' => 'error', 'msg' => 'This action not allowed.');
+            session()->flash('flash', $flash);
+            return redirect()->route('admin.tags.index');
+        }
         $tag->delete();
         $tag->posts()->detach();
 
-        // Toastr::success('message', 'Tag deleted successfully.');
         return back();
     }
 }

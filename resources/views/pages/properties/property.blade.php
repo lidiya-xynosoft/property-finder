@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </section>
-            
+{{--             
             <div class="widget-boxed popular mt-5">
 
                 <div class="widget-boxed-body">
@@ -67,7 +67,7 @@
                     </section>
                 </div>
             </div>
-            <br />
+            <br /> --}}
             <div class="row">
                 
                 <div class="col-lg-8 col-md-12 blog-pots">
@@ -113,7 +113,7 @@
                                                     <div class="homes-tag button alt featured">Featured</div>
                                                 @endif
                                                 <div class="homes-tag button alt sale">For {{ $property->purpose }}</div>
-                                                <div class="homes-price">${{ number_format($property->price) }}</div>
+                                                <div class="homes-price">{{ $currency }} {{ number_format($property->price) }}</div>
                                                 @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
                                                     <img src="{{ Storage::url('property/' . $property->image) }}"
                                                         alt="{{ $property->title }}" class="img-responsive">
@@ -123,11 +123,11 @@
                                             </a>
                                         </div>
                                         <div class="button-effect">
-                                            <a href="{{ route('property.show', $property->slug) }}" class="btn"><i
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="btn"><i
                                                     class="fa fa-link"></i></a>
                                             <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
                                                     class="fas fa-video"></i></a>
-                                            <a href="{{ route('property.show', $property->slug) }}"
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
                                                 class="img-poppu btn"><i class="fa fa-photo"></i></a>
                                         </div>
                                     </div>
@@ -141,10 +141,10 @@
                         @endif
 
                         <h3><a
-                                href="{{ route('property.show', $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
+                                href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
                         </h3>
                         <p class="homes-address mb-3">
-                            <a href="{{ route('property.show', $property->slug) }}">
+                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
                                 <i class="fa fa-map-marker"></i><span>{{ ucfirst($property->address) }}</span>
                             </a>
                             

@@ -84,7 +84,8 @@
                                     <tr>
                                         <td class="image myelist">
                                             @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
-                                                <a href="{{ route('property.show', $property->slug) }}" class="img-fluid">
+                                                <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                    class="img-fluid">
                                                     <img src="{{ Storage::url('property/' . $property->image) }}"
                                                         alt="{{ $property->title }}"></a>
                                             @else
@@ -93,7 +94,7 @@
                                         </td>
                                         <td>
                                             <div class="inner">
-                                                <a href="single-property-1.html">
+                                                <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
                                                     <h2> {{ str_limit($property->title, 30) }}</h2>
                                                 </a>
                                                 <figure><i class="lni-map-marker"></i> {{ ucfirst($property->address) }}
@@ -109,18 +110,23 @@
                                                     </li>
                                                     <li class="mb-0"><i class="fa fa-star"></i>
                                                     </li>
-                                                    <li class="ml-3">(6 Reviews)</li>
+                                                    <li class="ml-3">({{ $property->comments_count }} Reviews)</li>
                                                 </ul>
                                             </div>
                                         </td>
                                         <td>{{ $property->created_at }}</td>
-                                        <td>{{ $property->price }}</td>
+                                        <td>{{ $currency }} {{ $property->price }}</td>
                                         <td class="actions">
                                             <a href="{{ route('agent.properties.edit', $property->slug) }}"
                                                 class="edit"><i class="fa fa-list mr-3"></i></a>
 
                                             <a href="#" onclick="deleteProperty({{ $property->id }})"
                                                 class="edit"><i class="fa fa-remove mr-3"></i></a>
+                                            <form action="{{ route('agent.properties.destroy', $property->slug) }}"
+                                                method="POST" id="del-property_{{ $property->id }}" style="display:none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -139,31 +145,31 @@
             </div>
         </div>
     </section>
-@endsection
-
-@section('scripts')
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script>
-        function deleteProperty(id) {
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                buttons: true,
-                dangerMode: true,
-                buttons: ["Cancel", "Yes, delete it!"]
-            }).then((value) => {
-                if (value) {
-                    document.getElementById('del-property-' + id).submit();
-                    swal(
-                        'Deleted!',
-                        'Property has been deleted.',
-                        'success', {
-                            buttons: false,
-                            timer: 1000,
-                        })
-                }
-            })
-        }
-    </script>
+    @push('script')
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+            var deleteProperty = function(id) {
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true,
+                    buttons: ["Cancel", "Yes, delete it!"]
+                }).then((value) => {
+                    if (value) {
+                        // document.getElementById('del-property_' + id).submit();
+                        document.forms['del-property_' + id].submit();
+                        swal(
+                            'Deleted!',
+                            'Property has been deleted.',
+                            'success', {
+                                buttons: false,
+                                timer: 1000,
+                            })
+                    }
+                })
+            }
+        </script>
+    @endpush
 @endsection

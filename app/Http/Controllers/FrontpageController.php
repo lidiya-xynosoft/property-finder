@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\City;
 use Illuminate\Http\Request;
 use App\Testimonial;
 use App\Property;
 use App\Service;
 use App\Slider;
 use App\Post;
+use App\Setting;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class FrontpageController extends Controller
 {
@@ -22,11 +25,25 @@ class FrontpageController extends Controller
         $testimonials   = Testimonial::latest()->get();
         $agents          = User::latest()->where('role_id', 2)->take(6)->get();
         $posts          = Post::latest()->where('status', 1)->take(6)->get();
-        $cities = Property::select('city', 'city_slug')->distinct('city_slug')->get();
+        $cities = City::all();
 
+        foreach ($cities as $key => $city) {
+            $processed_cities[$key] = array(
+                'total_property' => $city->property->pluck('city_id')->count(),
+                'image' => $city->image,
+                'city_name' => $city->name,
+                'city_slug' => $city->slug
+            );
+        }
+        if (Auth::user()) {
+            $user_data = User::with('country')->where('id', Auth::id())->first();
+            $currency = $user_data->country->currency;
+        } else {
+            $currency = Setting::find(1)->currency;
+        }
         $categories   = Category::has('posts')->withCount('posts')->get();
 
-        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents', 'cities', 'categories'));
+        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents', 'processed_cities', 'categories', 'currency'));
     }
 
 

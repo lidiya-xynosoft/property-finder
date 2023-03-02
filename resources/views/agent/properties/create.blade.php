@@ -5,10 +5,10 @@
 @section('content')
     @push('head')
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}"> --}}
+        {{-- <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}"> --}}
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}"> --}}
     @endpush
     <section class="user-page section-padding">
         <div class="container-fluid">
@@ -108,8 +108,8 @@
                                         <p class="no-mb">
                                             <label for="price">Price</label>
                                             <input type="text" name="price"
-                                                class="form-control @error('price') is-invalid @enderror" placeholder="USD"
-                                                id="price">
+                                                class="form-control @error('price') is-invalid @enderror"
+                                                placeholder="{{ $currency }}" id="price">
                                         </p>
                                         @error('price')
                                             <span class="invalid-feedback" role="alert">
@@ -134,7 +134,7 @@
 
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
-                                            <label for="price">Bedroom</label>
+                                            <label for="price">No of bedroom</label>
                                             <input type="text" id="bedroom" name="bedroom" type="number"
                                                 class="form-control @error('bedroom') is-invalid @enderror">
                                         </p>
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb last">
-                                            <label for="area">Bathroom</label>
+                                            <label for="area">No of bathroom</label>
                                             <input type="text" id="bathroom" name="bathroom" type="number"
                                                 class="form-control @error('bathroom') is-invalid @enderror">
                                         </p>
@@ -156,9 +156,10 @@
                                             </span>
                                         @enderror
                                     </div>
+
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
-                                            <label for="price">Garage</label>
+                                            <label for="price">No of Garage</label>
                                             <input type="text" id="garage" name="garage" type="number"
                                                 class="form-control @error('garage') is-invalid @enderror">
                                         </p>
@@ -170,6 +171,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
+
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">Built Year</label>
@@ -183,31 +185,63 @@
                                         @enderror
                                     </div>
                                     <div class="col-lg-4 col-md-12">
-                                        <br />
-                                        {{-- <div class="select-option"> --}}
-                                        {{-- <i class="ti-angle-down"></i> --}}
-                                        <select name="type">
+                                        <label for="type">Property type</label>
+                                        <select name="type" class="form-select required">
+                                            <option>--Select-- </option>
                                             @foreach ($types as $type)
                                                 <option value="{{ $type->slug }}" class="option">{{ $type->name }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        {{-- </div> --}}
+                                        @error('type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-4 col-md-12">
-                                        <br />
+                                        <label for="purpose">Property purpose</label>
+                                        <select name="purpose" class="form-select required">
+                                            <option>--Select--</option>
 
-                                        <select name="purpose">
                                             @foreach ($purposes as $purpose)
                                                 <option value="{{ $purpose->slug }}" class="option">{{ $purpose->name }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        {{-- </div> --}}
+                                        @error('purpose')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                         </div> <!-- /.col -->
+                        <div class="single-add-property">
+                            <h3>Property Tags</h3>
+                            <div class="property-form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="pro-feature-add pl-0">
+
+                                            @foreach ($tags as $tag)
+                                                <li class="fl-wrap filter-tags clearfix">
+                                                    <div class="checkboxes float-left">
+                                                        <div class="filter-tags-wrap">
+                                                            <input id="check-t{{ $tag->id }}" type="checkbox"
+                                                                name="tags[]" value="{{ $tag->id }}">
+                                                            <label
+                                                                for="check-t{{ $tag->id }}">{{ $tag->name }}</label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="single-add-property">
                             <h3>Property Features</h3>
                             <div class="property-form-group">
@@ -233,51 +267,54 @@
                             </div>
                         </div>
                         <div class="single-add-property">
-                            <h3>property Location</h3>
+                            <h3>property NearBy</h3>
                             <div class="property-form-group">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="property-nearby">
-                                            <div class="nearby-info mb-4 repeater">
-                                                <div data-repeater-list="group_a">
-                                                    <span class="nearby-title mb-3 d-block text-info">
-                                                        <i class="fas fa-graduation-cap mr-2"></i><b
-                                                            class="title">Education</b>
+                                            @foreach ($nearby_categories as $key => $nearby_category)
+                                                <div class="nearby-info mb-4 repeater">
+                                                    <div data-repeater-list="{{ $nearby_category->slug }}">
+                                                        <span
+                                                            class="nearby-title mb-3 d-block {{ $nearby_category->class }}">
+                                                            <i class="{{ $nearby_category->icon }}"></i><b
+                                                                class="title">{{ $nearby_category->name }}</b>
 
+                                                            <button data-repeater-create type="button"
+                                                                class="btn btn-success ml-0">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                                                    class="fa fa-plus mr-3"></i></button>
+                                                        </span>
 
-                                                        <button data-repeater-create type="button"
-                                                            class="btn btn-success ml-0"><i
-                                                                class="fa fa-plus mr-3"></i></i></button>
-                                                    </span>
+                                                        <div data-repeater-item class="d-flex mb-2">
 
-                                                    <div data-repeater-item class="d-flex mb-2">
+                                                            <label class="sr-only"
+                                                                for="inlineFormInputGroup1">{{ __('Users') }}</label>
 
-                                                        <label class="sr-only"
-                                                            for="inlineFormInputGroup1">{{ __('Users') }}</label>
+                                                            <input type="text" class="form-control"
+                                                                name="{{ $nearby_category->slug }}_name"
+                                                                placeholder="Enter item name">
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <input type="text" class="form-control"
+                                                                name="{{ $nearby_category->slug }}_distance"
+                                                                placeholder="Enter distance ">
 
-                                                        <input type="text" class="form-control" name="education_name"
-                                                            placeholder="Enter item name">
-
-                                                        <input type="text" class="form-control"
-                                                            name="education_distance" placeholder="Enter distance ">
-
-                                                        <button data-repeater-delete type="button"
-                                                            class="btn btn-danger btn-icon ml-2"><i
-                                                                class="fa fa-remove mr-3"></i></button>
+                                                            <button data-repeater-delete type="button"
+                                                                class="btn btn-danger btn-icon ml-2"><i
+                                                                    class="fa fa-remove mr-3"></i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="nearby-info mb-4 repeater">
+                                            @endforeach
+                                            {{-- <div class="nearby-info mb-4 repeater">
                                                 <div data-repeater-list="group_b">
                                                     <span class="nearby-title mb-3 d-block text-success">
-                                                        <i class="fas fa-graduation-cap mr-2"></i><b
-                                                            class="title">Health & Medical</b>
+                                                        <i class="fas fa-graduation-cap mr-2"></i><b class="title">Health
+                                                            & Medical</b>
 
 
                                                         <button data-repeater-create type="button"
                                                             class="btn btn-success ml-0"><i
-                                                                class="fa fa-plus mr-3"></i></i></button>
+                                                                class="fa fa-plus mr-3"></i></button>
                                                     </span>
 
                                                     <div data-repeater-item class="d-flex mb-2">
@@ -298,15 +335,16 @@
                                                 </div>
                                             </div>
 
-                                             <div class="nearby-info mb-4 repeater">
+                                            <div class="nearby-info mb-4 repeater">
                                                 <div data-repeater-list="group_c">
-                                                     <span class="nearby-title mb-3 d-block text-danger">
-                                                <i class="fas fa-car mr-2"></i><b class="title">Transportation</b>
+                                                    <span class="nearby-title mb-3 d-block text-danger">
+                                                        <i class="fas fa-car mr-2"></i><b
+                                                            class="title">Transportation</b>
 
 
                                                         <button data-repeater-create type="button"
                                                             class="btn btn-success ml-0"><i
-                                                                class="fa fa-plus mr-3"></i></i></button>
+                                                                class="fa fa-plus mr-3"></i></button>
                                                     </span>
 
                                                     <div data-repeater-item class="d-flex mb-2">
@@ -325,7 +363,7 @@
                                                                 class="fa fa-remove mr-3"></i></button>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
 
                                     </div>
@@ -337,40 +375,74 @@
                             <h3>property Location</h3>
                             <div class="property-form-group">
                                 <div class="row">
+
+                                    <div class="col-lg-6 col-md-12">
+
+                                        <p>
+                                            <label for="city">Select City </label>
+
+                                            <select name="city_id" class="form-select form-select-lg" required>
+                                                <option>--Select city--</option>
+                                                @foreach ($cities as $key => $city)
+                                                    <option value="{{ $city->id }}"
+                                                        onclick="getSelectedDistrictLatLong({{ $city->id }})">
+                                                        {{ $city->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('city_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            <br />
+
+                                        </p>
+                                    </div>
+
                                     <div class="col-lg-6 col-md-12">
                                         <p>
-                                            <label for="address">Address</label>
+                                            <label for="address">Address line1</label>
                                             <input type="text" id="address" name="address"
-                                                placeholder="Enter Your Address"
-                                                class=" @error('address') is-invalid @enderror">
+                                                placeholder="Enter Your Address">
                                         </p>
-                                        @error('address')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         <p>
-                                            <label for="city">City</label>
-                                            <input type="text" id="city" name="city" type="text"
-                                                placeholder="Enter Your City">
+                                            <label for="address">Find Property</label>
+                                            <input type="text" name="autocomplete" id="autocomplete"
+                                                class="form-control" placeholder="Enter your location">
                                         </p>
                                     </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <p>
+                                            <label for="address">Address line2</label>
+                                            <input type="text" id="address1" name="address1"
+                                                placeholder="Enter Your Address">
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 d-none" id="map_area">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div id="map" style="height:400px; width: 600px;" class="my-3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-6 col-md-12 d-none">
                                         <p class="no-mb first">
                                             <label for="latitude">Latitude</label>
-                                            <input id="location_latitude" name="location_latitude" type="text"
+                                            <input id="latitude" name="latitude" type="text"
                                                 placeholder="Google Maps latitude">
                                         </p>
                                     </div>
-                                    <div class="col-lg-6 col-md-12">
+                                    <div class="col-lg-6 col-md-12 d-none">
                                         <p class="no-mb last">
                                             <label for="longitude">Longitude</label>
-                                            <input type="text" id="location_longitude" name="location_longitude"
+                                            <input type="text" id="longitude" name="longitude"
                                                 placeholder="Google Maps longitude">
                                         </p>
                                     </div>
@@ -440,6 +512,101 @@
     </section>
     @push('script')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+
+        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCcdV0HtLCefHEkAlQAJ0VEOFeMmPGCcTA&libraries=places"
+            type="text/javascript"></script>
+
+        <script>
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+            function initialize() {
+                var input = document.getElementById('autocomplete');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    console.log(place.address_components);
+                    console.log(place);
+                    $('#latitude').val(place.geometry['location'].lat());
+                    $('#longitude').val(place.geometry['location'].lng());
+                    defaultPosition = {
+                        lat: place.geometry['location'].lat(),
+                        lng: place.geometry['location'].lng(),
+                    };
+                    initMap();
+                    $('#address').val(place.formatted_address);
+
+                    // --------- show lat and long ---------------
+                    // $("#address_area").removeClass("d-none");
+                    $("#map_area").removeClass("d-none");
+                });
+            }
+
+            var getSelectedDistrictLatLong = function(value) {
+                $.ajax({
+                    url: "/property/city-lat-long",
+                    type: 'get',
+                    data: {
+                        city_id: value,
+                    },
+                    success: function(res) {
+                        if (res['success'] == 1) {
+                            console.log(res);
+                            $('#latitude').val(res['lat']);
+                            $('#longitude').val(res['long']);
+
+                            defaultPosition = {
+                                lat: res['lat'],
+                                lng: res['long'],
+                            };
+
+                            initMap();
+                            $("#map_area").removeClass("d-none");
+
+                        }
+                    },
+                    error: function() {
+                        alert('failed...');
+                        return;
+                    }
+                });
+            };
+        </script>
+        <script>
+            let map;
+
+            let defaultPosition = {
+                lat: 12.818079042852622,
+                lng: 79.69474439948242
+            };
+            $('#latitude').val('12.818079042852622');
+            $('#longitude').val('79.69474439948242');
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: defaultPosition,
+                    zoom: 8,
+                    scrollwheel: true,
+                });
+                const uluru = defaultPosition;
+                let marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map,
+                    draggable: true
+                });
+                google.maps.event.addListener(marker, 'position_changed',
+                    function() {
+                        let lat = marker.position.lat()
+                        let lng = marker.position.lng()
+                        $('#latitude').val(lat)
+                        $('#longitude').val(lng)
+                    })
+                google.maps.event.addListener(map, 'click',
+                    function(event) {
+                        pos = event.latLng
+                        marker.setPosition(pos)
+                    })
+            }
+        </script>
         <script>
             $('.repeater').repeater({
                 defaultValues: {
@@ -460,16 +627,29 @@
                                 required: true
                             },
                             price: {
-                                required: true
+                                required: true,
+                                number: true
+
                             },
                             area: {
-                                required: true
+                                required: true,
+                                number: true
+
                             },
                             bathroom: {
-                                required: true
+                                required: true,
+                                number: true
+
                             },
                             bedroom: {
-                                required: true
+                                required: true,
+                                number: true
+                            },
+                            garage: {
+                                number: true
+                            },
+                            built_year: {
+                                number: true
                             },
 
                             address: {

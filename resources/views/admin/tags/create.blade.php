@@ -33,6 +33,16 @@
                                 <label class="form-label">Tag</label>
                             </div>
                         </div>
+                         <div class="form-group form-float">
+                        <div class="form-line {{$errors->has('type') ? 'focused error' : ''}}">
+                            <label>Select Type</label>
+                            <select name="type" class="form-control show-tick">
+                                <option value="">-- Please select --</option>
+                                <option value="blog">Blog</option>
+                                <option value="property">Property</option>
+                            </select>
+                        </div>
+                    </div>
 
                         <button type="submit" class="btn btn-indigo btn-lg m-t-15 waves-effect">
                             <i class="material-icons">save</i>

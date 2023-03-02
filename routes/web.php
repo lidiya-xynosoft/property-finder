@@ -10,12 +10,14 @@ Route::get('/slider', 'FrontpageController@slider')->name('slider.index');
 Route::post('/search', 'FrontpageController@search')->name('search');
 
 Route::get('/property', 'PagesController@properties')->name('property');
-Route::get('/property/{id}', 'PagesController@propertieshow')->name('property.show');
+Route::get('/property/{id}/{slug}', 'PagesController@propertieshow')->name('property.show');
 Route::post('/property/message', 'PagesController@messageAgent')->name('property.message');
 Route::post('/property/comment/{id}', 'PagesController@propertyComments')->name('property.comment');
 Route::post('/property/rating', 'PagesController@propertyRating')->name('property.rating');
 Route::get('/property/city/{cityslug}', 'PagesController@propertyCities')->name('property.city');
 Route::get('/property/type/{type}', 'PagesController@propertyTypes')->name('property.type');
+Route::get('/property/city-lat-long', 'PagesController@getCityLatLong');
+
 
 Route::get('/agents', 'PagesController@agents')->name('agents');
 Route::get('/agents/{id}', 'PagesController@agentshow')->name('agents.show');
@@ -50,6 +52,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
+    Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
     Route::resource('testimonials', 'TestimonialController');
 

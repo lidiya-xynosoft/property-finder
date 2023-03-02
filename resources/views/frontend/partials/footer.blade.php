@@ -81,7 +81,7 @@
                                          <div class="icon-holder">
                                              @if (Storage::disk('public')->exists('property/' . $post->image) && $post->image)
                                                   
-                                                      <a href="{{ route('property.show', $post->slug) }}">
+                                                      <a href="{{ url('property/' . $post->id . '/' . $post->slug) }}">
                                                    
                                                      <i class="fa fa-post" aria-hidden="true"></i>
 

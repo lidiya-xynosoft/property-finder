@@ -96,6 +96,11 @@
                                 <span>Country</span>
                             </a>
                         </li>
+                        <li class="{{ Request::is('admin/cities*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.cities.index') }}">
+                                <span>City</span>
+                            </a>
+                        </li>
                         <li class="{{ Request::is('admin/settings') ? 'active' : '' }}">
                             <a href="{{ route('admin.settings') }}">
                                 <span>Settings</span>

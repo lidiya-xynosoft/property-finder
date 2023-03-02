@@ -2,27 +2,21 @@
 
 @section('title', 'Edit Property')
 
-
 @section('content')
-@push('head')
-   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
-        <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">
     @endpush
     <section class="user-page section-padding">
         <div class="container-fluid">
             <div class="row">
-
-
                 @include('agent.sidebar')
-
                 <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
                     <div class="col-lg-12 mobile-dashbord dashbord">
                         <div class="dashboard_navigationbar dashxl">
                             <div class="dropdown">
-                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i> Dashboard
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i>
+                                    Dashboard
                                     Navigation</button>
                                 <ul id="myDropdown" class="dropdown-content">
                                     <li>
@@ -67,100 +61,200 @@
                             </div>
                         </div>
                     </div>
-                <form action="{{route('agent.properties.update',$property->slug)}}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+
+                    <form action="{{ route('agent.properties.update', $property->slug) }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         <div class="single-add-property">
                             <h3>Property description and price</h3>
                             <div class="property-form-group">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
-                                            <label for="title">Property Title</label>
+                                            <label for="validationCustom01" class="form-label">Property Title</label>
                                             <input type="text" name="title" id="title"
-                                                placeholder="Enter your property title" data-length="200">
+                                                value="{{ $property->title }}"
+                                                class="form-control @error('title') is-invalid @enderror"
+                                                id="validationCustom01" placeholder="Enter your property title"
+                                                data-length="200">
                                         </p>
                                     </div>
+                                    @error('title')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
                                             <label for="description">Property Description</label>
-                                            <textarea id="description" name="description" placeholder="Describe about your property"></textarea>
+                                            <textarea id="description" name="description" placeholder="Describe about your property"
+                                                class="form-control html-editor h-205 @error('description') is-invalid @enderror">
+                                               {!! $property->description !!}
+                                                </textarea>
                                         </p>
                                     </div>
+                                    @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">Price</label>
-                                            <input type="text" name="price" placeholder="USD" id="price">
+                                            <input type="text" name="price"
+                                                class="form-control @error('price') is-invalid @enderror"
+                                                value="{{ $property->price }}" placeholder="{{ $currency }}"
+                                                id="price">
                                         </p>
+                                        @error('price')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         <p class="no-mb last">
                                             <label for="area">Floor Area</label>
-                                            <input type="text" name="area" placeholder="Sqft" id="area">
+                                            <input type="text" name="area" placeholder="Sqft"
+                                                value="{{ $property->area }}"
+                                                class="form-control @error('area') is-invalid @enderror" id="area">
                                         </p>
+                                        @error('area')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
 
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
-                                            <label for="price">Bedroom</label>
+                                            <label for="price">No of bedroom</label>
                                             <input type="text" id="bedroom" name="bedroom" type="number"
-                                                class="validate">
+                                                value="{{ $property->bedroom }}"
+                                                class="form-control @error('bedroom') is-invalid @enderror">
                                         </p>
+                                        @error('bedroom')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb last">
-                                            <label for="area">Bathroom</label>
+                                            <label for="area">No of bathroom</label>
                                             <input type="text" id="bathroom" name="bathroom" type="number"
-                                                class="validate">
+                                                value="{{ $property->bathroom }}"
+                                                class="form-control @error('bathroom') is-invalid @enderror">
                                         </p>
+                                        @error('bathroom')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
+
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
-                                            <label for="price">Near By</label>
-                                            <input type="text" id="nearby" name="nearby" type="number"
-                                                class="validate">
+                                            <label for="price">No of Garage</label>
+                                            <input type="text" id="garage" name="garage" type="number"
+                                                value="{{ $property->garage }}"
+                                                class="form-control @error('garage') is-invalid @enderror">
                                         </p>
+                                        @error('garage')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-12 dropdown faq-drop">
-                                        <div class="form-group categories">
-                                            <div class="nice-select form-control wide" tabindex="0"><span
-                                                    class="current">Select status</span>
-                                                <select class="list" name="purpose">
-                                                    <option value="rent" class="option">
-                                                        Rent
-                                                    </option>
-                                                    <option value="sale" class="option">
-                                                        Sale
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
+
+                                    <div class="col-lg-4 col-md-12">
+                                        <p class="no-mb">
+                                            <label for="price">Built Year</label>
+                                            <input type="text" id="built_year" name="built_year" type="number"
+                                                value="{{ $property->built_year }}"
+                                                class="form-control @error('built_year') is-invalid @enderror">
+                                        </p>
+                                        @error('built_year')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                    <div class="col-lg-6 col-md-12 dropdown faq-drop">
-                                        <div class="form-group categories">
-                                            <div class="nice-select form-control wide" tabindex="0"><span
-                                                    class="current">Type</span>
-                                                <select class="list" name="type">
-                                                    <option value="house" class="option">
-                                                        house</option>
-                                                    <option value="commercial" class="option">commercial</option>
-                                                    <option value="apartment" class="option">apartment</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <label for="type">Property type</label>
+                                        <select name="type" class="form-select required">
+                                            <option>--Select-- </option>
+                                            @foreach ($types as $type)
+                                                <option value="{{ $type->slug }}"
+                                                    {{ $type->slug == $property->type ? 'selected' : '' }} class="option">
+                                                    {{ $type->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('type')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <label for="purpose">Property purpose</label>
+                                        <select name="purpose" class="form-select required">
+                                            <option>--Select--</option>
+
+                                            @foreach ($purposes as $purpose)
+                                                <option value="{{ $purpose->slug }}" class="option"
+                                                    {{ $property->purpose == $purpose->slug ? 'selected' : '' }}>
+                                                    {{ $purpose->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('purpose')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                         </div> <!-- /.col -->
+                        <div class="single-add-property">
+                            <h3>Property Tags</h3>
+                            <div class="property-form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="pro-feature-add pl-0">
+
+                                            @foreach ($tags as $tag)
+                                                <li class="fl-wrap filter-tags clearfix">
+                                                    <div class="checkboxes float-left">
+                                                        <div class="filter-tags-wrap">
+                                                            <input id="check-t{{ $tag->id }}" type="checkbox"
+                                                                name="tags[]" value="{{ $tag->id }}"
+                                                                @foreach ($property->tags as $checked)
+                                                        {{ $checked->id == $tag->id ? 'checked' : '' }} @endforeach>
+                                                            <label
+                                                                for="check-t{{ $tag->id }}">{{ $tag->name }}</label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="single-add-property">
                             <h3>Property Features</h3>
                             <div class="property-form-group">
@@ -168,60 +262,152 @@
                                     <div class="col-md-12">
                                         <ul class="pro-feature-add pl-0">
 
-                                              @foreach($features as $feature)
+                                            @foreach ($features as $feature)
                                                 <li class="fl-wrap filter-tags clearfix">
                                                     <div class="checkboxes float-left">
                                                         <div class="filter-tags-wrap">
-                                                            <input id="check-k" type="checkbox" name="features[]"
-                                                                value="{{$feature->id}}">
-                                                            <label for="check-k">{{$feature->name}}</label>
+                                                            <input id="check-{{ $feature->id }}" type="checkbox"
+                                                                name="features[]" value="{{ $feature->id }}"
+                                                                @foreach ($property->features as $checked)
+                                                        {{ $checked->id == $feature->id ? 'checked' : '' }} @endforeach>
+                                                            <label
+                                                                for="check-{{ $feature->id }}">{{ $feature->name }}</label>
                                                         </div>
                                                     </div>
                                                 </li>
-                                           @endforeach
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="single-add-property">
-                            <h3>property Location</h3>
+                            <h3>property NearBy</h3>
                             <div class="property-form-group">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-12">
-                                        <p>
-                                            <label for="address">Address</label>
-                                            <input type="text" id="address" name="address"
-                                                placeholder="Enter Your Address">
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <p>
-                                            <label for="city">City</label>
-                                            <input type="text" id="city" name="city" type="text"
-                                                class="validate" placeholder="Enter Your City">
-                                        </p>
+                                    <div class="col-md-12">
+                                        <div class="property-nearby">
+                                            @foreach ($nearby_categories as $key => $nearby_category)
+                                                <div class="nearby-info mb-4 repeater">
+                                                    <div data-repeater-list="{{ $nearby_category->slug }}">
+                                                        <span
+                                                            class="nearby-title mb-3 d-block {{ $nearby_category->class }}">
+                                                            <i class="{{ $nearby_category->icon }}"></i><b
+                                                                class="title">{{ $nearby_category->name }}</b>
+
+                                                            <button data-repeater-create type="button"
+                                                                class="btn btn-success ml-0">&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                                                    class="fa fa-plus mr-3"></i></button>
+                                                        </span>
+
+                                                        <div data-repeater-item class="d-flex mb-2">
+
+                                                            <label class="sr-only"
+                                                                for="inlineFormInputGroup1">{{ __('Users') }}</label>
+
+                                                            <input type="text" class="form-control"
+                                                                name="{{ $nearby_category->slug }}_name"
+                                                                placeholder="Enter item name">
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <input type="text" class="form-control"
+                                                                name="{{ $nearby_category->slug }}_distance"
+                                                                placeholder="Enter distance ">
+
+                                                            <button data-repeater-delete type="button"
+                                                                class="btn btn-danger btn-icon ml-2"><i
+                                                                    class="fa fa-remove mr-3"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+
+                                        </div>
+
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="single-add-property">
+                            <h3>property Location</h3>
+                            <div class="property-form-group">
                                 <div class="row">
+
                                     <div class="col-lg-6 col-md-12">
-                                        <p class="no-mb first">
-                                            <label for="latitude">Latitude</label>
-                                            <input id="location_latitude" name="location_latitude" type="text"
-                                                class="validate" placeholder="Google Maps latitude">
+
+                                        <p>
+                                            <label for="city">Select City </label>
+
+                                            <select name="city_id" class="form-select form-select-lg" required>
+                                                <option>--Select city--</option>
+                                                @foreach ($cities as $key => $city)
+                                                    <option value="{{ $city->id }}"
+                                                        {{ $property->city_id == $city->id ? 'selected' : '' }}
+                                                        onclick="getSelectedDistrictLatLong({{ $city->id }})">
+                                                        {{ $city->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('city_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            <br />
+
+                                        </p>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-12">
+                                        <p>
+                                            <label for="address">Address line1</label>
+                                            <input type="text" id="address" name="address"
+                                                value="{{ $property->address }}" placeholder="Enter Your Address">
                                         </p>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
+                                        <p>
+                                            <label for="address">Find Property</label>
+                                            <input type="text" name="autocomplete" id="autocomplete"
+                                                class="form-control" placeholder="Enter your location">
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <p>
+                                            <label for="address">Address line2</label>
+                                            <input type="text" id="address1" name="address1"
+                                                value="{{ $property->address1 }}" placeholder="Enter Your Address">
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 d-none" id="map_area">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div id="map" style="height:400px; width: 600px;" class="my-3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-12 d-none">
+                                        <p class="no-mb first">
+                                            <label for="latitude">Latitude</label>
+                                            <input id="latitude" name="latitude" type="text"
+                                                value="{{ $property->latitude }}" placeholder="Google Maps latitude">
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 d-none">
                                         <p class="no-mb last">
                                             <label for="longitude">Longitude</label>
-                                            <input type="text" id="location_longitude" name="location_longitude"
-                                                placeholder="Google Maps longitude">
+                                            <input type="text" id="longitude" name="longitude"
+                                                value="{{ $property->longitude }}" placeholder="Google Maps longitude">
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="single-add-property">
                             <h3>Extra Information</h3>
                             <div class="property-form-group">
@@ -229,24 +415,61 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p>
                                             <label for="address">Youtube Link</label>
-                                            <input id="video" name="video" type="text" class="validate"
+                                            <input id="video" name="video" value="{{ $property->video }}"
+                                                type="text"class="form-control @error('title') is-invalid @enderror"
                                                 placeholder="Enter youtube link">
                                         </p>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
+                                        <div class="file-field input-field col s2">
+                                            @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
+                                                <img src="{{ Storage::url('property/' . $property->image) }}"
+                                                    alt="{{ $property->title }}" class="responsive-img">
+                                            @endif
+                                        </div>
                                         <p>
                                             <label for="address">Featured Image</label>
 
-                                            <input type="file" name="image">
+                                            <input type="file" name="image"
+                                                class="form-control @error('image') is-invalid @enderror">
                                         </p>
+
+                                        @error('image')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-12">
+                                        <div class="file-field input-field col s2">
+                                            @if (Storage::disk('public')->exists('property/' . $property->floor_plan) && $property->floor_plan)
+                                                <img src="{{ Storage::url('property/' . $property->floor_plan) }}"
+                                                    alt="{{ $property->title }}" class="responsive-img">
+                                            @endif
+                                        </div>
                                         <p>
                                             <label for="address">Floor Plan</label>
                                             <input type="file" name="floor_plan">
                                         </p>
+
                                     </div>
                                     <div class="col-lg-12 col-md-12">
+                                        @if ($property->gallery)
+                                            <div class="row m-b-0">
+                                                @foreach ($property->gallery as $gallery)
+                                                    <div class="col m3 s6">
+                                                        <div class="gallery-image-edit" id="gallery-{{ $gallery->id }}">
+                                                            <button type="button" data-id="{{ $gallery->id }}"
+                                                                class="btn btn-small red"><i
+                                                                    class="material-icons">X</i></button>
+                                                            <img class="responsive-img"
+                                                                src="{{ Storage::url('property/gallery/' . $gallery->name) }}"
+                                                                alt="{{ $gallery->name }}">
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                         <p>
                                             <label for="address">Upload Gallery Images</label>
 
@@ -275,4 +498,196 @@
             </div>
         </div>
     </section>
+    @push('script')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+
+        <script src="https://maps.google.com/maps/api/js?key=AIzaSyCcdV0HtLCefHEkAlQAJ0VEOFeMmPGCcTA&libraries=places"
+            type="text/javascript"></script>
+
+        <script>
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+            function initialize() {
+                var input = document.getElementById('autocomplete');
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    console.log(place.address_components);
+                    console.log(place);
+                    $('#latitude').val(place.geometry['location'].lat());
+                    $('#longitude').val(place.geometry['location'].lng());
+                    defaultPosition = {
+                        lat: place.geometry['location'].lat(),
+                        lng: place.geometry['location'].lng(),
+                    };
+                    initMap();
+                    $('#address').val(place.formatted_address);
+
+                    // --------- show lat and long ---------------
+                    // $("#address_area").removeClass("d-none");
+                    $("#map_area").removeClass("d-none");
+                });
+            }
+
+            var getSelectedDistrictLatLong = function(value) {
+                $.ajax({
+                    url: "/property/city-lat-long",
+                    type: 'get',
+                    data: {
+                        city_id: value,
+                    },
+                    success: function(res) {
+                        if (res['success'] == 1) {
+                            console.log(res);
+                            $('#latitude').val(res['lat']);
+                            $('#longitude').val(res['long']);
+
+                            defaultPosition = {
+                                lat: res['lat'],
+                                lng: res['long'],
+                            };
+
+                            initMap();
+                            $("#map_area").removeClass("d-none");
+
+                        }
+                    },
+                    error: function() {
+                        alert('failed...');
+                        return;
+                    }
+                });
+            };
+        </script>
+        <script>
+            let map;
+
+            let defaultPosition = {
+                lat: 12.818079042852622,
+                lng: 79.69474439948242
+            };
+            $('#latitude').val('12.818079042852622');
+            $('#longitude').val('79.69474439948242');
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: defaultPosition,
+                    zoom: 8,
+                    scrollwheel: true,
+                });
+                const uluru = defaultPosition;
+                let marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map,
+                    draggable: true
+                });
+                google.maps.event.addListener(marker, 'position_changed',
+                    function() {
+                        let lat = marker.position.lat()
+                        let lng = marker.position.lng()
+                        $('#latitude').val(lat)
+                        $('#longitude').val(lng)
+                    })
+                google.maps.event.addListener(map, 'click',
+                    function(event) {
+                        pos = event.latLng
+                        marker.setPosition(pos)
+                    })
+            }
+        </script>
+        <script>
+            $('.repeater').repeater({
+                defaultValues: {
+                    'this_id': '1',
+                    'this_name': 'foo'
+                }
+            });
+            $(document).ready(function() {
+
+                // $('select').formSelect();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                // DELETE PROPERTY GALLERY IMAGE
+                $('.gallery-image-edit button').on('click', function(e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    var image = $('#gallery-' + id + ' img').attr('alt');
+                    $.post("{{ route('agent.gallery-delete') }}", {
+                        id: id,
+                        image: image
+                    }, function(data) {
+                        if (data.msg == true) {
+                            $('#gallery-' + id).parent().remove();
+                            M.toast({
+                                html: 'Image deleted successfully.',
+                                classes: 'green darken-4'
+                            })
+                        }
+                    });
+
+                });
+                $(function() {
+                    $("form[name='propertyForm']").validate({
+                        // Define validation rules
+                        rules: {
+
+                            title: {
+                                required: true
+                            },
+                            description: {
+                                required: true
+                            },
+                            price: {
+                                required: true,
+                                number: true
+
+                            },
+                            area: {
+                                required: true,
+                                number: true
+
+                            },
+                            bathroom: {
+                                required: true,
+                                number: true
+
+                            },
+                            bedroom: {
+                                required: true,
+                                number: true
+                            },
+                            garage: {
+                                number: true
+                            },
+                            built_year: {
+                                number: true
+                            },
+
+                            address: {
+                                required: true
+                            },
+                            image: {
+                                required: true
+                            },
+
+                        },
+                        // Specify validation error messages
+                        messages: {
+                            title: "Please provide a valid Property Title.",
+                            description: "Please enter description",
+                        },
+
+                        submitHandler: function(form) {
+                            console.log(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

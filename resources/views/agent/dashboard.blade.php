@@ -121,7 +121,7 @@
                                                 <td class="rating"><span>{{ $property->price }}</span></td>
                                                 <td class="status"><span class=" active">Active</span></td>
                                                 <td class="edit"><a
-                                                        href="{{ route('property.show', $property->slug) }}"><i
+                                                        href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"><i
                                                             class="fa fa-eye"></i></a></td>
                                             </tr>
                                         @endforeach
