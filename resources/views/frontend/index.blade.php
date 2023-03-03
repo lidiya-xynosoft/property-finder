@@ -58,7 +58,8 @@
                             <div class="project-inner project-head">
                                 <div class="homes">
                                     <!-- homes img -->
-                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="homes-img">
+                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                        class="homes-img">
                                         @if ($property->featured == 1)
                                             <div class="homes-tag button alt featured">Featured</div>
                                         @endif
@@ -69,12 +70,12 @@
                                     </a>
                                 </div>
                                 <div class="button-effect">
-                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="btn"><i
-                                            class="fa fa-link"></i></a>
+                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                        class="btn"><i class="fa fa-link"></i></a>
                                     <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
                                             class="fas fa-video"></i></a>
-                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="img-poppu btn"><i
-                                            class="fa fa-photo"></i></a>
+                                    <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                        class="img-poppu btn"><i class="fa fa-photo"></i></a>
                                 </div>
                             </div>
                             <!-- homes content -->
@@ -110,7 +111,8 @@
                                 </ul>
                                 <div class="price-properties footer pt-3 pb-0">
                                     <h3 class="title mt-3">
-                                        <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"> {{ $currency }}
+                                        <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
+                                            {{ $currency }}
                                             {{ number_format($property->price) }}</a>
                                     </h3>
                                     <div class="compare">
@@ -184,15 +186,16 @@
                                     <div class="project-inner project-head">
                                         <div class="homes">
                                             <!-- homes img -->
-                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="homes-img">
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                class="homes-img">
                                                 <div class="homes-tag button sale rent">For {{ $property->purpose }}</div>
                                                 <img src="{{ Storage::url('property/' . $property->image) }}"
                                                     alt="{{ $property->title }}" class="img-responsive">
                                             </a>
                                         </div>
                                         <div class="button-effect">
-                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="btn"><i
-                                                    class="fa fa-link"></i></a>
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                class="btn"><i class="fa fa-link"></i></a>
                                             <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
                                                     class="fas fa-video"></i></a>
                                             <a href="single-property-2.html" class="img-poppu btn"><i
@@ -206,7 +209,8 @@
                                                 href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ str_limit($property->title, 20) }}</a>
                                         </h3>
                                         <p class="homes-address mb-3">
-                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
+                                            <a
+                                                href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
                                                 <i
                                                     class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
                                             </a>
@@ -232,7 +236,8 @@
                                         </ul>
                                         <div class="price-properties footer pt-3 pb-0">
                                             <h3 class="title mt-3">
-                                                <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ $currency }}
+                                                <a
+                                                    href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ $currency }}
                                                     {{ number_format($property->price) }}</a>
                                             </h3>
                                             <div class="compare">
@@ -300,30 +305,32 @@
     <!-- END SECTION AGENTS -->
 
     <!-- START SECTION TESTIMONIALS -->
-    <section class="testimonials bg-white-2 rec-pro">
-        <div class="container-fluid">
-            <div class="sec-title">
-                <h2><span>Clients </span>Testimonials</h2>
-                <p>We collect reviews from our customers.</p>
-            </div>
-            <div class="owl-carousel job_clientSlide">
-                @foreach ($testimonials as $testimonial)
-                    <div class="singleJobClinet">
-                        <p>
-                            {{ $testimonial->testimonial }}
-                        </p>
-                        <div class="detailJC">
-                            <span><img src="{{ Storage::url('testimonial/' . $testimonial->image) }}"
-                                    alt="" /></span>
-                            <h5>{{ $testimonial->name }}</h5>
-                            <p>{{ $testimonial->place }}</p>
+    @if (isset($testimonials))
+        <section class="testimonials bg-white-2 rec-pro">
+            <div class="container-fluid">
+                <div class="sec-title">
+                    <h2><span>Clients </span>Testimonials</h2>
+                    <p>We collect reviews from our customers.</p>
+                </div>
+                <div class="owl-carousel job_clientSlide">
+                    @foreach ($testimonials as $testimonial)
+                        <div class="singleJobClinet">
+                            <p>
+                                {{ $testimonial->testimonial }}
+                            </p>
+                            <div class="detailJC">
+                                <span><img src="{{ Storage::url('testimonial/' . $testimonial->image) }}"
+                                        alt="" /></span>
+                                <h5>{{ $testimonial->name }}</h5>
+                                <p>{{ $testimonial->place }}</p>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
 
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
     <!-- END SECTION TESTIMONIALS -->
     @push('script')
         <script src="{{ asset('frontend/findhouse/js/rangeSlider.js') }}"></script>
@@ -464,6 +471,11 @@
                 $(".explore__form-checkbox-list").toggleClass("filter-block");
 
             });
+            //  $("#area-range-rent").on('change', function() {
+
+            //    document.getElementById('sliderVal').innerHTML = val;
+            //    alert("jee");
+            // });
         </script>
     @endpush
 @endsection

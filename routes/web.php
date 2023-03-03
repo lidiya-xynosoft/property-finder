@@ -15,7 +15,7 @@ Route::post('/property/message', 'PagesController@messageAgent')->name('property
 Route::post('/property/comment/{id}', 'PagesController@propertyComments')->name('property.comment');
 Route::post('/property/rating', 'PagesController@propertyRating')->name('property.rating');
 Route::get('/property/city/{cityslug}', 'PagesController@propertyCities')->name('property.city');
-Route::get('/property/type/{type}', 'PagesController@propertyTypes')->name('property.type');
+Route::get('/property/{cityslug}', 'PagesController@propertyCitieswithslug')->name('property.cityslug');
 Route::get('/property/city-lat-long', 'PagesController@getCityLatLong');
 
 

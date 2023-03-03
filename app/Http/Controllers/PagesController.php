@@ -13,9 +13,12 @@ use App\Property;
 use App\Message;
 use App\Gallery;
 use App\Comment;
+use App\NearbyCategory;
+use App\NearbyProperty;
 use App\Rating;
 use App\Post;
 use App\Setting;
+use App\Tag;
 use App\User;
 
 use Carbon\Carbon;
@@ -62,20 +65,39 @@ class PagesController extends Controller
         ->where('product_code', $code)
         ->first();
         $rating = Rating::where('property_id', $property->id)->where('type', 'property')->avg('rating');
-
+        $nearby = NearbyProperty::with('NearbyCategory')->where('property_id', $property->id)->get()->groupBy('nearby_category_id');
+        $processed_nearby = [];
+        if ($nearby) {
+            foreach ($nearby as $key => $items) {
+                $processed_nearby[NearbyCategory::find($key)->name] = array(
+                    'category' => NearbyCategory::find($key)->name,
+                    'class' => NearbyCategory::find($key)->class,
+                    'slug' => NearbyCategory::find($key)->slug,
+                    'icon' => NearbyCategory::find($key)->icon,
+                );
+                if ($items && !empty($items)) {
+                    foreach ($items as $key1 => $row) {
+                        $processed_nearby[NearbyCategory::find($key)->name]['items'][$key1]['title'] = $row['title'];
+                        $processed_nearby[NearbyCategory::find($key)->name]['items'][$key1]['distance'] = $row['distance'];
+                    }
+                }
+            }
+        }
+        $agent      = User::findOrFail($property->agent_id);
+        $tags         = Tag::has('property')->get();
         $relatedproperty = Property::latest()
             ->where('purpose', $property->purpose)
             ->where('type', $property->type)
             ->where('bedroom', $property->bedroom)
             ->where('bathroom', $property->bathroom)
             ->where('id', '!=', $property->id)
-            ->take(5)->get();
+            ->take(3)->get();
 
         $videoembed = $this->convertYoutube($property->video, 560, 315);
 
         $cities = Property::select('city', 'city_slug')->distinct('city_slug')->get();
 
-        return view('pages.properties.single', compact('property', 'rating', 'relatedproperty', 'videoembed', 'cities'));
+        return view('pages.properties.single', compact('property', 'tags', 'agent', 'processed_nearby', 'rating', 'relatedproperty', 'videoembed', 'cities'));
     }
 
 
@@ -83,16 +105,17 @@ class PagesController extends Controller
     public function agents()
     {
         $agents = User::latest()->where('role_id', 2)->paginate(12);
-
-        return view('pages.agents.index', compact('agents'));
+        $recent_properties = Property::latest()->paginate(3);
+        return view('pages.agents.index', compact('agents', 'recent_properties'));
     }
 
     public function agentshow($id)
     {
         $agent      = User::findOrFail($id);
         $properties = Property::latest()->where('agent_id', $id)->paginate(10);
-
-        return view('pages.agents.single', compact('agent', 'properties'));
+        $recent_properties = Property::latest()->where('agent_id', $id)->paginate(3);
+        $properties_count = Property::where('agent_id', $id)->count();
+        return view('pages.agents.single', compact('agent', 'properties', 'recent_properties', 'properties_count'));
     }
 
 
@@ -155,9 +178,9 @@ class PagesController extends Controller
     public function blogCategories()
     {
         $posts = Post::latest()->withCount(['comments', 'categories'])
-        ->whereHas('categories', function ($query) {
-            $query->where('categories.slug', '=', request('slug'));
-        })
+            ->whereHas('categories', function ($query) {
+                $query->where('categories.slug', '=', request('slug'));
+            })
             ->where('status', 1)
             ->paginate(10);
 
@@ -195,18 +218,19 @@ class PagesController extends Controller
     // MESSAGE TO AGENT (SINGLE AGENT PAGE)
     public function messageAgent(Request $request)
     {
-        $request->validate([
+        $rules = [
             'agent_id'  => 'required',
             'name'      => 'required',
-            'email'     => 'required',
+            'email'     => 'required|email',
             'phone'     => 'required',
             'message'   => 'required'
-        ]);
+        ];
+        $request->validate($rules);
 
         Message::create($request->all());
 
         if ($request->ajax()) {
-            return response()->json(['message' => 'Message send successfully.']);
+            return response()->json(['message' => 'Thank you, We have recieved your enquiry.']);
         }
     }
 
@@ -316,27 +340,24 @@ class PagesController extends Controller
 
 
     // PROPERTY CITIES
-    public function propertyCities()
+    public function propertyCities(Request $request)
     {
         $cities     = Property::select('city', 'city_slug')->distinct('city_slug')->get();
         $properties = Property::latest()->with('rating')->withCount('comments')
         ->where('city_slug', request('cityslug'))
         ->paginate(12);
-        $types     = Property::select('type')->distinct('type')->get();
 
-        return view('pages.properties.property', compact('properties', 'cities', 'types'));
+        return view('pages.properties.property', compact('properties', 'cities'));
     }
 
-    // PROPERTY CITIES
-    public function propertyTypes()
+    public function propertyCitieswithslug(Request $request)
     {
-        $types     = Property::select('type')->distinct('type')->get();
         $cities     = Property::select('city', 'city_slug')->distinct('city_slug')->get();
         $properties = Property::latest()->with('rating')->withCount('comments')
-        ->where('type', request('type'))
+            ->where('city_slug', request('cityslug'))
             ->paginate(12);
 
-        return view('pages.properties.property', compact('properties', 'cities', 'types'));
+        return view('pages.properties.property', compact('properties', 'cities'));
     }
 
 

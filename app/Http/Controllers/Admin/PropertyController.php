@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use Toastr;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use File;
 
 class PropertyController extends Controller

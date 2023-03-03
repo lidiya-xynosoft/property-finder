@@ -26,14 +26,16 @@ class FrontpageController extends Controller
         $agents          = User::latest()->where('role_id', 2)->take(6)->get();
         $posts          = Post::latest()->where('status', 1)->take(6)->get();
         $cities = City::all();
-
-        foreach ($cities as $key => $city) {
-            $processed_cities[$key] = array(
-                'total_property' => $city->property->pluck('city_id')->count(),
-                'image' => $city->image,
-                'city_name' => $city->name,
-                'city_slug' => $city->slug
-            );
+        $processed_cities = [];
+        if ($cities) {
+            foreach ($cities as $key => $city) {
+                $processed_cities[$key] = array(
+                    'total_property' => $city->property->pluck('city_id')->count(),
+                    'image' => $city->image,
+                    'city_name' => $city->name,
+                    'city_slug' => $city->slug
+                );
+            }
         }
         if (Auth::user()) {
             $user_data = User::with('country')->where('id', Auth::id())->first();
@@ -49,8 +51,9 @@ class FrontpageController extends Controller
 
     public function search(Request $request)
     {
-        $city     = strtolower($request->city);
+        $keyword     = strtolower($request->keyword);
         $type     = $request->type;
+        $city     = $request->city;
         $purpose  = $request->purpose;
         $bedroom  = $request->bedroom;
         $bathroom = $request->bathroom;
@@ -59,38 +62,12 @@ class FrontpageController extends Controller
         $minarea  = $request->minarea;
         $maxarea  = $request->maxarea;
         $featured = $request->featured;
-
-        $properties = Property::latest()->withCount('comments')
-            ->when($city, function ($query, $city) {
-                return $query->where('city', '=', $city);
-            })
-            ->when($type, function ($query, $type) {
-                return $query->where('type', '=', $type);
-            })
-            ->when($purpose, function ($query, $purpose) {
-                return $query->where('purpose', '=', $purpose);
-            })
-            ->when($bedroom, function ($query, $bedroom) {
-                return $query->where('bedroom', '=', $bedroom);
-            })
-            ->when($bathroom, function ($query, $bathroom) {
-                return $query->where('bathroom', '=', $bathroom);
-            })
-            ->when($minprice, function ($query, $minprice) {
-                return $query->where('price', '>=', $minprice);
-            })
-            ->when($maxprice, function ($query, $maxprice) {
-                return $query->where('price', '<=', $maxprice);
-            })
-            ->when($minarea, function ($query, $minarea) {
-                return $query->where('area', '>=', $minarea);
-            })
-            ->when($maxarea, function ($query, $maxarea) {
-                return $query->where('area', '<=', $maxarea);
-            })
-            ->when($featured, function ($query, $featured) {
-                return $query->where('featured', '=', 1);
-            })
+        $properties = Property::withCount('comments')
+        ->where('city_id', '=', $city)
+        ->orWhere('purpose_id', '=', $purpose)
+            ->orWhere('type_id', '=', $type)
+            ->orWhere('bathroom', '=', $bathroom)
+            ->orWhere('bedroom', '=', $bedroom)
             ->paginate(10);
         $recent_properties     = Property::latest()->where('featured', 0)->with('rating')->withCount('comments')->take(3)->get();
 

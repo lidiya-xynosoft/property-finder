@@ -28,6 +28,8 @@ class CreatePropertiesTable extends Migration
             $table->integer('bedroom');
             $table->integer('bathroom');
             $table->string('city');
+            $table->string('type');
+            $table->string('purpose');
             $table->string('city_slug');
             $table->string('garage');
             $table->string('built_year');
@@ -40,6 +42,7 @@ class CreatePropertiesTable extends Migration
             $table->string('location_latitude');
             $table->string('location_longitude');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

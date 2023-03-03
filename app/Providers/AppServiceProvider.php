@@ -10,7 +10,9 @@ use App\Property;
 use App\Post;
 use App\Tag;
 use App\Category;
+use App\City;
 use App\Country;
+use App\Feature;
 use App\Setting;
 use App\Message;
 use App\Purpose;
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
             // SHARE WITH SPECIFIC VIEW
             view()->composer('pages.search', function ($view) {
                 $view->with('bathroomdistinct', Property::select('bathroom')->distinct()->get());
+                $view->with('cities_all', City::all());
             });
 
             view()->composer('frontend.partials.footer', function ($view) {
@@ -65,6 +68,8 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('types', Type::all());
                 $view->with('purposes', Purpose::all());
                 $view->with('countries', Country::all());
+                $view->with('cities_all', City::all());
+                $view->with('features', Feature::all());
             });
 
             view()->composer('backend.partials.navbar', function ($view) {
@@ -97,16 +102,35 @@ class AppServiceProvider extends ServiceProvider
                 'pages.properties.sidebar',
                 function ($view) {
 
-                    $archives     = Post::archives();
+                    $features = Feature::all();
+                    // $tags = Tag::where('type', 'property')->get();
+                    $purposes = Purpose::all();
+                    $types = Type::all();
+                    $cities = City::all();
                     $categories   = Category::has('posts')->withCount('posts')->get();
                     $tags         = Tag::has('property')->get();
                     $recent_properties = Property::latest()->take(3)->get();
-
+                    $cities = City::all();
+                    $processed_cities = [];
+                    if ($cities) {
+                        foreach ($cities as $key => $city) {
+                            $processed_cities[$key] = array(
+                                'total_property' => $city->property->pluck('city_id')->count(),
+                                'image' => $city->image,
+                                'city_name' => $city->name,
+                                'city_slug' => $city->slug
+                            );
+                        }
+                    }
                     $view->with(compact(
-                        'archives',
-                        'categories',
+                        'purposes',
+                        'features',
+                        'types',
+                        'cities',
                         'tags',
-                        'recent_properties'
+                        'categories',
+                        'recent_properties',
+                        'processed_cities'
                     ));
                 }
             );

@@ -30,7 +30,7 @@
                             <thead>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Image</th>
+                                    {{-- <th>Image</th> --}}
                                     <th>Name</th>
                                     <th>Post Num</th>
                                     <th>Slug</th>
@@ -40,7 +40,7 @@
                             <tfoot>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Image</th>
+                                    {{-- <th>Image</th> --}}
                                     <th>Name</th>
                                     <th>Post Num</th>
                                     <th>Slug</th>
@@ -51,11 +51,11 @@
                                 @foreach( $categories as $key => $category )
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>
+                                    {{-- <td>
                                         @if(Storage::disk('public')->exists('category/thumb/'.$category->image))
                                             <img src="{{Storage::url('category/thumb/'.$category->image)}}" alt="{{$category->name}}" width="60" class="img-responsive img-rounded">
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td>{{$category->name}}</td>
                                     <td>{{$category->posts->count()}}</td>
                                     <td>{{$category->slug}}</td>

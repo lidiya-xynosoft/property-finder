@@ -49,6 +49,13 @@
                      </a>
                  </li>
 
+                 <li>
+                     <a class="{{Request::is('agent/logout') ? 'active' : ''}}"
+                         href="{{ route('logout') }}">
+                         <i class="fa fa-lock"></i>Logout
+                     </a>
+                 </li>
+
              </ul>
          </div>
      </div>

@@ -186,10 +186,10 @@
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <label for="type">Property type</label>
-                                        <select name="type" class="form-select required">
+                                        <select name="type_id" class="form-select required">
                                             <option>--Select-- </option>
                                             @foreach ($types as $type)
-                                                <option value="{{ $type->slug }}" class="option">{{ $type->name }}
+                                                <option value="{{ $type->id }}" class="option">{{ $type->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -201,11 +201,11 @@
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <label for="purpose">Property purpose</label>
-                                        <select name="purpose" class="form-select required">
+                                        <select name="purpose_id" class="form-select required">
                                             <option>--Select--</option>
 
                                             @foreach ($purposes as $purpose)
-                                                <option value="{{ $purpose->slug }}" class="option">{{ $purpose->name }}
+                                                <option value="{{ $purpose->id }}" class="option">{{ $purpose->name }}
                                                 </option>
                                             @endforeach
                                         </select>

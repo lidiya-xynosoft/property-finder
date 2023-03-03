@@ -24,10 +24,12 @@
                                 <div class="pro-wrapper">
                                     <div class="detail-wrapper-body">
                                         <div class="listing-title-bar">
-                                            <h3>{{ $property->title }} <span class="mrg-l-5 category-tag">For {{ $property->purpose }}</span></h3>
+                                            <h3>{{ $property->title }} <span class="mrg-l-5 category-tag">For
+                                                    {{ $property->purpose }}</span></h3>
                                             <div class="mt-0">
                                                 <a href="#listing-location" class="listing-address">
-                                                    <i class="fa fa-map-marker pr-2 ti-location-pin mrg-r-5"></i>{{ $property->address }}
+                                                    <i
+                                                        class="fa fa-map-marker pr-2 ti-location-pin mrg-r-5"></i>{{ $property->address }}
                                                 </a>
                                             </div>
                                         </div>
@@ -46,21 +48,22 @@
                                     </div>
                                 </div>
                             </section>
-                           @if(!$property->gallery->isEmpty())
-                        <div class="single-slider">
-                            @include('pages.properties.slider')
-                        </div>
-                    @else
-                        <div class="single-image">
-                            @if(Storage::disk('public')->exists('property/'.$property->image) && $property->image)
-                                <img src="{{Storage::url('property/'.$property->image)}}" alt="{{$property->title}}" class="imgresponsive">
+                            @if (!$property->gallery->isEmpty())
+                                <div class="single-slider">
+                                    @include('pages.properties.slider')
+                                </div>
+                            @else
+                                <div class="single-image">
+                                    @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
+                                        <img src="{{ Storage::url('property/' . $property->image) }}"
+                                            alt="{{ $property->title }}" class="imgresponsive">
+                                    @endif
+                                </div>
                             @endif
-                        </div>
-                    @endif
                             <div class="blog-info details mb-30">
                                 <h5 class="mb-4">Description</h5>
                                 <p class="mb-3"> {!! $property->description !!}</p>
-                              
+
                             </div>
                         </div>
                     </div>
@@ -70,254 +73,106 @@
                         <ul class="homes-list clearfix">
                             <li>
                                 <span class="font-weight-bold mr-1">Property ID:</span>
-                                <span class="det">V254680</span>
+                                <span class="det">{{ $property->product_code }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Property Type:</span>
-                                <span class="det">{{$property->type}}</span>
+                                <span class="det">{{ $property->type }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Property status:</span>
-                                <span class="det">For {{$property->purpose}}</span>
+                                <span class="det">For {{ $property->purpose }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Property Price:</span>
-                                <span class="det">{{ $currency }} {{number_format($property->price)}}</span>
+                                <span class="det">{{ $currency }} {{ number_format($property->price) }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Area:</span>
-                                <span class="det">{{$property->area}}  Sq Ft</span>
+                                <span class="det">{{ $property->area }} Sq Ft</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Bedrooms:</span>
-                                <span class="det">{{$property->bedroom}}</span>
+                                <span class="det">{{ $property->bedroom }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Bathrooms:</span>
-                                <span class="det">{{$property->bathroom}}</span>
+                                <span class="det">{{ $property->bathroom }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Garages:</span>
-                                <span class="det">{{$property->garage}}</span>
+                                <span class="det">{{ $property->garage }}</span>
                             </li>
                             <li>
                                 <span class="font-weight-bold mr-1">Year Built:</span>
-                                <span class="det">{{$property->built}}</span>
+                                <span class="det">{{ $property->built_year }}</span>
                             </li>
                         </ul>
                         <!-- title -->
-                         @if($property->features)
-                        <h5 class="mt-5">Amenities</h5>
-                        <!-- cars List -->
-                        <ul class="homes-list clearfix">
-                              @foreach($property->features as $feature)
-                            <li>
-                                <i class="fa fa-check-square" aria-hidden="true"></i>
-                                <span>{{$feature->name}}</span>
-                            </li>
-                            @endforeach
-                        </ul>
+                        @if ($property->features)
+                            <h5 class="mt-5">Amenities</h5>
+                            <!-- cars List -->
+                            <ul class="homes-list clearfix">
+                                @foreach ($property->features as $feature)
+                                    <li>
+                                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                                        <span>{{ $feature->name }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
                         @endif
                     </div>
                     <div class="floor-plan property wprt-image-video w50 pro">
                         <h5>Floor Plans</h5>
-                          @if(Storage::disk('public')->exists('property/'.$property->floor_plan) && $property->floor_plan)
-                                <img src="{{Storage::url('property/'.$property->floor_plan)}}" alt="{{$property->title}}">
-                            @endif
+                        @if (Storage::disk('public')->exists('property/' . $property->floor_plan) && $property->floor_plan)
+                            <img src="{{ Storage::url('property/' . $property->floor_plan) }}"
+                                alt="{{ $property->title }}">
+                        @endif
                     </div>
                     <div class="floor-plan property wprt-image-video w50 pro">
                         <h5>What's Nearby</h5>
                         <div class="property-nearby">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div class="nearby-info mb-4">
-                                        <span class="nearby-title mb-3 d-block text-info">
-                                            <i class="fas fa-graduation-cap mr-2"></i><b class="title">Education</b>
-                                        </span>
-                                        <div class="nearby-list">
-                                            <ul class="property-list list-unstyled mb-0">
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">Education Mandarin</h6>
-                                                    <span>(15.61 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">Marry's Education</h6>
-                                                    <span>(15.23 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">The Kaplan</h6>
-                                                    <span>(15.16 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
+                                    @foreach ($processed_nearby as $key => $value)
+                                        <div class="nearby-info mb-4">
+                                            <span class="nearby-title mb-3 d-block {{ $value['class'] }}">
+                                                <i class="{{ $value['icon'] }}"></i><b
+                                                    class="title">{{ $value['category'] }}</b>
+                                            </span>
+                                            <div class="nearby-list">
+                                                <ul class="property-list list-unstyled mb-0">
+                                                    @foreach ($value['items'] as $row)
+                                                        <li class="d-flex">
+                                                            <h6 class="mb-3 mr-2">{{ $row['title'] }}</h6>
+                                                            <span>({{ $row['distance'] }})</span>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="nearby-info mb-4">
-                                        <span class="nearby-title mb-3 d-block text-success">
-                                            <i class="fas fa-user-md mr-2"></i><b class="title">Health & Medical</b>
-                                        </span>
-                                        <div class="nearby-list">
-                                            <ul class="property-list list-unstyled mb-0">
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">Natural Market</h6>
-                                                    <span>(13.20 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">Food For Health</h6>
-                                                    <span>(13.22 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">A Matter of Health</h6>
-                                                    <span>(13.34 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="nearby-info">
-                                        <span class="nearby-title mb-3 d-block text-danger">
-                                            <i class="fas fa-car mr-2"></i><b class="title">Transportation</b>
-                                        </span>
-                                        <div class="nearby-list">
-                                            <ul class="property-list list-unstyled mb-0">
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">Airport Transportation</h6>
-                                                    <span>(11.36 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">NYC Executive Limo</h6>
-                                                    <span>(11.87 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="d-flex">
-                                                    <h6 class="mb-3 mr-2">Empire Limousine</h6>
-                                                    <span>(11.52 miles)</span>
-                                                    <ul class="list-unstyled list-inline ml-auto">
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="fas fa-star-half fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                        <li class="list-inline-item m-0 text-warning"><i
-                                                                class="far fa-star fa-xs"></i></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    @endforeach
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                     @if($property->video)
-                    <div class="property wprt-image-video w50 pro">
-                        <h5>Property Video</h5>
-                        <img alt="image" src="{{ asset('frontend/findhouse/images/slider/home-slider-4.jpg') }}">
-                        <a class="icon-wrap popup-video popup-youtube" href="{{ $property->video }}">
-                            <i class="fa fa-play"></i>
-                        </a>
-                        <div class="iq-waves">
-                            <div class="waves wave-1"></div>
-                            <div class="waves wave-2"></div>
-                            <div class="waves wave-3"></div>
+                    @if ($property->video)
+                        <div class="property wprt-image-video w50 pro">
+                            <h5>Property Video</h5>
+                            @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
+                                <img src="{{ Storage::url('property/' . $property->image) }}"
+                                    alt="{{ $property->title }}">
+                            @endif
+                            <a class="icon-wrap popup-video popup-youtube" href="{{ $property->video }}">
+                                <i class="fa fa-play"></i>
+                            </a>
+                            <div class="iq-waves">
+                                <div class="waves wave-1"></div>
+                                <div class="waves wave-2"></div>
+                                <div class="waves wave-3"></div>
+                            </div>
                         </div>
-                    </div>
                     @endif
                     <div class="property-location map">
                         <h5>Location</h5>
@@ -505,32 +360,37 @@
                                 <div class="widget-boxed-body">
                                     <div class="sidebar-widget author-widget2">
                                         <div class="author-box clearfix">
-                                            <img src="{{ asset('frontend/findhouse/images/testimonials/ts-1.jpg') }}"
-                                                alt="author-image" class="author__img">
-                                            <h4 class="author__title">Lisa Clark</h4>
+                                            <img src="{{ Storage::url('users/' . $agent->image) }}" alt="author-image"
+                                                class="author__img">
+                                            <h4 class="author__title">{{ $agent->name }}</h4>
                                             <p class="author__meta">Agent of Property</p>
                                         </div>
                                         <ul class="author__contact">
-                                            <li><span class="la la-map-marker"><i class="fa fa-map-marker"></i></span>302
-                                                Av Park, New York</li>
+                                            <li><span class="la la-map-marker"><i
+                                                        class="fa fa-map-marker"></i></span>{{ $agent->address }}</li>
                                             <li><span class="la la-phone"><i class="fa fa-phone"
-                                                        aria-hidden="true"></i></span><a href="#">(234) 0200
-                                                    17813</a></li>
+                                                        aria-hidden="true"></i></span><a
+                                                    href="#">{{ $agent->contact_no }}</a></li>
                                             <li><span class="la la-envelope-o"><i class="fa fa-envelope"
-                                                        aria-hidden="true"></i></span><a href="#">lisa@gmail.com</a>
+                                                        aria-hidden="true"></i></span><a
+                                                    href="#">{{ $agent->email }}</a>
                                             </li>
                                         </ul>
                                         <div class="agent-contact-form-sidebar">
                                             <h4>Request Inquiry</h4>
-                                            <form name="contact_form" method="post"
-                                                action="https://code-theme.com/html/findhouses/functions.php">
-                                                <input type="text" id="fname" name="full_name"
-                                                    placeholder="Full Name" required />
-                                                <input type="number" id="pnumber" name="phone_number"
-                                                    placeholder="Phone Number" required />
-                                                <input type="email" id="emailid" name="email_address"
-                                                    placeholder="Email Address" required />
-                                                <textarea placeholder="Message" name="message" required></textarea>
+                                            <form class="agent-message-box" action="" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="agent_id" value="{{ $agent->id }}">
+                                                <input type="hidden" name="product_id" value="{{ $property->id }}">
+                                                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
+                                                <input type="text" id="fname" name="name"
+                                                    placeholder="Full Name" />
+                                                <input type="number" id="pnumber" name="phone"
+                                                    placeholder="Phone Number" />
+                                                <input type="email" id="emailid" name="email"
+                                                    placeholder="Email Address" />
+                                                <textarea placeholder="Message" name="message"></textarea>
                                                 <input type="submit" name="sendmessage" class="multiple-send-message"
                                                     value="Submit Request" />
                                             </form>
@@ -541,53 +401,36 @@
                             <div class="main-search-field-2">
                                 <div class="widget-boxed mt-5">
                                     <div class="widget-boxed-header">
-                                        <h4>Recent Properties</h4>
+                                        <h4>Related Properties</h4>
                                     </div>
                                     <div class="widget-boxed-body">
                                         <div class="recent-post">
-                                            <div class="recent-main">
-                                                <div class="recent-img">
-                                                    <a href="blog-details.html"><img
-                                                            src="{{ asset('frontend/findhouse/images/feature-properties/fp-1.jpg') }}"
-                                                            alt=""></a>
+                                            @foreach ($relatedproperty as $key => $property)
+                                                <div class="recent-main my-4">
+                                                    <div class="recent-img">
+                                                        <a href="blog-details.html">
+                                                            @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
+                                                                <img src="{{ Storage::url('property/' . $property->image) }}"
+                                                                    alt="{{ $property->title }}" class="img-responsive">
+                                                            @else
+                                                            @endif
+
+                                                    </div>
+                                                    <div class="info-img">
+                                                        <a href="blog-details.html">
+                                                            <h6>{{ str_limit($property->title, 22) }}</h6>
+                                                        </a>
+                                                        <p>{{ $currency }} {{ number_format($property->price, 2) }}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div class="info-img">
-                                                    <a href="blog-details.html">
-                                                        <h6>Family Home</h6>
-                                                    </a>
-                                                    <p>$230,000</p>
-                                                </div>
-                                            </div>
-                                            <div class="recent-main my-4">
-                                                <div class="recent-img">
-                                                    <a href="blog-details.html"><img
-                                                            src="{{ asset('frontend/findhouse/images/feature-properties/fp-2.jpg') }}"
-                                                            alt=""></a>
-                                                </div>
-                                                <div class="info-img">
-                                                    <a href="blog-details.html">
-                                                        <h6>Family Home</h6>
-                                                    </a>
-                                                    <p>$230,000</p>
-                                                </div>
-                                            </div>
-                                            <div class="recent-main">
-                                                <div class="recent-img">
-                                                    <a href="blog-details.html"><img
-                                                            src="{{ asset('frontend/findhouse/images/feature-properties/fp-3.jpg') }}"
-                                                            alt=""></a>
-                                                </div>
-                                                <div class="info-img">
-                                                    <a href="blog-details.html">
-                                                        <h6>Family Home</h6>
-                                                    </a>
-                                                    <p>$230,000</p>
-                                                </div>
-                                            </div>
+                                                <br />
+                                            @endforeach
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="widget-boxed mt-5">
+                                {{-- <div class="widget-boxed mt-5">
                                     <div class="widget-boxed-header mb-5">
                                         <h4>Feature Properties</h4>
                                     </div>
@@ -727,9 +570,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <!-- Start: Specials offer -->
-                                <div class="widget-boxed popular mt-5">
+                                {{-- <div class="widget-boxed popular mt-5">
                                     <div class="widget-boxed-header">
                                         <h4>Specials of the day</h4>
                                     </div>
@@ -738,7 +581,7 @@
                                                 src="{{ asset('frontend/findhouse/images/single-property/banner.jpg') }}"
                                                 alt=""></div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <!-- End: Specials offer -->
                                 <div class="widget-boxed popular mt-5">
                                     <div class="widget-boxed-header">
@@ -746,29 +589,25 @@
                                     </div>
                                     <div class="widget-boxed-body">
                                         <div class="recent-post">
+                                            @php
+                                                $counter = 1;
+                                            @endphp
+
                                             <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Houses</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Real
-                                                        Home</a></span>
+
+                                                @foreach ($tags as $tag)
+                                                    <span><a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                            class="btn btn-outline-primary">{{ $tag->name }}</a></span>
+
+                                                    @if ($counter % 2 === 0)
                                             </div>
                                             <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Baths</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Beds</a></span>
-                                            </div>
-                                            <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Garages</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Family</a></span>
-                                            </div>
-                                            <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Real
-                                                        Estates</a></span>
-                                                <span><a href="#"
-                                                        class="btn btn-outline-primary">Properties</a></span>
-                                            </div>
-                                            <div class="tags no-mb">
-                                                <span><a href="#"
-                                                        class="btn btn-outline-primary">Location</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Price</a></span>
+                                                @endif
+                                                @php
+                                                    $counter++;
+                                                @endphp
+                                                @endforeach
+
                                             </div>
                                         </div>
                                     </div>
@@ -783,184 +622,86 @@
                 <div class="container">
                     <h5>Similar Properties</h5>
                     <div class="row portfolio-items">
-                        <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
-                            <div class="project-single">
-                                <div class="project-inner project-head">
-                                    <div class="homes">
-                                        <!-- homes img -->
-                                        <a href="single-property-1.html" class="homes-img">
-                                            <div class="homes-tag button alt featured">Featured</div>
-                                            <div class="homes-tag button alt sale">For Sale</div>
-                                            <div class="homes-price">$9,000/mo</div>
-                                            <img src="{{ asset('frontend/findhouse/images/blog/b-11.jpg') }}"
-                                                alt="home-1" class="img-responsive">
-                                        </a>
+                        @foreach ($relatedproperty as $property)
+                            <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
+                                <div class="project-single">
+                                    <div class="project-inner project-head">
+                                        <div class="homes">
+                                            <!-- homes img -->
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                class="homes-img">
+                                                @if ($property->featured == 1)
+                                                    <div class="homes-tag button alt featured">Featured</div>
+                                                @endif
+                                                <div class="homes-tag button sale">For {{ ucfirst($property->purpose) }}
+                                                </div>
+                                                <img src="{{ Storage::url('property/' . $property->image) }}"
+                                                    alt="{{ $property->title }}" class="img-responsive">
+                                            </a>
+                                        </div>
+                                        <div class="button-effect">
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                class="btn"><i class="fa fa-link"></i></a>
+                                            <a href="{{ $property->video }}" class="btn popup-video popup-youtube"><i
+                                                    class="fas fa-video"></i></a>
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
+                                                class="img-poppu btn"><i class="fa fa-photo"></i></a>
+                                        </div>
                                     </div>
-                                    <div class="button-effect">
-                                        <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                                        <a href="https://www.youtube.com/watch?v=14semTlwyUY"
-                                            class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
-                                        <a href="single-property-2.html" class="img-poppu btn"><i
-                                                class="fa fa-photo"></i></a>
-                                    </div>
-                                </div>
-                                <!-- homes content -->
-                                <div class="homes-content">
-                                    <!-- homes address -->
-                                    <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
-                                    <p class="homes-address mb-3">
-                                        <a href="single-property-1.html">
-                                            <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                                NYC</span>
-                                        </a>
-                                    </p>
-                                    <!-- homes List -->
-                                    <ul class="homes-list clearfix pb-3">
-                                        <li class="the-icons">
-                                            <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                            <span>6 Bedrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                            <span>3 Bathrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                            <span>720 sq ft</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                            <span>2 Garages</span>
-                                        </li>
-                                    </ul>
-                                    <div class="footer">
-                                        <a href="agent-details.html">
-                                            <img src="{{ asset('frontend/findhouse/images/testimonials/ts-1.jpg') }}"
-                                                alt="" class="mr-2"> Lisa Jhonson
-                                        </a>
-                                        <span>2 months ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item col-lg-4 col-md-6 col-xs-12 people">
-                            <div class="project-single">
-                                <div class="project-inner project-head">
-                                    <div class="homes">
-                                        <!-- homes img -->
-                                        <a href="single-property-1.html" class="homes-img">
-                                            <div class="homes-tag button sale rent">For Rent</div>
-                                            <div class="homes-price">$3,000/mo</div>
-                                            <img src="{{ asset('frontend/findhouse/images/blog/b-12.jpg') }}"
-                                                alt="home-1" class="img-responsive">
-                                        </a>
-                                    </div>
-                                    <div class="button-effect">
-                                        <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                                        <a href="https://www.youtube.com/watch?v=14semTlwyUY"
-                                            class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
-                                        <a href="single-property-2.html" class="img-poppu btn"><i
-                                                class="fa fa-photo"></i></a>
-                                    </div>
-                                </div>
-                                <!-- homes content -->
-                                <div class="homes-content">
-                                    <!-- homes address -->
-                                    <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
-                                    <p class="homes-address mb-3">
-                                        <a href="single-property-1.html">
-                                            <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                                NYC</span>
-                                        </a>
-                                    </p>
-                                    <!-- homes List -->
-                                    <ul class="homes-list clearfix pb-3">
-                                        <li class="the-icons">
-                                            <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                            <span>6 Bedrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                            <span>3 Bathrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                            <span>720 sq ft</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                            <span>2 Garages</span>
-                                        </li>
-                                    </ul>
-                                    <div class="footer">
-                                        <a href="agent-details.html">
-                                            <img src="{{ asset('frontend/findhouse/images/testimonials/ts-2.jpg') }}"
-                                                alt="" class="mr-2"> Karl Smith
-                                        </a>
-                                        <span>2 months ago</span>
+                                    <!-- homes content -->
+                                    <div class="homes-content">
+                                        <!-- homes address -->
+                                        <h3><a
+                                                href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">{{ str_limit($property->title, 25) }}</a>
+                                        </h3>
+                                        <p class="homes-address mb-3">
+                                            <a href="{{ route('property.city', $property->city) }}">
+                                                <i
+                                                    class="fa fa-map-marker"></i><span>{{ str_limit($property->address, 30) }}</span>
+                                            </a>
+                                        </p>
+                                        <!-- homes List -->
+                                        <ul class="homes-list clearfix pb-3">
+                                            <li class="the-icons">
+                                                <i class="flaticon-bed mr-2" aria-hidden="true"></i>
+                                                <span>{{ $property->bedroom }} Bedrooms</span>
+                                            </li>
+                                            <li class="the-icons">
+                                                <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
+                                                <span>{{ $property->bathroom }} Bathrooms</span>
+                                            </li>
+                                            <li class="the-icons">
+                                                <i class="flaticon-square mr-2" aria-hidden="true"></i>
+                                                <span>{{ $property->area }} sq ft</span>
+                                            </li>
+                                            <li class="the-icons">
+                                                <i class="flaticon-car mr-2" aria-hidden="true"></i>
+                                                <span>2 Garages</span>
+                                            </li>
+                                        </ul>
+                                        <div class="price-properties footer pt-3 pb-0">
+                                            <h3 class="title mt-3">
+                                                <a
+                                                    href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
+                                                    {{ $currency }}
+                                                    {{ number_format($property->price) }}</a>
+                                            </h3>
+                                            <div class="compare">
+                                                <a href="#" title="Compare">
+                                                    <i class="flaticon-compare"></i>
+                                                </a>
+                                                <a href="#" title="Share">
+                                                    <i class="flaticon-share"></i>
+                                                </a>
+                                                <a href="#" title="Favorites">
+                                                    <i class="flaticon-heart"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="item col-lg-4 col-md-6 col-xs-12 people landscapes no-pb pbp-3">
-                            <div class="project-single no-mb mbp-3">
-                                <div class="project-inner project-head">
-                                    <div class="homes">
-                                        <!-- homes img -->
-                                        <a href="single-property-1.html" class="homes-img">
-                                            <div class="homes-tag button alt sale">For Sale</div>
-                                            <div class="homes-price">$9,000/mo</div>
-                                            <img src="{{ asset('frontend/findhouse/images/blog/b-1.jpg') }}"
-                                                alt="home-1" class="img-responsive">
-                                        </a>
-                                    </div>
-                                    <div class="button-effect">
-                                        <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                                        <a href="https://www.youtube.com/watch?v=14semTlwyUY"
-                                            class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
-                                        <a href="single-property-2.html" class="img-poppu btn"><i
-                                                class="fa fa-photo"></i></a>
-                                    </div>
-                                </div>
-                                <!-- homes content -->
-                                <div class="homes-content">
-                                    <!-- homes address -->
-                                    <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
-                                    <p class="homes-address mb-3">
-                                        <a href="single-property-1.html">
-                                            <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                                NYC</span>
-                                        </a>
-                                    </p>
-                                    <!-- homes List -->
-                                    <ul class="homes-list clearfix pb-3">
-                                        <li class="the-icons">
-                                            <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                            <span>6 Bedrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                            <span>3 Bathrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                            <span>720 sq ft</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                            <span>2 Garages</span>
-                                        </li>
-                                    </ul>
-                                    <div class="footer">
-                                        <a href="agent-details.html">
-                                            <img src="{{ asset('frontend/findhouse/images/testimonials/ts-3.jpg') }}"
-                                                alt="" class="mr-2"> katy Teddy
-                                        </a>
-                                        <span>2 months ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </section>
@@ -981,11 +722,66 @@
         <script src="{{ asset('frontend/findhouse/js/leaflet-gesture-handling.min.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/leaflet-providers.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/leaflet.markercluster.js') }}"></script>
-        <script src="{{ asset('frontend/findhouse/js/map-single.js') }}"></script>
+        {{-- <script src="{{ asset('frontend/findhouse/js/map-single.js') }}"></script> --}}
         <script src="{{ asset('frontend/findhouse/js/popup.js') }}"></script>
 
-     <!-- Date Dropper Script-->
-      
+        <!-- Date Dropper Script-->
+        <script>
+            $(function() {
+                $(document).on('submit', '.agent-message-box', function(e) {
+                    e.preventDefault();
+
+                    var data = $(this).serialize();
+                    var url = "{{ route('property.message') }}";
+                    var btn = $('#msgsubmitbtn');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: data,
+                        beforeSend: function() {
+                            $(btn).addClass('disabled');
+                            $(btn).empty().append(
+                                '<span>Sending...</span><i class="fa fa-send" aria-hidden="true"></i>'
+                            );
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            if (data.message) {
+                                toastr.success(data.message);
+                                // M.toast({
+                                //     html: data.message,
+                                //     classes: 'green darken-4'
+                                // })
+                            }
+                        },
+                        error: function(xhr) {
+                            console.log(xhr);
+                            // console.log(xhr.responseJSON.errors);
+                            // toastr.error(xhr.responseJSON.message);
+
+                            Object.keys(xhr.responseJSON.errors).forEach(key => {
+                                let msg = xhr.responseJSON.errors[key];
+                                toastr.error(msg);
+                            });
+
+                            // M.toast({
+                            //     html: 'ERROR: Failed to send message!',
+                            //     classes: 'red darken-4'
+                            // })
+                        },
+                        complete: function() {
+                            $('form.agent-message-box')[0].reset();
+                            $(btn).removeClass('disabled');
+                            $(btn).empty().append(
+                                '<span>Send</span>');
+                        },
+                        dataType: 'json'
+                    });
+
+                })
+            })
+        </script>
 
         <script>
             $(document).ready(function() {
@@ -997,8 +793,34 @@
                     preloader: false,
                     fixedContentPos: false
                 });
-            });
+                if ($('#map-contact').length) {
+                    var map = L.map('map-contact', {
+                        zoom: 5,
+                        maxZoom: 20,
+                        tap: false,
+                        gestureHandling: true,
+                        center: [12.818079042852622, 79.69474439948242]
+                    });
 
+                    map.scrollWheelZoom.disable();
+
+                    var Hydda_Full = L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
+                        scrollWheelZoom: false,
+                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    var icon = L.divIcon({
+                        html: '<i class="fa fa-building"></i>',
+                        iconSize: [50, 50],
+                        iconAnchor: [50, 50],
+                        popupAnchor: [-20, -42]
+                    });
+
+                    var marker = L.marker([12.818079042852622, 79.69474439948242], {
+                        icon: icon
+                    }).addTo(map);
+                }
+            });
         </script>
 
         <script>
@@ -1019,7 +841,6 @@
                     slider.slick('slickNext');
                 });
             });
-
         </script>
     @endpush
 @endsection

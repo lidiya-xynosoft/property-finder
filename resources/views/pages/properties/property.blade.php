@@ -108,7 +108,7 @@
                                 <div class="project-single mb-0 bb-0" data-aos="fade-up">
                                     <div class="project-inner project-head">
                                         <div class="homes">
-                                            <a href="single-property-1.html" class="homes-img">
+                                            <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}" class="homes-img">
                                                 @if ($property->featured == 1)
                                                     <div class="homes-tag button alt featured">Featured</div>
                                                 @endif
@@ -166,7 +166,7 @@
                         </ul>
                         <div class="footer">
 
-                            <a href="agent-details.html">
+                            <a href="{{ route('agents.show', $property->user->id) }}">
                                 @if (Storage::disk('public')->exists('users/' . $property->user->image) && $property->user->image)
                                     <img src="{{ Storage::url('users/' . $property->user->image) }}"
                                         alt="{{ $property->user->name }}" class="mr-2">

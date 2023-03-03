@@ -67,6 +67,10 @@ class RegisterController extends Controller
         $username   = strtok($data['name'], " "); 
         $roleid     = isset($data['agent']) ? 2 : 3;
 
+        $flash = array('type' => 'error', 'msg' => 'Category updated successfully.');
+        session()->flash('flash', $flash);
+        return back();
+
         return User::create([
             'name'      => $data['name'],
             'email'     => $data['email'],

@@ -9,4 +9,9 @@ class NearbyCategory extends Model
 {
     use HasFactory;
     protected $fillable = ['class', 'name', 'slug', 'icon'];
+
+    public function nearbyProperty()
+    {
+        return $this->hasMany(NearbyProperty::class);
+    }
 }

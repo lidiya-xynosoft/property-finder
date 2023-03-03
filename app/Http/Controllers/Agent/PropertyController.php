@@ -62,8 +62,8 @@ class PropertyController extends Controller
         $request->validate([
             'title'     => 'required|unique:properties|max:255',
             'price'     => 'required',
-            'purpose'   => 'required',
-            'type'      => 'required',
+            'purpose_id'   => 'required',
+            'type_id'      => 'required',
             'bedroom'   => 'required',
             'bathroom'  => 'required',
             'city_id'      => 'required',
@@ -114,8 +114,8 @@ class PropertyController extends Controller
         $property->product_code    = $product_code;
         $property->slug     = $slug;
         $property->price    = $request->price;
-        $property->purpose  = $request->purpose;
-        $property->type     = $request->type;
+        $property->purpose  = Purpose::find($request->purpose_id)->name;
+        $property->type     = Type::find($request->type_id)->name;
         $property->garage     = $request->garage;
         $property->built_year     = $request->built_year;
         $property->image    = $imagename;
@@ -130,8 +130,10 @@ class PropertyController extends Controller
             $property->featured = true;
         }
         $property->agent_id           = Auth::id();
+        $property->type_id           =  $request->type_id;
+        $property->purpose_id           = $request->purpose_id;
         $property->city_id           =  $city_id;
-        $property->country_id           =  User::find(Auth::id())->country_id;
+        // $property->country_id           =  User::find(Auth::id())->country_id;
         $property->video              = $request->video;
         $property->floor_plan         = $imagefloorplan;
         $property->description        = $request->description;
@@ -214,8 +216,8 @@ class PropertyController extends Controller
         $request->validate([
             'title'     => 'required|max:255',
             'price'     => 'required',
-            'purpose'   => 'required',
-            'type'      => 'required',
+            'purpose_id'   => 'required',
+            'type_id'      => 'required',
             'bedroom'   => 'required',
             'bathroom'  => 'required',
             'city_id'      => 'required',
@@ -277,8 +279,8 @@ class PropertyController extends Controller
         $property->product_code    = $product_code;
         $property->slug     = $slug;
         $property->price    = $request->price;
-        $property->purpose  = $request->purpose;
-        $property->type     = $request->type;
+        $property->purpose  = Purpose::find($request->purpose_id)->name;
+        $property->type     = Type::find($request->type_id)->name;
         $property->garage     = $request->garage;
         $property->built_year     = $request->built_year;
         $property->image    = $imagename;
@@ -286,7 +288,7 @@ class PropertyController extends Controller
         $property->bathroom = $request->bathroom;
         $property->city     = City::find($city_id)->name;
         $property->city_slug = City::find($city_id)->slug;
-        $property->address  = $request->address . $request->input('address', null);
+        $property->address  = $request->address . $request->input('address1', null);
         $property->area     = $request->area;
 
         if (isset($request->featured)) {
@@ -294,7 +296,10 @@ class PropertyController extends Controller
         } else {
             $property->featured = false;
         }
-
+        $property->type_id           =  $request->type_id;
+        $property->purpose_id           = $request->purpose_id;
+        $property->city_id           =  $city_id;
+        // $property->country_id           =  User::find(Auth::id())->country_id;
         $property->description          = $request->description;
         $property->video                = $request->video;
         $property->floor_plan           = $imagefloorplan;

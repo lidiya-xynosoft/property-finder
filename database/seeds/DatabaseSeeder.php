@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
 
 
-        DB::table('types')->insert([
+        DB::table('purposes')->insert([
             [
                 'name'          => 'Rent',
                 'slug'          => 'rent',
@@ -25,15 +25,10 @@ class DatabaseSeeder extends Seeder
                 'name'          => 'Sale',
                 'slug'          => 'sale',
                 'created_at'    => date("Y-m-d H:i:s")
-            ],
-            [
-                'name'          => 'Commercial',
-                'slug'          => 'commercial',
-                'created_at'    => date("Y-m-d H:i:s")
             ]
         ]);
 
-        DB::table('purposes')->insert([
+        DB::table('types')->insert([
             [
                 'name'          => 'House',
                 'slug'          => 'house',
@@ -77,7 +72,9 @@ class DatabaseSeeder extends Seeder
                 'image'         => 'default.png',
                 'about'         => 'Bio of admin',
                 'password'      => bcrypt('123456'),
-                'created_at'    => date("Y-m-d H:i:s")
+                'created_at'    => date("Y-m-d H:i:s"),
+                'country_id'    => '1',
+                'contact_no' => '0123456789'
             ],
             [
                 'role_id'       => 2,
@@ -87,7 +84,9 @@ class DatabaseSeeder extends Seeder
                 'image'         => 'default.png',
                 'about'         => '',
                 'password'      => bcrypt('123456'),
-                'created_at'    => date("Y-m-d H:i:s")
+                'created_at'    => date("Y-m-d H:i:s"),
+                'country_id'    => '1',
+                'contact_no' => '0123456780'
             ],
             [
                 'role_id'       => 3,
@@ -97,7 +96,9 @@ class DatabaseSeeder extends Seeder
                 'image'         => 'default.png',
                 'about'         => null,
                 'password'      => bcrypt('123456'),
-                'created_at'    => date("Y-m-d H:i:s")
+                'created_at'    => date("Y-m-d H:i:s"),
+                'country_id'    => '1',
+                'contact_no' => '0123486789'
             ],
         ]);
 
@@ -123,22 +124,40 @@ class DatabaseSeeder extends Seeder
         DB::table('nearby_categories')->insert([
             [
                 'name'          => 'Education',
+                'slug'          => 'education',
                 'class'         => 'text-info',
                 'icon'          => 'fas fa-graduation-cap mr-2',
                 'created_at'    => date("Y-m-d H:i:s")
             ],
             [
                 'name'          => 'Health & Medical',
+                'slug'          => 'health_medical',
                 'class'         => 'text-success',
                 'icon'          => 'fas fa-user-md mr-2',
                 'created_at'    => date("Y-m-d H:i:s")
             ],
             [
                 'name'          => 'Transportation',
+                'slug'          => 'transportation',
                 'class'         => 'text-danger',
                 'icon'          => 'fas fa-car mr-2',
                 'created_at'    => date("Y-m-d H:i:s")
             ]
+        ]);
+
+        DB::table('settings')->insert([
+            [
+                'name'          => 'Property Finder',
+                'email'          => 'support@findhouses.com',
+                'phone'         => '456 875 369 208',
+                'address'          => '95 South Park Avenue, USA',
+                'currency'    => 'INR',
+                'footer'    => '2021 © Copyright - All Rights Reserved.',
+                'aboutus'    => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum incidunt architecto soluta laboriosam, perspiciatis, aspernatur officiis esse.',
+                'facebook'    => 'www.facebook.com',
+                'twitter'    => 'www.facebook.com',
+                'linkedin'    => 'www.facebook.com',
+            ],
         ]);
     }
 }

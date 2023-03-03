@@ -193,11 +193,11 @@
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <label for="type">Property type</label>
-                                        <select name="type" class="form-select required">
+                                        <select name="type_id" class="form-select required">
                                             <option>--Select-- </option>
                                             @foreach ($types as $type)
-                                                <option value="{{ $type->slug }}"
-                                                    {{ $type->slug == $property->type ? 'selected' : '' }} class="option">
+                                                <option value="{{ $type->id }}"
+                                                    {{ $type->id == $property->type_id ? 'selected' : '' }} class="option">
                                                     {{ $type->name }}
                                                 </option>
                                             @endforeach
@@ -210,12 +210,12 @@
                                     </div>
                                     <div class="col-lg-4 col-md-12">
                                         <label for="purpose">Property purpose</label>
-                                        <select name="purpose" class="form-select required">
+                                        <select name="purpose_id" class="form-select required">
                                             <option>--Select--</option>
 
                                             @foreach ($purposes as $purpose)
-                                                <option value="{{ $purpose->slug }}" class="option"
-                                                    {{ $property->purpose == $purpose->slug ? 'selected' : '' }}>
+                                                <option value="{{ $purpose->id }}" class="option"
+                                                    {{ $property->purpose_id == $purpose->id ? 'selected' : '' }}>
                                                     {{ $purpose->name }}
                                                 </option>
                                             @endforeach

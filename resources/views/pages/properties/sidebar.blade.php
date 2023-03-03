@@ -7,100 +7,66 @@
               </div>
               <!-- Search Form -->
               <div class="trip-search">
-                  <form class="form">
+                  <form class="sidebar-search" action="{{ route('search') }}" method="GET">
                       <!-- Form Lookin for -->
                       <div class="form-group looking">
                           <div class="first-select wide">
                               <div class="main-search-input-item">
-                                  <input type="text" placeholder="Enter Keyword..." value="" />
+                                  <input type="text" name="key_word" placeholder="Enter Keyword..." value="" />
                               </div>
                           </div>
                       </div>
                       <!--/ End Form Lookin for -->
                       <!-- Form Location -->
-                      <div class="form-group location">
-                          <div class="nice-select form-control wide" tabindex="0"><span class="current"><i
-                                      class="fa fa-map-marker"></i>Location</span>
-                              <ul class="list">
-                                  <li data-value="1" class="option selected ">New York</li>
-                                  <li data-value="2" class="option">Los Angeles</li>
-                                  <li data-value="3" class="option">Chicago</li>
-                                  <li data-value="3" class="option">Philadelphia</li>
-                                  <li data-value="3" class="option">San Francisco</li>
-                                  <li data-value="3" class="option">Miami</li>
-                                  <li data-value="3" class="option">Houston</li>
-                              </ul>
-                          </div>
+                      <div class="rld-single-select ml-22">
+                          <select name="type" class="browser-default">
+                              <option value="" disabled selected>Types</option>
+                              @foreach ($types as $type)
+                                  <option value="{{ $type->slug }}">{{ $type->name }}</option>
+                              @endforeach
+                          </select>
                       </div>
                       <!--/ End Form Location -->
                       <!-- Form Categories -->
                       <div class="form-group categories">
-                          <div class="nice-select form-control wide" tabindex="0"><span class="current"><i
-                                      class="fa fa-home" aria-hidden="true"></i>Property
-                                  Type</span>
-                              <ul class="list">
-                                  <li data-value="1" class="option selected ">House</li>
-                                  <li data-value="2" class="option">Apartment</li>
-                                  <li data-value="3" class="option">Condo</li>
-                                  <li data-value="3" class="option">Land</li>
-                                  <li data-value="3" class="option">Bungalow</li>
-                                  <li data-value="3" class="option">Single Family</li>
-                              </ul>
-                          </div>
+                          <select name="purpose" class="browser-default">
+                              <option value="" disabled selected>Purpose</option>
+                              @foreach ($purposes as $purpose)
+                                  <option value="{{ $purpose->slug }}">{{ $purpose->name }}</option>
+                              @endforeach
+                          </select>
                       </div>
                       <!--/ End Form Categories -->
                       <!-- Form Property Status -->
                       <div class="form-group categories">
-                          <div class="nice-select form-control wide" tabindex="0"><span class="current"><i
-                                      class="fa fa-home"></i>Property Status</span>
-                              <ul class="list">
-                                  <li data-value="1" class="option selected ">For Sale</li>
-                                  <li data-value="2" class="option">For Rent</li>
-                              </ul>
-                          </div>
+                          <select name="purpose" class="browser-default">
+                              <option value="" disabled selected>Purpose</option>
+                              <option value="rent">Rent</option>
+                              <option value="sale">Sale</option>
+                          </select>
                       </div>
                       <!--/ End Form Property Status -->
                       <!-- Form Bedrooms -->
                       <div class="form-group beds">
-                          <div class="nice-select form-control wide" tabindex="0"><span class="current"><i
-                                      class="fa fa-bed" aria-hidden="true"></i>
-                                  Bedrooms</span>
-                              <ul class="list">
-                                  <li data-value="1" class="option selected">1</li>
-                                  <li data-value="2" class="option">2</li>
-                                  <li data-value="3" class="option">3</li>
-                                  <li data-value="3" class="option">4</li>
-                                  <li data-value="3" class="option">5</li>
-                                  <li data-value="3" class="option">6</li>
-                                  <li data-value="3" class="option">7</li>
-                                  <li data-value="3" class="option">8</li>
-                                  <li data-value="3" class="option">9</li>
-                                  <li data-value="3" class="option">10</li>
-                              </ul>
-                          </div>
+                          <select name="bedroom" class="browser-default">
+                              <option value="" disabled selected>Choose Bedroom</option>
+                              @foreach ($bedroomdistinct as $bedroom)
+                                  <option value="{{ $bedroom->bedroom }}">{{ $bedroom->bedroom }}</option>
+                              @endforeach
+                          </select>
                       </div>
                       <!--/ End Form Bedrooms -->
                       <!-- Form Bathrooms -->
                       <div class="form-group bath">
-                          <div class="nice-select form-control wide" tabindex="0"><span class="current"><i
-                                      class="fa fa-bath" aria-hidden="true"></i>
-                                  Bathrooms</span>
-                              <ul class="list">
-                                  <li data-value="1" class="option selected">1</li>
-                                  <li data-value="2" class="option">2</li>
-                                  <li data-value="3" class="option">3</li>
-                                  <li data-value="3" class="option">4</li>
-                                  <li data-value="3" class="option">5</li>
-                                  <li data-value="3" class="option">6</li>
-                                  <li data-value="3" class="option">7</li>
-                                  <li data-value="3" class="option">8</li>
-                                  <li data-value="3" class="option">9</li>
-                                  <li data-value="3" class="option">10</li>
-                              </ul>
-                          </div>
+                          <select name="bathroom" class="browser-default">
+                              <option value="" disabled selected>Choose Bathroom</option>
+                              @foreach ($bathroomdistinct as $bathroom)
+                                  <option value="{{ $bathroom->bathroom }}">{{ $bathroom->bathroom }}</option>
+                              @endforeach
+                          </select>
                       </div>
                       <!--/ End Form Bathrooms -->
-                  </form>
+
               </div>
               <!--/ End Search Form -->
               <!-- Price Fields -->
@@ -108,14 +74,16 @@
                   <!-- Area Range -->
                   <div class="range-slider">
                       <label>Area Size</label>
-                      <div id="area-range" data-min="0" data-max="1300" data-unit="sq ft"></div>
+                      <div id="area-range" data-min="0" name="minarea" id="minarea" data-max="1300"
+                          data-unit="sq ft"></div>
                       <div class="clearfix"></div>
                   </div>
                   <br>
                   <!-- Price Range -->
                   <div class="range-slider">
                       <label>Price Range</label>
-                      <div id="price-range" data-min="0" data-max="600000" data-unit="$"></div>
+                      <div id="price-range" data-min="0" name="minprice" id="minprice" data-max="600000"
+                          data-unit="$"></div>
                       <div class="clearfix"></div>
                   </div>
               </div>
@@ -126,56 +94,36 @@
               <div class="more-search-options relative">
                   <!-- Checkboxes -->
                   <div class="checkboxes one-in-row margin-bottom-10">
-                      <input id="check-2" type="checkbox" name="check">
-                      <label for="check-2">Air Conditioning</label>
-                      <input id="check-3" type="checkbox" name="check">
-                      <label for="check-3">Swimming Pool</label>
-                      <input id="check-4" type="checkbox" name="check">
-                      <label for="check-4">Central Heating</label>
-                      <input id="check-5" type="checkbox" name="check">
-                      <label for="check-5">Laundry Room</label>
-                      <input id="check-6" type="checkbox" name="check">
-                      <label for="check-6">Gym</label>
-                      <input id="check-7" type="checkbox" name="check">
-                      <label for="check-7">Alarm</label>
-                      <input id="check-8" type="checkbox" name="check">
-                      <label for="check-8">Window Covering</label>
-                      <input id="check-9" type="checkbox" name="check">
-                      <label for="check-9">WiFi</label>
-                      <input id="check-10" type="checkbox" name="check">
-                      <label for="check-10">TV Cable</label>
-                      <input id="check-11" type="checkbox" name="check">
-                      <label for="check-11">Dryer</label>
-                      <input id="check-12" type="checkbox" name="check">
-                      <label for="check-12">Microwave</label>
-                      <input id="check-13" type="checkbox" name="check">
-                      <label for="check-13">Washer</label>
-                      <input id="check-14" type="checkbox" name="check">
-                      <label for="check-14">Refrigerator</label>
-                      <input id="check-15" type="checkbox" name="check">
-                      <label for="check-15">Outdoor Shower</label>
+                      @foreach ($features as $key => $feature)
+                          <input id="check-{{ $key }}" type="checkbox" name="feature[]">
+                          <label for="check-{{ $key }}">{{ $feature->name }}</label>
+                      @endforeach
                   </div>
                   <!-- Checkboxes / End -->
               </div>
+
               <!-- More Search Options / End -->
               <div class="col-lg-12 no-pds">
                   <div class="at-col-default-mar">
                       <button class="btn btn-default hvr-bounce-to-right" type="submit">Search</button>
                   </div>
               </div>
+              </form>
           </div>
 
           <div class="widget-boxed mt-5">
               <div class="widget-boxed-header">
-                  <h4>Category</h4>
+                  <h4>Popular Places</h4>
               </div>
               <div class="widget-boxed-body">
                   <div class="recent-post">
                       <div class="recent-main">
                           <ul>
-                              @foreach ($types as $type)
-                                  <li><a href="{{ route('property.type', $type->type) }}"><i class="fa fa-caret-right"
-                                              aria-hidden="true"></i>{{ $type->type }} ( 1)</a>
+                              @foreach ($processed_cities as $city)
+                                  <li> <a href="{{ route('property.cityslug', $city['city_slug']) }}"><i
+                                              class="fa fa-caret-right" aria-hidden="true"></i>{{ $city['city_name'] }}
+                                          ({{ $city['total_property'] }})
+                                      </a>
                                   </li>
                               @endforeach
                           </ul>
@@ -196,7 +144,7 @@
                       @foreach ($recent_properties as $key => $property)
                           <div class="recent-main my-4">
                               <div class="recent-img">
-                                  <a href="blog-details.html">
+                                  <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
                                       @if (Storage::disk('public')->exists('property/' . $property->image) && $property->image)
                                           <img src="{{ Storage::url('property/' . $property->image) }}"
                                               alt="{{ $property->title }}" class="img-responsive">
@@ -205,7 +153,7 @@
 
                               </div>
                               <div class="info-img">
-                                  <a href="blog-details.html">
+                                  <a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}">
                                       <h6>{{ str_limit($property->title, 22) }}</h6>
                                   </a>
                                   <p>{{ $currency }} {{ number_format($property->price, 2) }}</p>
@@ -253,7 +201,7 @@
                       <div class="tags">
 
                           @foreach ($tags as $tag)
-                              <span><a href="{{ route('blog.tags', $tag->slug) }}"
+                              <span><a href="{{ url('property/' . $property->product_code . '/' . $property->slug) }}"
                                       class="btn btn-outline-primary">{{ $tag->name }}</a></span>
 
                               @if ($counter % 2 === 0)

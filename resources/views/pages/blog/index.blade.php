@@ -64,7 +64,7 @@
                                             </ul>
                                         </div>
                                         <div class="news-item-descr big-news">
-                                            <p> {{ str_limit($post->body, 120) }}
+                                            <p> {{ $post->excerpt }}
                                             </p>
                                         </div>
                                         <div class="news-item-bottom">
