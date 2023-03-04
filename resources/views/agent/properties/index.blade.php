@@ -135,7 +135,7 @@
                         <div class="pagination-container">
                             <nav>
                                 <ul class="pagination">
-                                    {{ $properties->links() }}
+                                    {{ $properties->links('pagination::bootstrap-4') }}
                                 </ul>
                             </nav>
                         </div>

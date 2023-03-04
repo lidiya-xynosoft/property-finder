@@ -1,68 +1,118 @@
-@extends('frontend.layouts.app')
+@extends('frontend.layouts.profile')
+@section('title', 'Agent dashboard')
 
 @section('styles')
 @endsection
 
 @section('content')
+@push('head')
+   <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/dashbord-mobile-menu.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/swiper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/owl-carousel.css') }}">
+        <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
 
-    <section class="section">
-        <div class="container">
+    @endpush
+    <section class="user-page section-padding">
+        <div class="container-fluid">
             <div class="row">
 
-                <div class="col s12 m3">
-                    <div class="agent-sidebar">
-                        @include('user.sidebar')
-                    </div>
-                </div>
 
-                <div class="col s12 m9">
+                @include('user.sidebar')
 
-                    <h4 class="agent-title">DASHBOARD</h4>
-                    
-                    <div class="agent-content">
+                <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
+                    <div class="col-lg-12 mobile-dashbord dashbord">
+                        <div class="dashboard_navigationbar dashxl">
+                            <div class="dropdown">
+                                <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10 mr-2"></i> Dashboard
+                                    Navigation</button>
+                                <ul id="myDropdown" class="dropdown-content">
+                                    <li>
+                                        <a class="{{ Request::is('user/dashboard') ? 'active' : '' }}"
+                                            href="{{ route('user.dashboard') }}">
+                                            <i class="fa fa-map-marker mr-3"></i> Dashboard
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="{{ Request::is('user/profile') ? 'active' : '' }}"
+                                            href="{{ route('agent.profile') }}">
 
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="box indigo white-text p-30">
-                                    <i class="material-icons left">comment</i>
-                                    <span class="truncate uppercase bold font-18">Comments</span>
-                                    <h4 class="m-t-10 m-b-0">{{ $commentcount }}</h4>
-                                </div>
+                                            <i class="fa fa-user mr-3"></i>Profile
+                                        </a>
+                                    </li>
+                                 
+                                    <li>
+                                        <a href="{{ route('user.profile') }}">
+                                            <i class="fa fa-heart mr-3" aria-hidden="true"></i>Favorited Properties
+                                        </a>
+                                    </li>
+                                    
+
+                                    <li>
+                                        <a class="{{ Request::is('user/changepassword') ? 'active' : '' }}"
+                                            href="{{ route('user.changepassword') }}">
+                                            <i class="fa fa-lock mr-3"></i>Change Password
+                                        </a>
+                                    </li>
+
+                                </ul>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col s12">
-                                <div class="box indigo white-text p-20">
-                                    <i class="material-icons left font-18">comment</i>
-                                    <span class="truncate uppercase bold">Recent Comments</span>
-                                </div>
-                                <div class="box-content">
-                                    @foreach($comments as $key => $comment)
-                                        <div class="grey lighten-4">
-                                            <span class="border-bottom display-block p-15  grey-text-d-2">
-                                                {{ ++$key }}. {{ $comment->body }}
-                                                
-                                            </span>
+                    </div>
+                    <div class="dashborad-box stat bg-white">
+                        <h4 class="title">Manage Dashboard</h4>
+                        <div class="section-body">
+                            <div class="row">
+                               
+                                <div class="col-lg-3 col-md-6 col-xs-12 dar rev mr-3">
+                                    <div class="item">
+                                        <div class="icon">
+                                            <i class="fas fa-comments"></i>
                                         </div>
-                                    @endforeach
+                                        <div class="info">
+                                            <h6 class="number">{{ $commentcount }}</h6>
+                                            <p class="type ml-1">Messages</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    {{ $comments->links() }}
-                                </div>
+
                             </div>
                         </div>
-
                     </div>
-        
+                <div class="dashborad-box">
+                        <h4 class="title">Recent Comments</h4>
+                        <div class="section-body listing-table">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                          @foreach($comments as $key => $comment)
+                                            <tr>
+                                                <td> {{ ++$key }}. {{ $comment->body }}</td>
+                                               
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="pagination-container">
+                            <nav>
+                                <ul class="pagination">
+                                    {{ $comments->links('pagination::bootstrap-4') }}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                   
                 </div>
 
             </div>
         </div>
     </section>
-
 @endsection
 
-@section('scripts')
-
-@endsection

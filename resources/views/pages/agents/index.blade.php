@@ -293,7 +293,7 @@
                 </aside>
             </div>
             <nav aria-label="..." class="pt-55">
-                {{ $agents->links() }}
+                {{ $agents->links('pagination::bootstrap-4') }}
             </nav>
         </div>
     </section>

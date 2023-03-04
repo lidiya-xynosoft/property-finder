@@ -11,6 +11,7 @@
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet-gesture-handling.min.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.markercluster.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/leaflet.markercluster.default.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     @endpush
 
     <!-- START SECTION PROPERTIES LISTING -->
@@ -181,172 +182,110 @@
                     </div>
                     <!-- Star Reviews -->
                     <section class="reviews comments">
-                        <h3 class="mb-5">3 Reviews</h3>
-                        <div class="row mb-5">
-                            <ul class="col-12 commented pl-0">
-                                <li class="comm-inf">
-                                    <div class="col-md-2">
-                                        <img src="{{ asset('frontend/findhouse/images/testimonials/ts-5.jpg') }}"
-                                            class="img-fluid" alt="">
-                                    </div>
-                                    <div class="col-md-10 comments-info">
-                                        <div class="conra">
-                                            <h5 class="mb-2">Mary Smith</h5>
-                                            <div class="rating-box">
-                                                <div class="detail-list-rating mr-0">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="mb-4">May 30 2020</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam, quam
-                                            congue dictum luctus, lacus magna congue ante, in finibus dui sapien eu dolor.
-                                            Integer tincidunt suscipit erat, nec laoreet ipsum vestibulum sed.</p>
-                                        <div class="rest"><img
-                                                src="{{ asset('frontend/findhouse/images/single-property/s-1.jpg') }}"
-                                                class="img-fluid" alt=""></div>
-                                    </div>
-                                </li>
+                        <h3 class="mb-5"> {{ $property->comments_count }} Reviews</h3>
+                        @auth
+                            <div class="right" id="rateYo"></div>
+                            <br />
+                        @endauth
 
-                            </ul>
-                        </div>
-                        <div class="row">
-                            <ul class="col-12 commented pl-0">
-                                <li class="comm-inf">
-                                    <div class="col-md-2">
-                                        <img src="{{ asset('frontend/findhouse/images/testimonials/ts-4.jpg') }}"
-                                            class="img-fluid" alt="">
-                                    </div>
-                                    <div class="col-md-10 comments-info">
-                                        <div class="conra">
-                                            <h5 class="mb-2">Abraham Tyron</h5>
-                                            <div class="rating-box">
-                                                <div class="detail-list-rating mr-0">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="mb-4">june 1 2020</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam, quam
-                                            congue dictum luctus, lacus magna congue ante, in finibus dui sapien eu dolor.
-                                            Integer tincidunt suscipit erat, nec laoreet ipsum vestibulum sed.</p>
-                                    </div>
-                                </li>
+                        <div class="clearfix"></div>
 
-                            </ul>
-                        </div>
-                        <div class="row mb-5">
-                            <ul class="col-12 commented mb-0 pl-0">
-                                <li class="comm-inf">
-                                    <div class="col-md-2">
-                                        <img src="{{ asset('frontend/findhouse/images/testimonials/ts-3.jpg') }}"
-                                            class="img-fluid" alt="">
-                                    </div>
-                                    <div class="col-md-10 comments-info">
-                                        <div class="conra">
-                                            <h5 class="mb-2">Lisa Williams</h5>
-                                            <div class="rating-box">
-                                                <div class="detail-list-rating mr-0">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </div>
+                        @foreach ($property->comments as $comment)
+                            @if ($comment->parent_id == null)
+                                <div class="row mb-5">
+                                    <ul class="col-12 commented pl-0">
+                                        <li class="comm-inf">
+                                            <div class="col-md-2">
+                                                
+                                                @if (Storage::url('users/' . $comment->users->image) && $comment->users->image)
+                                                    <img src="{{ $comment->users->image }}"
+                                                        alt="{{ $property->user->name }}"  class="img-fluid">
+                                                @endif
+                                               
                                             </div>
-                                        </div>
-                                        <p class="mb-4">jul 12 2020</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam, quam
-                                            congue dictum luctus, lacus magna congue ante, in finibus dui sapien eu dolor.
-                                            Integer tincidunt suscipit erat, nec laoreet ipsum vestibulum sed.</p>
-                                        <div class="resti">
-                                            <div class="rest"><img
-                                                    src="{{ asset('frontend/findhouse/images/single-property/s-2.jpg') }}"
-                                                    class="img-fluid" alt=""></div>
-                                            <div class="rest"><img
-                                                    src="{{ asset('frontend/findhouse/images/single-property/s-3.jpg') }}"
-                                                    class="img-fluid" alt=""></div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                                            <div class="col-md-10 comments-info">
+                                                <div class="conra">
+                                                    <h5 class="mb-2">{{ $comment->users->name }}</h5>
+                                               
+                                                </div>
+                                                <p class="mb-4">{{ $comment->created_at->diffForHumans() }}</p>
+                                              
+
+                                                <p>{{ $comment->body }}</p>
+                                                <div id="procomment-{{ $comment->id }}"></div>
+                                              
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            @endif
+                            {{-- @foreach ($comment->children as $commentchildren)
+                                <div class="row ml-5">
+                                    <ul class="col-12 commented">
+                                        <li class="comm-inf">
+                                            <div class="col-md-2">
+                                                <img src="{{ Storage::url('users/' . $commentchildren->users->image) }}"
+                                                    class="img-fluid" alt="">
+                                            </div>
+                                            <div class="col-md-10 comments-info">
+                                                <h5 class="mb-1">{{ $commentchildren->users->name }}</h5>
+                                                <p class="mb-4">{{ $commentchildren->created_at->diffForHumans() }}</p>
+                                                <p>{{ $commentchildren->body }}</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endforeach --}}
+                        @endforeach
                     </section>
                     <!-- End Reviews -->
                     <!-- Star Add Review -->
-                    <section class="single reviews leve-comments details">
-                        <div id="add-review" class="add-review-box">
-                            <!-- Add Review -->
-                            <h3 class="listing-desc-headline margin-bottom-20 mb-4">Add Review</h3>
-                            <span class="leave-rating-title">Your rating for this listing</span>
-                            <!-- Rating / Upload Button -->
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <!-- Leave Rating -->
-                                    <div class="clearfix"></div>
-                                    <div class="leave-rating margin-bottom-30">
-                                        <input type="radio" name="rating" id="rating-1" value="1" />
-                                        <label for="rating-1" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-2" value="2" />
-                                        <label for="rating-2" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-3" value="3" />
-                                        <label for="rating-3" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-4" value="4" />
-                                        <label for="rating-4" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-5" value="5" />
-                                        <label for="rating-5" class="fa fa-star"></label>
+                    @auth
+                        <section class="single reviews leve-comments details">
+                            <div id="add-review" class="add-review-box">
+                                <!-- Add Review -->
+                                <h3 class="listing-desc-headline margin-bottom-20 mb-4">Add Review</h3>
+                                <form action="{{ route('property.comment', $property->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="parent" value="0">
+                                    <!-- Rating / Upload Button -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <!-- Leave Rating -->
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        {{-- <div class="col-md-6">
+                                            <!-- Uplaod Photos -->
+                                            <div class="add-review-photos margin-bottom-30">
+                                                <div class="photoUpload">
+                                                    <span><i class="sl sl-icon-arrow-up-circle"></i> Upload Photos</span>
+                                                    <input type="file" class="upload" />
+                                                </div>
+                                            </div>
+                                        </div> --}}
                                     </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- Uplaod Photos -->
-                                    <div class="add-review-photos margin-bottom-30">
-                                        <div class="photoUpload">
-                                            <span><i class="sl sl-icon-arrow-up-circle"></i> Upload Photos</span>
-                                            <input type="file" class="upload" />
+                                    <div class="row">
+                                        <div class="col-md-12 data">
+                                            <div class="col-md-12 form-group">
+                                                <textarea class="form-control" name="body" id="exampleTextarea" rows="8" placeholder="Review" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-lg mt-2">Submit Review</button>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 data">
-                                    <form action="#">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="text" name="name" class="form-control"
-                                                    placeholder="First Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="text" name="name" class="form-control"
-                                                    placeholder="Last Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="email" name="email" class="form-control"
-                                                    placeholder="Email" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 form-group">
-                                            <textarea class="form-control" id="exampleTextarea" rows="8" placeholder="Review" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-lg mt-2">Submit Review</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                        </section>
+                    @endauth
                     <!-- End Add Review -->
+                    @guest
+                        <div class="comment-login">
+                            <h6>Please Login to comment</h6>
+                            <a href="{{ route('login') }}" class="btn indigo">Login</a>
+                        </div>
+                    @endguest
+
                 </div>
                 <aside class="col-lg-4 col-md-12 car">
                     <div class="single widget">
@@ -707,13 +646,17 @@
             </section>
             <!-- END SIMILAR PROPERTIES -->
         </div>
+        {{-- RATING --}}
+        @php
+            $rating = $rating == null ? 0 : $rating;
+        @endphp
     </section>
     <!-- END SECTION PROPERTIES LISTING -->
     <!-- push external js -->
     @push('script')
         <script src="{{ asset('frontend/findhouse/js/jquery-ui.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/range-slider.js') }}"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
         <script src="{{ asset('frontend/findhouse/js/popper.min.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/slick4.js') }}"></script>
         <script src="{{ asset('frontend/findhouse/js/inner.js') }}"></script>
@@ -728,6 +671,63 @@
         <!-- Date Dropper Script-->
         <script>
             $(function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                // RATING
+                $("#rateYo").rateYo({
+                        rating: <?php echo json_encode($rating); ?>,
+                        halfStar: true,
+                        starWidth: "26px"
+                    })
+                    .on("rateyo.set", function(e, data) {
+
+                        var rating = data.rating;
+                        var property_id = <?php echo json_encode($property->id); ?>;
+                        var user_id = <?php echo json_encode(auth()->id()); ?>;
+
+                        $.post("{{ route('property.rating') }}", {
+                            rating: rating,
+                            property_id: property_id,
+                            user_id: user_id
+                        }, function(data) {
+                            if (data.rating.rating) {
+                                toastr.success(data.rating.rating + ' star added successfully.');
+                                // M.toast({
+                                //     html: 'Rating: ' + data.rating.rating +
+                                //         ' added successfully.',
+                                //     classes: 'green darken-4'
+                                // })
+
+                            }
+                        });
+                    });
+
+
+                // COMMENT
+                $(document).on('click', '#commentreplay', function(e) {
+                    e.preventDefault();
+
+                    var commentid = $(this).data('commentid');
+
+                    $('#procomment-' + commentid).empty().append(
+                        `<div class="comment-box">
+                        <form action="{{ route('property.comment', $property->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="parent" value="1">
+                            <input type="hidden" name="parent_id" value="` + commentid + `">
+                            
+                            <textarea name="body" class="box" placeholder="Leave a comment"></textarea>
+                            <input type="submit" class="btn indigo" value="Comment">
+                        </form>
+                    </div>`
+                    );
+                });
+
                 $(document).on('submit', '.agent-message-box', function(e) {
                     e.preventDefault();
 

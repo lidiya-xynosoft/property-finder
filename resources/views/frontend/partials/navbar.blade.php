@@ -81,7 +81,6 @@
                                        alt=""></span>
                                {{ ucfirst(Auth::user()->name) }}
                            </div>
-
                            <ul>
                                @if (Auth::user()->role->id == 1)
                                    <li><a href="{{ route('admin.dashboard') }}">

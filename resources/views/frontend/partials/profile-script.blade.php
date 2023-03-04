@@ -5,8 +5,8 @@
   {{-- <script src="{{ asset('frontend/findhouse/js/tether.min.js') }}"></script> --}}
   {{-- <script src="{{ asset('frontend/findhouse/js/moment.js') }}"></script> --}}
   <script src="{{ asset('frontend/findhouse/js/bootstrap.min.js') }}"></script>
-  {{-- <script src="{{ asset('frontend/findhouse/js/mmenu.min.js') }}"></script> --}}
-  {{-- <script src="{{ asset('frontend/findhouse/js/mmenu.js') }}"></script> --}}
+  <script src="{{ asset('frontend/findhouse/js/mmenu.min.js') }}"></script> 
+ <script src="{{ asset('frontend/findhouse/js/mmenu.js') }}"></script>
   {{-- <script src="{{ asset('frontend/findhouse/js/swiper.min.js') }}"></script>
   <script src="{{ asset('frontend/findhouse/js/swiper.js') }}"></script> --}}
   {{-- <script src="{{ asset('frontend/findhouse/js/slick.min.js') }}"></script>

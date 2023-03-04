@@ -10,8 +10,8 @@ use Carbon\Carbon;
 use App\Comment;
 use App\Message;
 use App\User;
-use Auth;
-use Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Toastr;
 
 class DashboardController extends Controller
@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $comments = Comment::latest()
                            ->with('commentable')
                            ->where('user_id',Auth::id())
-                           ->paginate(10);
+        ->paginate(2);
 
         $commentcount = Comment::where('user_id',Auth::id())->count();
 
@@ -39,12 +39,11 @@ class DashboardController extends Controller
     {
         $request->validate([
             'name'      => 'required',
-            'username'  => 'required',
+            'last_name'  => 'required',
             'email'     => 'required|email',
             'image'     => 'image|mimes:jpeg,jpg,png',
             'about'     => 'max:250'
         ]);
-
         $user = User::find(Auth::id());
 
         $image = $request->file('image');
@@ -65,14 +64,15 @@ class DashboardController extends Controller
         }
 
         $user->name = $request->name;
-        $user->username = $request->username;
+        $user->username = $request->last_name;
         $user->email = $request->email;
         $user->image = $imagename;
         $user->about = $request->about;
-
+        $user->address = $request->address;
         $user->save();
-
-        return back();
+        $flash = array('type' => 'success', 'msg' => 'Profile updated');
+        $request->session()->flash('flash', $flash);
+        return redirect()->back();
     }
 
 
@@ -84,14 +84,18 @@ class DashboardController extends Controller
 
     public function changePasswordUpdate(Request $request)
     {
+
         if (!(Hash::check($request->get('currentpassword'), Auth::user()->password))) {
 
-            Toastr::error('message', 'Your current password does not matches with the password you provided! Please try again.');
+            $flash = array('type' => 'error', 'msg' => 'Your current password does not matches with the password you provided! Please try again.');
+            $request->session()->flash('flash', $flash);
             return redirect()->back();
         }
         if(strcmp($request->get('currentpassword'), $request->get('newpassword')) == 0){
 
-            Toastr::error('message', 'New Password cannot be same as your current password! Please choose a different password.');
+            $flash = array('type' => 'error', 'msg' =>
+            'New Password cannot be same as your current password! Please choose a different password.');
+            $request->session()->flash('flash', $flash);
             return redirect()->back();
         }
 
@@ -104,7 +108,9 @@ class DashboardController extends Controller
         $user->password = bcrypt($request->get('newpassword'));
         $user->save();
 
-        Toastr::success('message', 'Password changed successfully.');
+        $flash = array('type' => 'sucess', 'msg' =>
+        'Password change successfully');
+        $request->session()->flash('flash', $flash);
         return redirect()->back();
     }
 
@@ -175,5 +181,4 @@ class DashboardController extends Controller
         Toastr::success('message', 'Message deleted successfully.');
         return back();
     }
-
 }

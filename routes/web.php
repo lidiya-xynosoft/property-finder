@@ -102,7 +102,7 @@ Route::group(['prefix' => 'user', 'namespace' => 'User', 'middleware' => ['auth'
 
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('profile', 'DashboardController@profile')->name('profile');
-    Route::post('profile', 'DashboardController@profileU pdate')->name('profile.update');
+    Route::post('profile', 'DashboardController@profileUpdate')->name('profile.update');
     Route::get('changepassword', 'DashboardController@changePassword')->name('changepassword');
     Route::post('changepassword', 'DashboardController@changePasswordUpdate')->name('changepassword.update');
 

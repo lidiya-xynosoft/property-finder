@@ -29,11 +29,7 @@
                          <i class="fa fa-list" aria-hidden="true"></i>My Properties
                      </a>
                  </li>
-                 <li>
-                     <a href="{{route('agent.profile')}}">
-                         <i class="fa fa-heart" aria-hidden="true"></i>Favorited Properties
-                     </a>
-                 </li>
+                
                  <li>
                      <a class="{{Request::is('agent/properties/create') ? 'active' : ''}}"
                          href="{{route('agent.properties.create')}}">
@@ -49,12 +45,7 @@
                      </a>
                  </li>
 
-                 <li>
-                     <a class="{{Request::is('agent/logout') ? 'active' : ''}}"
-                         href="{{ route('logout') }}">
-                         <i class="fa fa-lock"></i>Logout
-                     </a>
-                 </li>
+                 
 
              </ul>
          </div>
