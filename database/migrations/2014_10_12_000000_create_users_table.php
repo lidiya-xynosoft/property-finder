@@ -19,6 +19,10 @@ class CreateUsersTable extends Migration
             $table->integer('country_id')->unsigned();
             $table->string('name');
             $table->string('username')->unique();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
             $table->string('contact_no')->unique();
             $table->string('email')->unique();
             $table->string('image')->default('default.png');

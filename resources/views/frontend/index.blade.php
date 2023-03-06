@@ -10,39 +10,6 @@
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/maps.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/colors/pink.css') }}">
     @endpush
-    <!-- START SECTION POPULAR PLACES -->
-    <section class="feature-categories bg-white rec-pro">
-        <div class="container-fluid">
-            <div class="sec-title">
-                <h2><span>Popular </span>Places</h2>
-                <p>Properties In Most Popular Places.</p>
-            </div>
-            <div class="row">
-                <!-- Single category -->
-
-                @foreach ($processed_cities as $key => $city)
-                    <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
-                        <div class="small-category-2">
-                            <div class="small-category-2-thumb img-1">
-                                <a href="{{ route('property.city', $city['city_slug']) }}">
-                                    <img src="{{ Storage::url('city/' . $city['image']) }}"
-                                        alt="{{ $city['city_name'] }}"></a>
-                            </div>
-                            <div class="sc-2-detail">
-                                <h4 class="sc-jb-title"><a href="properties-full-grid-1.html">{{ $city['city_name'] }}</a>
-                                </h4>
-                                <span>{{ $city['total_property'] }} Properties</span>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-                <!-- Single category -->
-
-            </div>
-            <!-- /row -->
-        </div>
-    </section>
-    <!-- END SECTION POPULAR PLACES -->
 
     <!-- START SECTION FEATURED PROPERTIES -->
     <section class="featured portfolio bg-white-2 rec-pro full-l">
@@ -141,6 +108,41 @@
         </div>
     </section>
     <!-- END SECTION FEATURED PROPERTIES -->
+
+<!-- START SECTION POPULAR PLACES -->
+    <section class="feature-categories bg-white rec-pro">
+        <div class="container-fluid">
+            <div class="sec-title">
+                <h2><span>Popular </span>Places</h2>
+                <p>Properties In Most Popular Places.</p>
+            </div>
+            <div class="row">
+                <!-- Single category -->
+
+                @foreach ($processed_cities as $key => $city)
+                    <div class="col-xl-3 col-lg-6 col-sm-6" data-aos="fade-up" data-aos-delay="150">
+                        <div class="small-category-2">
+                            <div class="small-category-2-thumb img-1">
+                                <a href="{{ route('property.cityslug', $city['city_slug']) }}">
+                                    <img src="{{ Storage::url('city/' . $city['image']) }}"
+                                        alt="{{ $city['city_name'] }}"></a>
+                            </div>
+                            <div class="sc-2-detail">
+                                <h4 class="sc-jb-title"><a
+                                        href="{{ route('property.cityslug', $city['city_slug']) }}">{{ $city['city_name'] }}</a>
+                                </h4>
+                                <span>{{ $city['total_property'] }} Properties</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                <!-- Single category -->
+
+            </div>
+            <!-- /row -->
+        </div>
+    </section>
+    <!-- END SECTION POPULAR PLACES -->
 
     <!-- START SECTION WHY CHOOSE US -->
     <section class="how-it-works bg-white rec-pro">
@@ -277,21 +279,21 @@
                         <div class="inner-box team-details">
                             <div class="image team-head">
                                 @if (Storage::disk('public')->exists('users/' . $agent->image) && $agent->image)
-                                    <a href="agents-listing-grid.html"><img
+                                    <a href="{{ route('agents.show', $agent->id) }}"><img
                                             src="{{ Storage::url('users/' . $agent->image) }}" alt="" /></a>
                                 @endif
 
                                 <div class="team-hover">
                                     <ul class="team-social">
-                                        <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
-                                        <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="{{ $agent->facebook }}" class="facebook" target="_blank" ><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="{{ $agent->twitter }}" class="twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="{{ $agent->instagram }}" class="instagram" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                        <li><a href="{{ $agent->linkedin }}" class="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="lower-box">
-                                <h3><a href="agents-listing-grid.html">{{ $agent->name . ' ' . $agent->username }}</a>
+                                <h3><a href="{{ route('agents.show', $agent->id) }}">{{ $agent->name . ' ' . $agent->username }}</a>
                                 </h3>
                                 <div class="designation">Real Estate Agent</div>
                             </div>

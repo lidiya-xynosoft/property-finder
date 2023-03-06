@@ -137,6 +137,38 @@
                                                 value="{{ $profile->contact_no }}" class="validate">
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Facebook</label>
+                                            <input id="facebook" required name="facebook" class="form-control"
+                                                placeholder="www.example.com" type="text"
+                                                value="{{ $profile->facebook }}" class="validate">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Twitter</label>
+                                            <input id="twitter" required name="twitter" class="form-control"
+                                                placeholder="www.example.com" type="text"
+                                                value="{{ $profile->twitter }}" class="validate">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Instagram</label>
+                                            <input id="instagram" required name="instagram" class="form-control"
+                                                placeholder="www.example.com" type="text"
+                                                value="{{ $profile->instagram }}" class="validate">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Linkedin</label>
+                                            <input id="linkedin" required name="linkedin" class="form-control"
+                                                placeholder="www.example.com" type="text"
+                                                value="{{ $profile->linkedin }}" class="validate">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Image</label>

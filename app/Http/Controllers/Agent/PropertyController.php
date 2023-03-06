@@ -223,7 +223,7 @@ class PropertyController extends Controller
             'city_id'      => 'required',
             'address'   => 'required',
             'area'      => 'required',
-            'image'     => 'required|image|mimes:jpeg,jpg,png',
+            // 'image'     => 'required|image|mimes:jpeg,jpg,png',
             'floor_plan' => 'image|mimes:jpeg,jpg,png',
             'description'        => 'required',
             'latitude'  => 'required',
@@ -276,7 +276,7 @@ class PropertyController extends Controller
         $product_code = Auth::id() . '-' . $product_count . Carbon::now()->timestamp;
 
         $property->title    = $request->title;
-        $property->product_code    = $product_code;
+        // $property->product_code    = $product_code;
         $property->slug     = $slug;
         $property->price    = $request->price;
         $property->purpose  = Purpose::find($request->purpose_id)->name;

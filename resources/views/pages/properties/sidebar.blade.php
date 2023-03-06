@@ -7,7 +7,8 @@
               </div>
               <!-- Search Form -->
               <div class="trip-search">
-                  <form class="sidebar-search" action="{{ route('search') }}" method="GET">
+                 <form action="{{ route('search') }} " method="POST">
+                            @csrf
                       <!-- Form Lookin for -->
                       <div class="form-group looking">
                           <div class="first-select wide">
@@ -16,6 +17,7 @@
                               </div>
                           </div>
                       </div>
+                        <br/>
                       <!--/ End Form Lookin for -->
                       <!-- Form Location -->
                       <div class="rld-single-select ml-22">
@@ -26,9 +28,10 @@
                               @endforeach
                           </select>
                       </div>
+                        <br/>
                       <!--/ End Form Location -->
                       <!-- Form Categories -->
-                      <div class="form-group categories">
+                        <div class="rld-single-select ml-22">
                           <select name="purpose" class="browser-default">
                               <option value="" disabled selected>Purpose</option>
                               @foreach ($purposes as $purpose)
@@ -36,18 +39,22 @@
                               @endforeach
                           </select>
                       </div>
+
+                        <br/>
                       <!--/ End Form Categories -->
                       <!-- Form Property Status -->
-                      <div class="form-group categories">
-                          <select name="purpose" class="browser-default">
-                              <option value="" disabled selected>Purpose</option>
-                              <option value="rent">Rent</option>
-                              <option value="sale">Sale</option>
+                       <div class="rld-single-select ml-22">
+                          <select name="city" class="browser-default">
+                              <option value="" disabled selected>Cities</option>
+                              @foreach ($cities as $city)
+                                  <option value="{{ $city->slug }}">{{ $city->name }}</option>
+                              @endforeach
                           </select>
                       </div>
+                          <br/>
                       <!--/ End Form Property Status -->
                       <!-- Form Bedrooms -->
-                      <div class="form-group beds">
+                     <div class="rld-single-select ml-22">
                           <select name="bedroom" class="browser-default">
                               <option value="" disabled selected>Choose Bedroom</option>
                               @foreach ($bedroomdistinct as $bedroom)
@@ -55,9 +62,10 @@
                               @endforeach
                           </select>
                       </div>
+                          <br/>
                       <!--/ End Form Bedrooms -->
                       <!-- Form Bathrooms -->
-                      <div class="form-group bath">
+                       <div class="rld-single-select ml-22">
                           <select name="bathroom" class="browser-default">
                               <option value="" disabled selected>Choose Bathroom</option>
                               @foreach ($bathroomdistinct as $bathroom)
@@ -65,6 +73,7 @@
                               @endforeach
                           </select>
                       </div>
+                           <br/>
                       <!--/ End Form Bathrooms -->
 
               </div>
@@ -159,7 +168,6 @@
                                   <p>{{ $currency }} {{ number_format($property->price, 2) }}</p>
                               </div>
                           </div>
-                          <br />
                       @endforeach
                       {{-- <div class="recent-main my-4">
                           <div class="recent-img">

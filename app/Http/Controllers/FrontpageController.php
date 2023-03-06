@@ -19,22 +19,25 @@ class FrontpageController extends Controller
 
     public function index()
     {
-        $sliders        = Slider::latest()->get();
+        $homeImage        = Slider::latest()->first();
         $properties     = Property::latest()->with('rating')->withCount('comments')->take(6)->get();
         $services       = Service::orderBy('service_order')->take(4)->get();
         $testimonials   = Testimonial::latest()->get();
         $agents          = User::latest()->where('role_id', 2)->take(6)->get();
         $posts          = Post::latest()->where('status', 1)->take(6)->get();
-        $cities = City::all();
+        $cities = City::latest()->get();
         $processed_cities = [];
         if ($cities) {
             foreach ($cities as $key => $city) {
-                $processed_cities[$key] = array(
-                    'total_property' => $city->property->pluck('city_id')->count(),
-                    'image' => $city->image,
-                    'city_name' => $city->name,
-                    'city_slug' => $city->slug
-                );
+                if ($city->property->pluck('city_id')->count() > 0) {
+                    $processed_cities[$key] = array(
+                        'total_property' => $city->property->pluck('city_id')->count(),
+                        'image' => $city->image,
+                        'city_name' => $city->name,
+                        'city_slug' => $city->slug,
+                        'city_id' => $city->id
+                    );
+                }
             }
         }
         if (Auth::user()) {
@@ -45,7 +48,7 @@ class FrontpageController extends Controller
         }
         $categories   = Category::has('posts')->withCount('posts')->get();
 
-        return view('frontend.index', compact('sliders', 'properties', 'services', 'testimonials', 'posts', 'agents', 'processed_cities', 'categories', 'currency'));
+        return view('frontend.index', compact('homeImage', 'properties', 'services', 'testimonials', 'posts', 'agents', 'processed_cities', 'categories', 'currency'));
     }
 
 
@@ -63,8 +66,8 @@ class FrontpageController extends Controller
         $maxarea  = $request->maxarea;
         $featured = $request->featured;
         $properties = Property::withCount('comments')
-        ->where('city_id', '=', $city)
-        ->orWhere('purpose_id', '=', $purpose)
+            ->where('city_id', '=', $city)
+            ->orWhere('purpose_id', '=', $purpose)
             ->orWhere('type_id', '=', $type)
             ->orWhere('bathroom', '=', $bathroom)
             ->orWhere('bedroom', '=', $bedroom)

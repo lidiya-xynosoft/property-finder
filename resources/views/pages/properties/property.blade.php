@@ -2,7 +2,7 @@
 @section('title', 'Properties')
 @section('content')
     @push('head')
-        <link rel="stylesheet" href="{{ asset('frontend/findhouse/font/flaticon.css') }}">
+            <link rel="stylesheet" href="{{ asset('frontend/findhouse/font/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/fontawesome-5-all.min.css') }}">
         <link rel="stylesheet" id="color" href="{{ asset('frontend/findhouse/css/default.css') }}">
         <link rel="stylesheet" href="{{ asset('frontend/findhouse/css/search.css') }}">

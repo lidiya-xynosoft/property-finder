@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'username', 'image', 'about', 'address', 'contact_no', 'country_id'
+        'name', 'email', 'password', 'role_id', 'username', 'image', 'about', 'address', 'contact_no', 'country_id', 'facebook', 'instagram', 'twitter', 'linkedin'
     ];
 
     /**
@@ -35,6 +35,10 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+    public function property()
+    {
+        return $this->hasMany(Property::class, 'agent_id');
     }
     public function country()
     {

@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
             $bathroomdistinct  = Property::select('bathroom')->distinct()->get();
             view()->share('bathroomdistinct', $bathroomdistinct);
 
+           
             $currency = Setting::find(1)->currency;
 
             view()->share('currency', $currency);
@@ -51,6 +52,9 @@ class AppServiceProvider extends ServiceProvider
 
 
             // SHARE WITH SPECIFIC VIEW
+            view()->composer('auth.register', function ($view) {
+                $view->with('countries', Country::all());
+            });
             view()->composer('pages.search', function ($view) {
                 $view->with('bathroomdistinct', Property::select('bathroom')->distinct()->get());
                 $view->with('cities_all', City::all());

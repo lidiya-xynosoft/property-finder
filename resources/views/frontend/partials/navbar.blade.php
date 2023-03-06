@@ -123,7 +123,7 @@
 
                <!-- lang-wrap-->
                @guest
-                   <div class="header-user-menu user-menu add d-none d-lg-none d-xl-flex">
+                   {{-- <div class="header-user-menu user-menu add d-none d-lg-none d-xl-flex">
                        <div class="lang-wrap">
                            <div class="show-lang"><span><i class="fas fa-globe-americas"></i><strong>ENG</strong></span><i
                                    class="fa fa-caret-down arrlan"></i></div>
@@ -134,7 +134,7 @@
                                <li><a href="#" data-lantext="De">Deutsch</a></li>
                            </ul>
                        </div>
-                   </div>
+                   </div> --}}
 
 
                    <!-- lang-wrap end-->

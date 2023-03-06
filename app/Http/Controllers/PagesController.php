@@ -104,7 +104,7 @@ class PagesController extends Controller
     // AGENT PAGE
     public function agents()
     {
-        $agents = User::latest()->where('role_id', 2)->paginate(12);
+        $agents = User::with('Property')->latest()->where('role_id', 2)->paginate(12);
         $recent_properties = Property::latest()->paginate(3);
         return view('pages.agents.index', compact('agents', 'recent_properties'));
     }

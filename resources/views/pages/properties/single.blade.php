@@ -25,8 +25,7 @@
                                 <div class="pro-wrapper">
                                     <div class="detail-wrapper-body">
                                         <div class="listing-title-bar">
-                                            <h3>{{ $property->title }} <span class="mrg-l-5 category-tag">For
-                                                    {{ $property->purpose }}</span></h3>
+                                            <h3>{{ $property->title }}<span class="mrg-l-5 category-tag"> {{ $property->purpose }}</span></h3>
                                             <div class="mt-0">
                                                 <a href="#listing-location" class="listing-address">
                                                     <i
@@ -198,8 +197,8 @@
                                             <div class="col-md-2">
                                                 
                                                 @if (Storage::url('users/' . $comment->users->image) && $comment->users->image)
-                                                    <img src="{{ $comment->users->image }}"
-                                                        alt="{{ $property->user->name }}"  class="img-fluid">
+                                                    <img src="{{ Storage::url('users/' . $comment->users->image ) }}"
+                                                        alt="{{ $comment->users->name }}"  class="img-fluid">
                                                 @endif
                                                
                                             </div>
@@ -280,10 +279,12 @@
                     @endauth
                     <!-- End Add Review -->
                     @guest
+                    <br/>
                         <div class="comment-login">
                             <h6>Please Login to comment</h6>
                             <a href="{{ route('login') }}" class="btn indigo">Login</a>
                         </div>
+                        <br/>
                     @endguest
 
                 </div>
@@ -781,9 +782,7 @@
 
                 })
             })
-        </script>
-
-        <script>
+  
             $(document).ready(function() {
                 $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
                     disableOn: 700,
@@ -821,9 +820,7 @@
                     }).addTo(map);
                 }
             });
-        </script>
-
-        <script>
+       
             $('.slick-carousel').each(function() {
                 var slider = $(this);
                 $(this).slick({
