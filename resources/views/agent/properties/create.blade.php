@@ -432,14 +432,14 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-12 d-none">
+                                    <div class="col-lg-6 col-md-12">
                                         <p class="no-mb first">
                                             <label for="latitude">Latitude</label>
                                             <input id="latitude" name="latitude" type="text"
                                                 placeholder="Google Maps latitude">
                                         </p>
                                     </div>
-                                    <div class="col-lg-6 col-md-12 d-none">
+                                    <div class="col-lg-6 col-md-12">
                                         <p class="no-mb last">
                                             <label for="longitude">Longitude</label>
                                             <input type="text" id="longitude" name="longitude"

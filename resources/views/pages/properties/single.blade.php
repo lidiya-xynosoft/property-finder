@@ -23,9 +23,9 @@
                         <div class="col-md-12">
                             <section class="headings-2 pt-0">
                                 <div class="pro-wrapper">
-                                    <div class="detail-wrapper-body">
+                                    <div class="detail-wrapper-body">   <span class="mrg-l-5 category-tag"> {{ $property->purpose }}</span>
                                         <div class="listing-title-bar">
-                                            <h3>{{ $property->title }}<span class="mrg-l-5 category-tag"> {{ $property->purpose }}</span></h3>
+                                         <h3>{{ $property->title }}</h3>
                                             <div class="mt-0">
                                                 <a href="#listing-location" class="listing-address">
                                                     <i
@@ -177,7 +177,7 @@
                     <div class="property-location map">
                         <h5>Location</h5>
                         <div class="divider-fade"></div>
-                        <div id="map-contact" class="contact-map"></div>
+                        <div id="property-location" class="contact-map"></div>
                     </div>
                     <!-- Star Reviews -->
                     <section class="reviews comments">
@@ -792,8 +792,8 @@
                     preloader: false,
                     fixedContentPos: false
                 });
-                if ($('#map-contact').length) {
-                    var map = L.map('map-contact', {
+                if ($('#property-location').length) {
+                    var map = L.map('property-location', {
                         zoom: 5,
                         maxZoom: 20,
                         tap: false,
