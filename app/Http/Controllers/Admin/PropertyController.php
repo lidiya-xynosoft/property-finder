@@ -8,7 +8,8 @@ use App\Property;
 use App\Feature;
 use App\PropertyImageGallery;
 use App\Comment;
-
+use App\PropertyAgreement;
+use App\PropertyCustomer;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
@@ -23,15 +24,15 @@ class PropertyController extends Controller
     {
         $properties = Property::latest()->withCount('comments')->get();
 
-        return view('admin.properties.index',compact('properties'));
+        return view('admin.properties.index', compact('properties'));
     }
 
 
     public function create()
-    {   
+    {
         $features = Feature::all();
 
-        return view('admin.properties.create',compact('features'));
+        return view('admin.properties.create', compact('features'));
     }
 
 
@@ -48,7 +49,7 @@ class PropertyController extends Controller
             'address'   => 'required',
             'area'      => 'required',
             'image'     => 'required|image|mimes:jpeg,jpg,png',
-            'floor_plan'=> 'image|mimes:jpeg,jpg,png',
+            'floor_plan' => 'image|mimes:jpeg,jpg,png',
             'description'        => 'required',
             'location_latitude'  => 'required',
             'location_longitude' => 'required',
@@ -57,30 +58,28 @@ class PropertyController extends Controller
         $image = $request->file('image');
         $slug  = str_slug($request->title);
 
-        if(isset($image)){
+        if (isset($image)) {
             $currentDate = Carbon::now()->toDateString();
-            $imagename = $slug.'-'.$currentDate.'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $imagename = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-            if(!Storage::disk('public')->exists('property')){
+            if (!Storage::disk('public')->exists('property')) {
                 Storage::disk('public')->makeDirectory('property');
             }
             $propertyimage = Image::make($image)->stream();
-            Storage::disk('public')->put('property/'.$imagename, $propertyimage);
-
+            Storage::disk('public')->put('property/' . $imagename, $propertyimage);
         }
 
         $floor_plan = $request->file('floor_plan');
-        if(isset($floor_plan)){
+        if (isset($floor_plan)) {
             $currentDate = Carbon::now()->toDateString();
-            $imagefloorplan = 'floor-plan-'.$currentDate.'-'.uniqid().'.'.$floor_plan->getClientOriginalExtension();
+            $imagefloorplan = 'floor-plan-' . $currentDate . '-' . uniqid() . '.' . $floor_plan->getClientOriginalExtension();
 
-            if(!Storage::disk('public')->exists('property')){
+            if (!Storage::disk('public')->exists('property')) {
                 Storage::disk('public')->makeDirectory('property');
             }
             $propertyfloorplan = Image::make($floor_plan)->stream();
-            Storage::disk('public')->put('property/'.$imagefloorplan, $propertyfloorplan);
-
-        }else{
+            Storage::disk('public')->put('property/' . $imagefloorplan, $propertyfloorplan);
+        } else {
             $imagefloorplan = 'default.png';
         }
 
@@ -94,11 +93,11 @@ class PropertyController extends Controller
         $property->bedroom  = $request->bedroom;
         $property->bathroom = $request->bathroom;
         $property->city     = $request->city;
-        $property->city_slug= str_slug($request->city);
+        $property->city_slug = str_slug($request->city);
         $property->address  = $request->address;
         $property->area     = $request->area;
 
-        if(isset($request->featured)){
+        if (isset($request->featured)) {
             $property->featured = true;
         }
         $property->agent_id = Auth::id();
@@ -115,27 +114,25 @@ class PropertyController extends Controller
 
         $gallary = $request->file('gallaryimage');
 
-        if($gallary)
-        {
-            foreach($gallary as $images)
-            {
+        if ($gallary) {
+            foreach ($gallary as $images) {
                 $currentDate = Carbon::now()->toDateString();
-                $galimage['name'] = 'gallary-'.$currentDate.'-'.uniqid().'.'.$images->getClientOriginalExtension();
+                $galimage['name'] = 'gallary-' . $currentDate . '-' . uniqid() . '.' . $images->getClientOriginalExtension();
                 // $galimage['size'] = $images->getClientSize();
                 $galimage['property_id'] = $property->id;
-                
-                if(!Storage::disk('public')->exists('property/gallery')){
+
+                if (!Storage::disk('public')->exists('property/gallery')) {
                     Storage::disk('public')->makeDirectory('property/gallery');
                 }
                 $propertyimage = Image::make($images)->stream();
-                Storage::disk('public')->put('property/gallery/'.$galimage['name'], $propertyimage);
+                Storage::disk('public')->put('property/gallery/' . $galimage['name'], $propertyimage);
 
                 $property->gallery()->create($galimage);
             }
         }
         $flash = array('type' => 'success', 'msg' => 'Property created successfully.');
         $request->session()->flash('flash', $flash);
-        
+
         return redirect()->route('admin.properties.index');
     }
 
@@ -146,7 +143,7 @@ class PropertyController extends Controller
 
         $videoembed = $this->convertYoutube($property->video, 560, 315);
 
-        return view('admin.properties.show',compact('property','videoembed'));
+        return view('admin.properties.show', compact('property', 'videoembed'));
     }
 
 
@@ -157,7 +154,7 @@ class PropertyController extends Controller
 
         $videoembed = $this->convertYoutube($property->video);
 
-        return view('admin.properties.edit',compact('property','features','videoembed'));
+        return view('admin.properties.edit', compact('property', 'features', 'videoembed'));
     }
 
 
@@ -174,7 +171,7 @@ class PropertyController extends Controller
             'address'   => 'required',
             'area'      => 'required',
             'image'     => 'image|mimes:jpeg,jpg,png',
-            'floor_plan'=> 'image|mimes:jpeg,jpg,png',
+            'floor_plan' => 'image|mimes:jpeg,jpg,png',
             'description'        => 'required',
             'location_latitude'  => 'required',
             'location_longitude' => 'required'
@@ -185,40 +182,38 @@ class PropertyController extends Controller
 
         $property = Property::find($property->id);
 
-        if(isset($image)){
+        if (isset($image)) {
             $currentDate = Carbon::now()->toDateString();
-            $imagename = $slug.'-'.$currentDate.'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $imagename = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-            if(!Storage::disk('public')->exists('property')){
+            if (!Storage::disk('public')->exists('property')) {
                 Storage::disk('public')->makeDirectory('property');
             }
-            if(Storage::disk('public')->exists('property/'.$property->image)){
-                Storage::disk('public')->delete('property/'.$property->image);
+            if (Storage::disk('public')->exists('property/' . $property->image)) {
+                Storage::disk('public')->delete('property/' . $property->image);
             }
             $propertyimage = Image::make($image)->stream();
-            Storage::disk('public')->put('property/'.$imagename, $propertyimage);
-
-        }else{
+            Storage::disk('public')->put('property/' . $imagename, $propertyimage);
+        } else {
             $imagename = $property->image;
         }
 
 
         $floor_plan = $request->file('floor_plan');
-        if(isset($floor_plan)){
+        if (isset($floor_plan)) {
             $currentDate = Carbon::now()->toDateString();
-            $imagefloorplan = 'floor-plan-'.$currentDate.'-'.uniqid().'.'.$floor_plan->getClientOriginalExtension();
+            $imagefloorplan = 'floor-plan-' . $currentDate . '-' . uniqid() . '.' . $floor_plan->getClientOriginalExtension();
 
-            if(!Storage::disk('public')->exists('property')){
+            if (!Storage::disk('public')->exists('property')) {
                 Storage::disk('public')->makeDirectory('property');
             }
-            if(Storage::disk('public')->exists('property/'.$property->floor_plan)){
-                Storage::disk('public')->delete('property/'.$property->floor_plan);
+            if (Storage::disk('public')->exists('property/' . $property->floor_plan)) {
+                Storage::disk('public')->delete('property/' . $property->floor_plan);
             }
 
             $propertyfloorplan = Image::make($floor_plan)->stream();
-            Storage::disk('public')->put('property/'.$imagefloorplan, $propertyfloorplan);
-
-        }else{
+            Storage::disk('public')->put('property/' . $imagefloorplan, $propertyfloorplan);
+        } else {
             $imagefloorplan = $property->floor_plan;
         }
 
@@ -235,9 +230,9 @@ class PropertyController extends Controller
         $property->address      = $request->address;
         $property->area         = $request->area;
 
-        if(isset($request->featured)){
+        if (isset($request->featured)) {
             $property->featured = true;
-        }else{
+        } else {
             $property->featured = false;
         }
 
@@ -252,20 +247,19 @@ class PropertyController extends Controller
         $property->features()->sync($request->features);
 
         $gallary = $request->file('gallaryimage');
-        if($gallary){
-            foreach($gallary as $images){
-                if(isset($images))
-                {
+        if ($gallary) {
+            foreach ($gallary as $images) {
+                if (isset($images)) {
                     $currentDate = Carbon::now()->toDateString();
-                    $galimage['name'] = 'gallary-'.$currentDate.'-'.uniqid().'.'.$images->getClientOriginalExtension();
+                    $galimage['name'] = 'gallary-' . $currentDate . '-' . uniqid() . '.' . $images->getClientOriginalExtension();
                     // $galimage['size'] = $images->getClientSize();
                     $galimage['property_id'] = $property->id;
-                    
-                    if(!Storage::disk('public')->exists('property/gallery')){
+
+                    if (!Storage::disk('public')->exists('property/gallery')) {
                         Storage::disk('public')->makeDirectory('property/gallery');
                     }
                     $propertyimage = Image::make($images)->stream();
-                    Storage::disk('public')->put('property/gallery/'.$galimage['name'], $propertyimage);
+                    Storage::disk('public')->put('property/gallery/' . $galimage['name'], $propertyimage);
 
                     $property->gallery()->create($galimage);
                 }
@@ -277,26 +271,25 @@ class PropertyController extends Controller
         return redirect()->route('admin.properties.index');
     }
 
- 
+
     public function destroy(Property $property)
     {
         $property = Property::find($property->id);
 
-        if(Storage::disk('public')->exists('property/'.$property->image)){
-            Storage::disk('public')->delete('property/'.$property->image);
+        if (Storage::disk('public')->exists('property/' . $property->image)) {
+            Storage::disk('public')->delete('property/' . $property->image);
         }
-        if(Storage::disk('public')->exists('property/'.$property->floor_plan)){
-            Storage::disk('public')->delete('property/'.$property->floor_plan);
+        if (Storage::disk('public')->exists('property/' . $property->floor_plan)) {
+            Storage::disk('public')->delete('property/' . $property->floor_plan);
         }
 
         $property->delete();
-        
+
         $galleries = $property->gallery;
-        if($galleries)
-        {
+        if ($galleries) {
             foreach ($galleries as $key => $gallery) {
-                if(Storage::disk('public')->exists('property/gallery/'.$gallery->name)){
-                    Storage::disk('public')->delete('property/gallery/'.$gallery->name);
+                if (Storage::disk('public')->exists('property/gallery/' . $gallery->name)) {
+                    Storage::disk('public')->delete('property/gallery/' . $gallery->name);
                 }
                 PropertyImageGallery::destroy($gallery->id);
             }
@@ -310,26 +303,50 @@ class PropertyController extends Controller
     }
 
 
-    public function galleryImageDelete(Request $request){
-        
+    public function galleryImageDelete(Request $request)
+    {
+
         $gallaryimg = PropertyImageGallery::find($request->id)->delete();
 
-        if(Storage::disk('public')->exists('property/gallery/'.$request->image)){
-            Storage::disk('public')->delete('property/gallery/'.$request->image);
+        if (Storage::disk('public')->exists('property/gallery/' . $request->image)) {
+            Storage::disk('public')->delete('property/gallery/' . $request->image);
         }
 
-        if($request->ajax()){
+        if ($request->ajax()) {
 
             return response()->json(['msg' => $gallaryimg]);
         }
     }
 
     // YOUTUBE LINK TO EMBED CODE
-    private function convertYoutube($youtubelink, $w = 250, $h = 140) {
+    private function convertYoutube($youtubelink, $w = 250, $h = 140)
+    {
         return preg_replace(
             "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
             "<iframe width=\"$w\" height=\"$h\" src=\"//www.youtube.com/embed/$2\" frameborder=\"0\" allowfullscreen></iframe>",
             $youtubelink
         );
+    }
+
+    public function propertyManage(Request $request)
+    {
+        $update_data = [];
+        $agreements = [];
+        $customer = null;
+        $property = Property::find($request['property_id']);
+        if (isset($request['update_id'])) {
+            $update_data = PropertyAgreement::where(['is_withdraw' => 0, 'id' => $request['update_id']])->first();
+            $property = Property::find($update_data->property_id);
+        }
+        if (isset($request['update_id'])) {
+            return view('admin.properties.manage', compact('property', 'update_data'));
+        } else {
+            $rows = PropertyAgreement::where(['property_id' => $property->id, 'is_withdraw' => 0])->first();
+            $sign_agreement = PropertyAgreement::where(['property_id' => $property->id, 'is_withdraw' => 0, 'is_published' => 1])->first();
+            if ($sign_agreement) {
+                $customer = PropertyCustomer::where(['property_id' => $sign_agreement->property_id, 'status' => 1])->first();
+            }
+            return view('admin.properties.manage', compact('property', 'rows', 'customer'));
+        }
     }
 }

@@ -55,6 +55,7 @@ class TestimonialController extends Controller
         $testimonial->testimonial = $request->testimonial;
         $testimonial->image = $imagename;
         $testimonial->save();
+        
         $flash = array('type' => 'success', 'msg' => 'Testimonial created successfully');
         $request->session()->flash('flash', $flash);
         return redirect()->route('admin.testimonials.index');

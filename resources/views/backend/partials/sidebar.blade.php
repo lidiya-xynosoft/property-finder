@@ -18,24 +18,35 @@
                         <span>Sliders</span>
                     </a>
                 </li>
-                <li class="{{ Request::is('admin/types*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.types.index') }}">
-                        <i class="material-icons">abc</i>
-                        <span>Types</span>
-                    </a>
-                </li>
-                <li class="{{ Request::is('admin/purposes*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.purposes.index') }}">
-                        <i class="material-icons">grading</i>
-                        <span>Purpose</span>
-                    </a>
-                </li>
-                <li class="{{ Request::is('admin/properties*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.properties.index') }}">
-                        <i class="material-icons">home</i>
+
+                <li class="{{ Request::is('admin/settings*') ? 'active' : '' }}">
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">house</i>
                         <span>Property</span>
                     </a>
+                    <ul class="ml-menu">
+                        <li class="{{ Request::is('admin/properties*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.properties.index') }}">
+                                <span>All Property</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('admin/types*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.types.index') }}">
+                                {{-- <i class="material-icons">abc</i> --}}
+                                <span>Types</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('admin/purposes*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.purposes.index') }}">
+                                {{-- <i class="material-icons">grading</i> --}}
+                                <span>Purpose</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
                 </li>
+
                 <li class="{{ Request::is('admin/features*') ? 'active' : '' }}">
                     <a href="{{ route('admin.features.index') }}">
                         <i class="material-icons">star</i>

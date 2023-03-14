@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'arthemic/radmin-laravel-starter-kit',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '21c9451c40b06531ee18aea8a3a069588c17032f',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '074099bea2f7d91e82590342c094309a881640df',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'arthemic/radmin-laravel-starter-kit' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '21c9451c40b06531ee18aea8a3a069588c17032f',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '074099bea2f7d91e82590342c094309a881640df',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -622,6 +622,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'mpdf/mpdf' => array(
+            'pretty_version' => 'v8.1.4',
+            'version' => '8.1.4.0',
+            'reference' => 'add590e93b7502efafd9839a68cff99f3497b318',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mpdf/mpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'mtdowling/cron-expression' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -635,7 +644,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../myclabs/deep-copy',
             'aliases' => array(),
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'nesbot/carbon' => array(
             'pretty_version' => '2.66.0',
@@ -1141,6 +1150,15 @@
             'install_path' => __DIR__ . '/../sebastian/version',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'setasign/fpdi' => array(
+            'pretty_version' => 'v2.3.7',
+            'version' => '2.3.7.0',
+            'reference' => 'bccc892d5fa1f48c43f8ba7db5ed4ba6f30c8c05',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../setasign/fpdi',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'spatie/laravel-permission' => array(
             'pretty_version' => '3.18.0',

@@ -2,6 +2,7 @@
 
 // FRONT-END ROUTES
 
+use App\Http\Controllers\Admin\AgreementManageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'FrontpageController@index')->name('home');
@@ -37,6 +38,8 @@ Route::post('/contact', 'PagesController@messageContact')->name('contact.message
 
 
 Auth::routes();
+Route::get('publish-previewed-agreement', [AgreementManageController::class, 'publishPreviewedAgreement']);
+Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
 
@@ -49,6 +52,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('types', 'TypeController');
     Route::resource('properties', 'PropertyController');
     Route::post('properties/gallery/delete', 'PropertyController@galleryImageDelete')->name('gallery-delete');
+    Route::get('property/manage/', 'PropertyController@propertyManage')->name('property-manage');
+
+    Route::post('/agreement/save-update-agreement', 'AgreementManageController@saveUpdateagreement')->name('agreement-manage');
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
