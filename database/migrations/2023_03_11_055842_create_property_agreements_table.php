@@ -56,6 +56,8 @@ class CreatePropertyAgreementsTable extends Migration
             $table->string('rent_payment_commencement_arabic');
             $table->string('rent_free')->nullable();
             $table->tinyInteger('is_draft')->default('0');
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
             $table->tinyInteger('is_published')->default('0');
             $table->tinyInteger('is_withdraw')->default('0');
             $table->timestamps();

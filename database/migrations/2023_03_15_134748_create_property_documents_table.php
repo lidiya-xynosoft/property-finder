@@ -16,10 +16,10 @@ class CreatePropertyDocumentsTable extends Migration
         Schema::create('property_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
-            $table->string('document_name');
+            $table->foreignId('document_type_id')->constrained('document_types');
             $table->string('file');
-            $table->tinyInteger('is_active')->default('1');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

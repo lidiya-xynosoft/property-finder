@@ -58,6 +58,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
+    Route::resource('expense_category', 'ExpenseCategoryController');
+
     Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
     Route::resource('testimonials', 'TestimonialController');

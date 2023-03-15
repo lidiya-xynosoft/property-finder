@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePropertyCustomersTable extends Migration
+class CreatePropertyExpensesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreatePropertyCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::create('property_customers', function (Blueprint $table) {
+        Schema::create('property_expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
-            $table->foreignId('property_agreement_id')->constrained('property_agreements');
-            $table->foreignId('customer_id')->constrained('customers');
-            $table->tinyInteger('status')->default('0');
+            $table->foreignId('expense_category_id')->constrained('expense_categories');
+            $table->float('amount', 10, 3)->default(0.00);
+            $table->tinyInteger('is_active')->default('1');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreatePropertyCustomersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('property_customers');
+        Schema::dropIfExists('property_expenses');
     }
 }

@@ -595,12 +595,12 @@ class AgreementManageController extends Controller
                 'is_draft' => false,
                 'is_published' => true,
             );
-            $PropertyCustomer = PropertyCustomer::create([
-                'property_id' => PropertyAgreement::find($id)->property_id,
-                'property_agreement_id' => $id,
-                'customer_id' => PropertyAgreement::find($id)->customer_id,
-                'status' => 1
-            ]);
+            // $PropertyCustomer = PropertyCustomer::create([
+            //     'property_id' => PropertyAgreement::find($id)->property_id,
+            //     'property_agreement_id' => $id,
+            //     'customer_id' => PropertyAgreement::find($id)->customer_id,
+            //     'status' => 1
+            // ]);
             PropertyAgreement::where('id', $id)->update($ins_data);
         }
 

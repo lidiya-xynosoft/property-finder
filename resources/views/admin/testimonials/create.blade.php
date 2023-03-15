@@ -84,7 +84,7 @@
         $('#testimonial-image-input').on('change', function(){
             showImage(this, '#testimonial-imgsrc');
         });
-    })
+   })(jQuery);
 </script>
 
 @endpush

@@ -8,6 +8,7 @@ use App\Property;
 use App\Feature;
 use App\PropertyImageGallery;
 use App\Comment;
+use App\ExpenseCategory;
 use App\PropertyAgreement;
 use App\PropertyCustomer;
 use Illuminate\Support\Facades\Storage;
@@ -334,19 +335,20 @@ class PropertyController extends Controller
         $agreements = [];
         $customer = null;
         $property = Property::find($request['property_id']);
+        $expense_category = ExpenseCategory::all();
+        $fixed_expenses = [];
         if (isset($request['update_id'])) {
             $update_data = PropertyAgreement::where(['is_withdraw' => 0, 'id' => $request['update_id']])->first();
             $property = Property::find($update_data->property_id);
-        }
-        if (isset($request['update_id'])) {
-            return view('admin.properties.manage', compact('property', 'update_data'));
+            return view('admin.properties.manage', compact('property', 'update_data', 'expense_category', 'fixed_expenses'));
         } else {
             $rows = PropertyAgreement::where(['property_id' => $property->id, 'is_withdraw' => 0])->first();
             $sign_agreement = PropertyAgreement::where(['property_id' => $property->id, 'is_withdraw' => 0, 'is_published' => 1])->first();
             if ($sign_agreement) {
                 $customer = PropertyCustomer::where(['property_id' => $sign_agreement->property_id, 'status' => 1])->first();
             }
-            return view('admin.properties.manage', compact('property', 'rows', 'customer'));
+
+            return view('admin.properties.manage', compact('property', 'rows', 'customer', 'expense_category', 'fixed_expenses'));
         }
     }
 }

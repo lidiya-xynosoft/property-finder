@@ -49,7 +49,7 @@
                         </li>
                         <li class="list-group-item">
                             <strong>Address : </strong>
-                            <span class="left">{{ $property->address }}</span>
+                            <span class="right">{{ $property->address }}</span>
                         </li>
                     </ul>
                 </div>
@@ -64,27 +64,35 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#manage_property">Manage Property</a></li>
                         <li><a data-toggle="tab" href="#sign_agreement">Sign Agreement</a></li>
-                        <li><a data-toggle="tab" href="#menu2">Fixed Expenses</a></li>
-                        <li><a data-toggle="tab" href="#menu3">Income</a></li>
-                        {{-- <li><a data-toggle="tab" href="#menu3"><strong class="label bg-blue">Income</strong></a></li> --}}
+                        <li><a data-toggle="tab" href="#fixed_expenses">Fixed Expenses</a></li>
+                        <li><a data-toggle="tab" href="#income">Income</a></li>
+                        <li><a data-toggle="tab" href="#rent">Recursive rentals</a></li>
+                        <li><a data-toggle="tab" href="#document">Property Documents</a></li>
+                        <li><a data-toggle="tab" href="#history">History</a></li>
                     </ul>
 
                     <div class="tab-content">
                         <div id="manage_property" class="tab-pane fade in active">
-                           @include('admin.properties.partials.agreement-tab')
+                            @include('admin.properties.partials.agreement-tab')
 
-                       </div>
-
+                        </div>
                         <div id="sign_agreement" class="tab-pane fade">
                             @include('admin.properties.partials.agreement-sign')
                         </div>
-                        <div id="menu2" class="tab-pane fade">
-                            <strong>Menu 2</strong>
-                            <p>Some content in menu 2.</p>
+                        <div id="fixed_expenses" class="tab-pane fade">
+                            @include('admin.properties.partials.fixed_expenses')
                         </div>
-                        <div id="menu3" class="tab-pane fade">
-                            <strong>Menu 3</strong>
-                            <p>Some content in menu 2.</p>
+                        <div id="income" class="tab-pane fade">
+                            @include('admin.properties.partials.income')
+                        </div>
+                        <div id="rent" class="tab-pane fade">
+                            @include('admin.properties.partials.rentals')
+                        </div>
+                        <div id="document" class="tab-pane fade">
+                            @include('admin.properties.partials.documents')
+                        </div>
+                        <div id="history" class="tab-pane fade">
+                            @include('admin.properties.partials.history')
                         </div>
                     </div>
                 </div>
@@ -97,8 +105,14 @@
 @endsection
 @push('script')
     <script src="{{ asset('backend/plugins/select2/dist/js/select2.min.js') }}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
     <script>
+        $('.repeater').repeater({
+            defaultValues: {
+                'this_id': '1',
+                'this_name': 'foo'
+            }
+        });
         (function($) {
             $('#lease-section').hide();
             $('#utilities_arabic').hide();

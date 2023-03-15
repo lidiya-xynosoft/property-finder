@@ -67,6 +67,20 @@
                         <span>Testimonials</span>
                     </a>
                 </li>
+                <li class="header">Accounts</li>
+                <li class="{{ Request::is('admin/expense_category*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.expense_category.index') }}">
+                        <i class="material-icons">view_list</i>
+                        <span>Expense Categories</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.categories.index') }}">
+                        <i class="material-icons">view_list</i>
+                        <span>Ledger</span>
+                    </a>
+                </li>
+
 
                 <li class="header">Blog</li>
                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">

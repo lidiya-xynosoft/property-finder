@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PropertyAgreement extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'property_id',
         'customer_id',
@@ -44,5 +45,7 @@ class PropertyAgreement extends Model
         'is_draft',
         'is_published',
         'is_withdraw',
+        'date',
+        'time'
     ];
 }
