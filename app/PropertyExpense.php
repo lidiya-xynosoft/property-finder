@@ -9,4 +9,8 @@ class PropertyExpense extends Model
 {
     use HasFactory;
     protected $fillable = ['property_id', 'expense_category_id', 'amount', 'is_active'];
+    public function expenseCategory()
+    {
+        return $this->belongsTo(ExpenseCategory::class);
+    }
 }

@@ -3,6 +3,8 @@
 // FRONT-END ROUTES
 
 use App\Http\Controllers\Admin\AgreementManageController;
+use App\Http\Controllers\Admin\DocumentController;
+use App\Http\Controllers\Admin\ExpenseManageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'FrontpageController@index')->name('home');
@@ -40,6 +42,12 @@ Route::post('/contact', 'PagesController@messageContact')->name('contact.message
 Auth::routes();
 Route::get('publish-previewed-agreement', [AgreementManageController::class, 'publishPreviewedAgreement']);
 Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
+Route::get('agreement/sign-agreement', [AgreementManageController::class, 'signAgreement']);
+Route::post('expense/save-update-expense', [ExpenseManageController::class, 'saveUpdateExpense']);
+Route::post('document/save-update-document', [DocumentController::class, 'saveUpdateDocument']);
+Route::delete('expense/delete/{id}', [ExpenseManageController::class, 'destroy']);
+Route::delete('document/delete/{id}', [DocumentController::class, 'destroy']);
+Route::get('rent/pay/{id}', [ExpenseManageController::class, 'rentPayment']);
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
 
@@ -63,6 +71,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
     Route::resource('testimonials', 'TestimonialController');
+    Route::get('ledger', 'LedgerController@index')->name('ledger');
 
     Route::get('galleries/album', 'GalleryController@album')->name('album');
     Route::post('galleries/album/store', 'GalleryController@albumStore')->name('album.store');

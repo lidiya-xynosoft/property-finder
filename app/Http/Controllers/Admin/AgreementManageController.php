@@ -8,6 +8,7 @@ use App\Property;
 use App\PropertyAgreement;
 use App\PropertyCustomer;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -599,7 +600,6 @@ class AgreementManageController extends Controller
             //     'property_id' => PropertyAgreement::find($id)->property_id,
             //     'property_agreement_id' => $id,
             //     'customer_id' => PropertyAgreement::find($id)->customer_id,
-            //     'status' => 1
             // ]);
             PropertyAgreement::where('id', $id)->update($ins_data);
         }
@@ -611,6 +611,37 @@ class AgreementManageController extends Controller
         } else {
             return response([
                 'success' => 1,
+            ]);
+        }
+    }
+    public function signAgreement(Request $request)
+    {
+        $agreement_id = $request['agreement_id'];
+        $property_id = $request['property_id'];
+
+        PropertyAgreement::whereId($agreement_id)->update(['is_signed' => 1]);
+        $PropertyCustomer = PropertyCustomer::create([
+            'property_id' => $property_id,
+            'property_agreement_id' => $agreement_id,
+            'customer_id' => PropertyAgreement::find($agreement_id)->customer_id,
+            'start_date' => Carbon::parse(PropertyAgreement::find($agreement_id)->lease_commencement)->format('Y-m-d'),
+            'end_date' => Carbon::parse(PropertyAgreement::find($agreement_id)->lease_expiry)->format('Y-m-d'),
+            'date' => Carbon::now()->toDateString(),
+            'time' => Carbon::now()->format('H:i:s'),
+            'rent_date'  => PropertyAgreement::find($agreement_id)->rent_payment_commencement,
+            'status' => '1'
+        ]);
+        if ($PropertyCustomer) {
+            return response([
+                'success' => 1,
+                'customer' => Customer::find(PropertyAgreement::find($agreement_id)->customer_id)->name,
+                'duration' => PropertyAgreement::find($agreement_id)->lease_period,
+                'expiry' => PropertyAgreement::find($agreement_id)->lease_expiry,
+                'rent_date'  => PropertyAgreement::find($agreement_id)->rent_payment_commencement,
+            ]);
+        } else {
+            return response([
+                'success' => 0,
             ]);
         }
     }

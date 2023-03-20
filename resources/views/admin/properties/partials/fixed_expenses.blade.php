@@ -1,13 +1,18 @@
 <div class="header">
     <div class="property-nearby">
-        <form>
+        <form method="POST" id="expenseForm">
+            @csrf
+            <input name="property_id" value="{{ $property->id }}" hidden>
             <div class="nearby-info mb-4 repeater">
                 <span class="nearby-title mb-3 d-block text-danger">
                     <i class="fas fa-car mr-2"></i><b class="title">Add Property Expenses</b>
-                    <button data-repeater-create type="button" class="btn btn-success ml-0"><i
-                            class="fa fa-plus mr-3"></i></button>
+                     <a  data-repeater-create
+                                                class="btn btn-warning btn-sm waves-effect">
+                                                <i class="material-icons">add</i>
+                                            </a>
+                    
                 </span>
-                <div data-repeater-list="group_c">
+                <div data-repeater-list="expenses">
 
                     <br />
                     <div data-repeater-item class="d-flex mb-2">
@@ -39,10 +44,13 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-line">
+                                    <label for="expense_amount" class="form-label">&nbsp;<span
+                                                class="text-red"></span></label>
+   
+                                    <div  class="table-actions">
                                         <button data-repeater-delete type="button"
-                                            class="btn btn-danger btn-icon ml-2"><i
-                                                class="fa fa-remove mr-3"></i></button>
+                                            class="btn btn-danger btn-sm waves-effect"><i class="material-icons">close</i></button>
+                                           
                                     </div>
                                 </div>
 
@@ -52,7 +60,7 @@
                 </div>
             </div>
             <div class="card-footer" align="left">
-                <input type="submit" name="save_draft" value="Submit" class="btn btn-primary">
+                <input type="submit" id="expense_submit" value="Submit" class="btn btn-primary">
             </div>
         </form>
     </div>
@@ -69,61 +77,29 @@
         <table id="garageListTable" class="table table-striped table-bordered nowrap">
             <thead>
                 <tr>
-                    <th>{{ __('Agreement Number') }}</th>
-                    <th>{{ __('Tenant Name') }}</th>
-                    <th>{{ __('Tenant Phone') }}</th>
-                    <th>{{ __('Lease Period') }}</th>
-                    <th>{{ __('Lease Expiry') }}</th>
-                    <th>{{ __('Monthly rent') }}</th>
-                    <th>{{ __('Mode Of Pay') }}</th>
-                    <th>{{ __('PDF') }}</th>
-                    <th>{{ __('Status') }}</th>
+                   <th>{{ __('SL') }}</th>
+                    <th>{{ __('Expense Name') }}</th>
+                    <th>{{ __('Expense Amount') }}</th>
                     <th>{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($agreements as $rows) --}}
+                @foreach ($fixed_expenses as $key=>$expense)
                 <tr>
-                    <td>{{ $rows->agreement_id }}</td>
-                    <td>{{ $rows->tenant_name }}</td>
-
-                    <td>{{ $rows->phone }}</td>
-                    <td>{{ $rows->lease_period }} </td>
-                    <td>{{ $rows->lease_expiry }}</td>
-                    <td>{{ $rows->monthly_rent }}</td>
-                    <td>{{ $rows->payment_mode }}</td>
-                    <td><a href="{{ url('agreement/generate-pdf?agreement_id=') . $rows->id }}" target="_blank"
-                            class="btn btn-danger">PDF</a></td>
-
-                    @if ($rows->is_draft == '1')
-                        <td>
-                            <div class="badge badge-pill badge-secondary">Not Published</div>
-                        </td>
-                    @else
-                        <td>
-                            <div class="badge badge-pill badge-primary">Published</div>
-                        </td>
-                    @endif
+                   <td>{{ $key + 1 }}</td>
+                    <td>{{ $expense['expense_category']['title'] }}</td>
+                    <td>{{ $expense['amount'] }}</td>
+                    
                     <td>
                         <div class="table-actions">
 
-                            @if ($rows->is_published == '0')
-                                <a target="_blank"
-                                    href="{{ url('publish-previewed-agreement?list_id=') . $rows->id }}">
-                                    <button data-repeater-create type="button"
-                                        class="btn btn-success btn-icon ml-2 mb-2">Publish</button>
-                                </a>
-                                {{-- @else
-                                                     
-                                                        <button data-repeater-create type="button"
-                                                            class="btn btn-success btn-icon ml-2 mb-2"> View --}}
-                            @endif
-                            <a href="{{ url('agreement/delete-agreement?id=') . $rows->id }}">
-                                <button data-repeater-create type="button" class="btn btn-danger btn-icon ml-2 mb-2">
-                                    <i class="material-icons">delete</i></button>
-                            </a>
+                            {{-- <a href=""> --}}
+                                {{-- <button data-repeater-create type="button" class="btn btn-danger btn-icon ml-2 mb-2">
+                                    <i class="material-icons">delete</i></button> --}}
+                               <button class="btn btn-danger btn-icon ml-2 mb-2 deleteExpense" data-id="{{ $expense['id'] }}" data-token="{{ csrf_token() }}" >Delete</button>
+                            {{-- </a> --}}
 
-                            <a href="{{ url('admin/property/manage/?update_id=') . $rows->id }}">
+                            <a href="{{ url('admin/property/manage/?update_id=') . $expense['id']}}">
                                 <button data-repeater-create type="button" class="btn btn-success btn-icon ml-2 mb-2">
                                     <i class="material-icons">edit</i></button>
                             </a>
@@ -131,8 +107,9 @@
                         </div>
                     </td>
                 </tr>
-                {{-- @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
+

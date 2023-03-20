@@ -1,5 +1,6 @@
 @extends('backend.layouts.app')
 @section('title', 'Agreement Management')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
     @push('head')
         <link rel="stylesheet" href="{{ asset('backend/plugins/select2/dist/css/select2.min.css') }}">
@@ -24,6 +25,7 @@
             <div class="card">
 
                 <div class="header bg-indigo">
+                    <input id="property_id" value="{{ $property->id }}" hidden>
                     <h2> {{ $property->title }}</h2>
                     <small>Posted By <strong>{{ $property->user->name }}</strong> on
                         {{ $property->created_at->toFormattedDateString() }}</small>
@@ -62,12 +64,13 @@
 
                 <div class="header">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#manage_property">Manage Property</a></li>
-                        <li><a data-toggle="tab" href="#sign_agreement">Sign Agreement</a></li>
-                        <li><a data-toggle="tab" href="#fixed_expenses">Fixed Expenses</a></li>
+                        <li class="active"><a data-toggle="tab" href="#manage_property">Lease Contract</a></li>
+                        <li><a data-toggle="tab" href="#sign_agreement_tab">Sign Agreement</a></li>
+                        <li><a data-toggle="tab" href="#fixed_expenses">Expenses</a></li>
+
+                        <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
                         <li><a data-toggle="tab" href="#income">Income</a></li>
-                        <li><a data-toggle="tab" href="#rent">Recursive rentals</a></li>
-                        <li><a data-toggle="tab" href="#document">Property Documents</a></li>
+                        <li><a data-toggle="tab" href="#document">Documents</a></li>
                         <li><a data-toggle="tab" href="#history">History</a></li>
                     </ul>
 
@@ -76,7 +79,7 @@
                             @include('admin.properties.partials.agreement-tab')
 
                         </div>
-                        <div id="sign_agreement" class="tab-pane fade">
+                        <div id="sign_agreement_tab" class="tab-pane fade">
                             @include('admin.properties.partials.agreement-sign')
                         </div>
                         <div id="fixed_expenses" class="tab-pane fade">
@@ -100,8 +103,6 @@
         </div>
     </div>
 
-
-
 @endsection
 @push('script')
     <script src="{{ asset('backend/plugins/select2/dist/js/select2.min.js') }}"></script>
@@ -117,6 +118,7 @@
             $('#lease-section').hide();
             $('#utilities_arabic').hide();
             $('#result_of_dated_check').hide();
+            // $('#customer_details').hide();
 
             var sourceText = $('#location_english').val();
             var arabicText = translateText(sourceText, '#location_arabic');
@@ -134,6 +136,252 @@
                 // document.getElementById("result_of_dated_check").classList.remove('d-none');
             }
             'use strict';
+
+            $(".deleteExpense").click(function() {
+                var id = $(this).data("id");
+                var token = $(this).data("token");
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "/document/delete/" + id,
+                            type: 'DELETE',
+                            dataType: "JSON",
+                            data: {
+                                "id": id,
+                                "_method": 'DELETE',
+                                "_token": token,
+                            },
+                            success: function(res) {
+                                if (res['success'] == 1) {
+                                    swal(
+                                        'Deleted!',
+                                        'Document has been deleted.',
+                                        'success'
+                                    )
+                                    location.reload(); // show response from the php script.
+                                } else {
+                                    swal(
+                                        'Something wrong!',
+                                        'document has not deleted.',
+                                        'warning'
+                                    )
+                                }
+                            },
+                            error: function() {
+                                swal(
+                                    'Something wrong!',
+                                    'document has not deleted.',
+                                    'warning'
+                                )
+                            }
+                        });
+
+                    }
+                })
+            });
+            $(".payRent").click(function() {
+                var id = $(this).data("id");
+                var token = $(this).data("token");
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "/rent/pay/" + id,
+                            type: 'get',
+                            dataType: "JSON",
+                            data: {
+                                "id": id,
+                                "_method": 'get',
+                                "_token": token,
+                            },
+                            success: function(res) {
+                                if (res['success'] == 1) {
+                                    swal(
+                                        'Paid!',
+                                        'Rent has been paid.',
+                                        'success'
+                                    )
+                                    location.reload(); // show response from the php script.
+                                } else {
+                                    swal(
+                                        'Something wrong!',
+                                        'Payment not completed',
+                                        'danger'
+                                    )
+                                }
+                            },
+                            error: function() {
+                                swal(
+                                    'Something wrong!',
+                                    'Payment not completed',
+                                    'warning'
+                                )
+                            }
+                        });
+
+                    }
+                })
+            });
+            $("#sign_agreement").click(function() {
+                var agree_box = $("input[name='agrement_type']:checked").val();
+                if (!agree_box) {
+                    alert("please agree the checkbox");
+                    return;
+                }
+                swal({
+                    title: 'Property Agreement confirmation?',
+                    text: "this will assign to customer!",
+                    type: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Agree it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "/agreement/sign-agreement",
+                            type: 'get',
+                            data: {
+                                property_id: $("#property_id").val(),
+                                agreement_id: $('#agreement_row_id').val(),
+                            },
+                            success: function(res) {
+
+                                if (res['success'] == 1) {
+                                    swal(
+                                        'Assigned!',
+                                        'Agreement has been confirmed.',
+                                        'success'
+                                    )
+                                    // $("#customer_details").show();
+                                    location.reload(); // show response from the php script.
+
+                                    // $("#sign_area").hide();
+                                    // $('#customer_name').text(res['customer']);
+                                    // $('#lease_duration').text(res['duration']);
+                                    // $('#expiry_date').text(res['expiry']);
+                                    // $('#rent_date').text(res['rent_date']);
+
+                                } else {
+                                    swal(
+                                        'Something wrong!',
+                                        'Agreement has not assigned.',
+                                        'warning'
+                                    )
+                                }
+                            },
+                            error: function() {
+                                swal(
+                                    'Something wrong!',
+                                    'Agreement has not assigned.',
+                                    'warning'
+                                )
+                            }
+                        });
+
+                    }
+                })
+
+            });
+
+            $("#documentForm").submit(function(e) {
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var actionUrl = '/document/save-update-document'
+
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function(data) {
+                        location.reload(); // show response from the php script.
+                    }
+                });
+
+            });
+            $("#expenseForm").submit(function(e) {
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var actionUrl = '/expense/save-update-expense'
+
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function(data) {
+                        location.reload(); // show response from the php script.
+                    }
+                });
+
+            });
+            $(".deleteExpense").click(function() {
+                var id = $(this).data("id");
+                var token = $(this).data("token");
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "/expense/delete/" + id,
+                            type: 'DELETE',
+                            dataType: "JSON",
+                            data: {
+                                "id": id,
+                                "_method": 'DELETE',
+                                "_token": token,
+                            },
+                            success: function(res) {
+                                if (res['success'] == 1) {
+                                    swal(
+                                        'Deleted!',
+                                        'expense has been deleted.',
+                                        'success'
+                                    )
+                                    location.reload(); // show response from the php script.
+                                } else {
+                                    swal(
+                                        'Something wrong!',
+                                        'expense has not deleted.',
+                                        'warning'
+                                    )
+                                }
+                            },
+                            error: function() {
+                                swal(
+                                    'Something wrong!',
+                                    'expense has not deleted.',
+                                    'warning'
+                                )
+                            }
+                        });
+
+                    }
+                })
+            });
+
             $("#unit_no").click(function() {
                 var utility_mode = $("input[name='utility_case']:checked").val();
                 var utilities = $('#utilities').val();

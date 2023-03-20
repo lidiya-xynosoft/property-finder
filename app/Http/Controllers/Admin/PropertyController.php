@@ -8,12 +8,17 @@ use App\Property;
 use App\Feature;
 use App\PropertyImageGallery;
 use App\Comment;
+use App\DocumentType;
 use App\ExpenseCategory;
 use App\PropertyAgreement;
 use App\PropertyCustomer;
+use App\PropertyDocument;
+use App\PropertyExpense;
+use App\PropertyRent;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
 use File;
@@ -331,24 +336,62 @@ class PropertyController extends Controller
 
     public function propertyManage(Request $request)
     {
-        $update_data = [];
-        $agreements = [];
-        $customer = null;
-        $property = Property::find($request['property_id']);
-        $expense_category = ExpenseCategory::all();
-        $fixed_expenses = [];
+        $data = array();
+        $data['property'] = Property::find($request['property_id']);
         if (isset($request['update_id'])) {
-            $update_data = PropertyAgreement::where(['is_withdraw' => 0, 'id' => $request['update_id']])->first();
-            $property = Property::find($update_data->property_id);
-            return view('admin.properties.manage', compact('property', 'update_data', 'expense_category', 'fixed_expenses'));
+            $agreement_row_id = $request['update_id'];
+            $property_id = PropertyAgreement::find($agreement_row_id)->property_id;
         } else {
-            $rows = PropertyAgreement::where(['property_id' => $property->id, 'is_withdraw' => 0])->first();
-            $sign_agreement = PropertyAgreement::where(['property_id' => $property->id, 'is_withdraw' => 0, 'is_published' => 1])->first();
-            if ($sign_agreement) {
-                $customer = PropertyCustomer::where(['property_id' => $sign_agreement->property_id, 'status' => 1])->first();
+            $property_id =
+                $request['property_id'];
+        }
+        $data['property'] = Property::find($property_id);
+
+        if (isset($request['update_id'])) {
+            $data['update_data'] = PropertyAgreement::where(['is_withdraw' => 0, 'id' => $agreement_row_id])->first();
+        }
+        $data['rows'] = [];
+        $data['income'] = [];
+        if (PropertyAgreement::where(['property_id' => $property_id, 'is_withdraw' => 0])->first()) {
+            $data['rows'] = PropertyAgreement::with([
+                'PropertyCustomer' => function ($query) use ($property_id) {
+                    $query->where(['property_id' => $property_id, 'is_withdraw' => 0])->get();
+                },
+            ])->where(['property_id' => $property_id, 'is_withdraw' => 0])->first()->toArray();
+        }
+
+
+        $data['expense_category'] = ExpenseCategory::all();
+        $data['document_types'] = DocumentType::all();
+        $data['fixed_expenses'] = PropertyExpense::with('ExpenseCategory')->where('property_id', $property_id)->get()->toArray();
+        $data['documents'] = PropertyDocument::with('DocumentType')->where('property_id', $property_id)->get()->toArray();
+        $data['rent_months'] = [];
+        if (isset($data['rows']) && !empty($data['rows'])) {
+            $rent_months = PropertyRent::where(['property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1])->get();
+            if (count($rent_months) > 0) {
+                $data['rent_months'] = $rent_months;
+            } else {
+                $result = CarbonPeriod::create($data['rows']['lease_commencement'], '1 month', $data['rows']['lease_expiry']);
+
+                foreach ($result as $dt) {
+                    PropertyRent::create([
+                        'property_id' => $property_id,
+                        'payment_type_id' => '1', // cash payment
+                        'property_agreement_id' => $data['rows']['id'],
+                        'month' => $dt->format("Y-M"),
+                        'rental_date' => $data['rows']['rent_payment_commencement'],
+                        'rent_amount' => $data['rows']['monthly_rent'],
+                    ]);
+                }
+                $rent_months = PropertyRent::where(['property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1])->get();
+                $data['rent_months'] = $rent_months;
             }
 
-            return view('admin.properties.manage', compact('property', 'rows', 'customer', 'expense_category', 'fixed_expenses'));
+            $data['income'] =  PropertyRent::where([
+                'property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1,
+                'payment_status' => 1
+            ])->get();
         }
+        return view('admin.properties.manage')->with($data);
     }
 }

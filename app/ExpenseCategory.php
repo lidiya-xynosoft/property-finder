@@ -17,13 +17,13 @@ class ExpenseCategory extends Model
         'description',
     ];
 
-    public function daybook()
+    public function ledger()
     {
-        return $this->hasMany(Daybook::class);
+        return $this->hasMany(Ledger::class);
     }
 
-    public function expense()
+    public function propertyExpense()
     {
-        return $this->hasMany(Expense::class);
+        return $this->hasMany(PropertyExpense::class);
     }
 }

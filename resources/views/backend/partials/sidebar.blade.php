@@ -74,9 +74,11 @@
                         <span>Expense Categories</span>
                     </a>
                 </li>
-                <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.categories.index') }}">
-                        <i class="material-icons">view_list</i>
+                <li class="{{ Request::is('admin/ledger') ? 'active' : '' }}">
+                    <a href="{{ url('admin/ledger') }}">
+                        <i class="material-icons">
+                            account_balance
+                        </i>
                         <span>Ledger</span>
                     </a>
                 </li>

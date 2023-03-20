@@ -1,13 +1,18 @@
 <div class="header">
     <div class="property-nearby">
-        <form>
+        <form method="POST" id="documentForm">
+            @csrf
+            <input name="property_id" value="{{ $property->id }}" hidden>
             <div class="nearby-info mb-4 repeater">
                 <span class="nearby-title mb-3 d-block text-danger">
-                    <i class="fas fa-car mr-2"></i><b class="title">Add Property Documents</b>
-                    <button data-repeater-create type="button" class="btn btn-success ml-0"><i
-                            class="fa fa-plus mr-3"></i></button>
+                    <i class="fas fa-car mr-2"></i><b class="title">Add Document</b>
+                     <a  data-repeater-create
+                                                class="btn btn-warning btn-sm waves-effect">
+                                                <i class="material-icons">add</i>
+                                            </a>
+                    
                 </span>
-                <div data-repeater-list="group_c">
+                <div data-repeater-list="documents">
 
                     <br />
                     <div data-repeater-item class="d-flex mb-2">
@@ -15,28 +20,37 @@
                             <div class="row">
                                 <div class="col-sm-3">
                                     <div class="form-line">
-                                        <label for="expense_category_id" class="form-label">Document<span
+                                        <label for="document_type_id" class="form-label">Select Document type<span
                                                 class="text-red">*</span></label>
 
-                                        <input id="expense_category_id" type="text" class="form-control"
-                                            name="expense_category_id"
-                                            value="{{ isset($expense) ? $expense->expense_category : '' }}">
+                                        <select name="document_type_id" class="form-control show-tick">
+                                            <option value="">-- Please select --</option>
+
+                                            @foreach ($document_types as $expense)
+                                                <option value="{{ $expense->id }}">
+                                                    {{ $expense->title }}</option>
+                                            @endforeach
+                                        </select>
+
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-line">
-                                        <label for="expense_amount" class="form-label">File<span
+                                        <label for="document_file" class="form-label">File<span
                                                 class="text-red">*</span></label>
 
-                                        <input id="expense_amount" type="file" class="form-control"
-                                            name="expense_amount" value="{{ isset($expense) ? $expense->amount : '' }}">
+                                        <input id="document_file" type="file" class="form-control"
+                                            name="document_file" value="">
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
-                                    <div class="form-line">
+                                    <label for="document_file" class="form-label">&nbsp;<span
+                                                class="text-red"></span></label>
+   
+                                    <div  class="table-actions">
                                         <button data-repeater-delete type="button"
-                                            class="btn btn-danger btn-icon ml-2"><i
-                                                class="fa fa-remove mr-3"></i></button>
+                                            class="btn btn-danger btn-sm waves-effect"><i class="material-icons">close</i></button>
+                                           
                                     </div>
                                 </div>
 
@@ -46,87 +60,54 @@
                 </div>
             </div>
             <div class="card-footer" align="left">
-                <input type="submit" name="save_draft" value="Submit" class="btn btn-primary">
+                <input type="submit" id="expense_submit" value="Submit" class="btn btn-primary">
             </div>
         </form>
     </div>
 </div>
- 
+
 <div class="header">
     <div class="body">
-     <span class="nearby-title mb-3 d-block text-success">
-                    <i class="fas fa-car mr-2"></i><b class="title">Documents Uploaded</b> 
-                </span>
-                <br/>
+        <span class="nearby-title mb-3 d-block text-success">
+            <i class="fas fa-car mr-2"></i><b class="title">Documents Overview</b>
+        </span>
+        <br />
     </div>
     <div class="table-responsive">
         <table id="garageListTable" class="table table-striped table-bordered nowrap">
             <thead>
                 <tr>
-                    <th>{{ __('Agreement Number') }}</th>
-                    <th>{{ __('Tenant Name') }}</th>
-                    <th>{{ __('Tenant Phone') }}</th>
-                    <th>{{ __('Lease Period') }}</th>
-                    <th>{{ __('Lease Expiry') }}</th>
-                    <th>{{ __('Monthly rent') }}</th>
-                    <th>{{ __('Mode Of Pay') }}</th>
-                    <th>{{ __('PDF') }}</th>
-                    <th>{{ __('Status') }}</th>
+                   <th>{{ __('SL') }}</th>
+                    <th>{{ __('Document Name') }}</th>
+                    <th>{{ __('file') }}</th>
                     <th>{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($agreements as $rows) --}}
+                @foreach ($documents as $key=>$document)
                 <tr>
-                    <td>{{ $rows->agreement_id }}</td>
-                    <td>{{ $rows->tenant_name }}</td>
-
-                    <td>{{ $rows->phone }}</td>
-                    <td>{{ $rows->lease_period }} </td>
-                    <td>{{ $rows->lease_expiry }}</td>
-                    <td>{{ $rows->monthly_rent }}</td>
-                    <td>{{ $rows->payment_mode }}</td>
-                    <td><a href="{{ url('agreement/generate-pdf?agreement_id=') . $rows->id }}" target="_blank"
-                            class="btn btn-danger">PDF</a></td>
-
-                    @if ($rows->is_draft == '1')
-                        <td>
-                            <div class="badge badge-pill badge-secondary">Not Published</div>
-                        </td>
-                    @else
-                        <td>
-                            <div class="badge badge-pill badge-primary">Published</div>
-                        </td>
-                    @endif
+                   <td>{{ $key + 1 }}</td>
+                    <td>{{ $document['document_type']['title'] }}</td>
+                    <td>{{ $document['file'] }}</td>
+                    
                     <td>
                         <div class="table-actions">
 
-                            @if ($rows->is_published == '0')
-                                <a target="_blank"
-                                    href="{{ url('publish-previewed-agreement?list_id=') . $rows->id }}">
-                                    <button data-repeater-create type="button"
-                                        class="btn btn-success btn-icon ml-2 mb-2">Publish</button>
-                                </a>
-                                {{-- @else
-                                                     
-                                                        <button data-repeater-create type="button"
-                                                            class="btn btn-success btn-icon ml-2 mb-2"> View --}}
-                            @endif
-                            <a href="{{ url('agreement/delete-agreement?id=') . $rows->id }}">
-                                <button data-repeater-create type="button" class="btn btn-danger btn-icon ml-2 mb-2">
-                                    <i class="material-icons">delete</i></button>
-                            </a>
+                         
+                               <button class="btn btn-danger btn-icon ml-2 mb-2 deleteDocument" data-id="{{ $document['id'] }}" data-token="{{ csrf_token() }}" >Delete</button>
+                           
 
-                            <a href="{{ url('admin/property/manage/?update_id=') . $rows->id }}">
+                            {{-- <a href="{{ url('admin/property/manage/?update_id=') . $document['id']}}">
                                 <button data-repeater-create type="button" class="btn btn-success btn-icon ml-2 mb-2">
                                     <i class="material-icons">edit</i></button>
-                            </a>
+                            </a> --}}
 
                         </div>
                     </td>
                 </tr>
-                {{-- @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>
 </div>
+

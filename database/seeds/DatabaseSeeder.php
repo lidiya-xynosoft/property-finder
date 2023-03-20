@@ -159,5 +159,16 @@ class DatabaseSeeder extends Seeder
                 'linkedin'    => 'www.facebook.com',
             ],
         ]);
+
+        DB::table('payment_types')->insert([
+            [
+                'name'          => 'Cash',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'name'          => 'Card',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+        ]);
     }
 }

@@ -21,9 +21,10 @@ class CreatePropertyCustomersTable extends Migration
             $table->tinyInteger('status')->default('0');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->string('rent_date')->nullable();
             $table->date('date')->nullable();
             $table->time('time')->nullable();
-            $table->tinyInteger('is_withdrawd')->default('0');
+            $table->tinyInteger('is_withdraw')->default('0');
             $table->tinyInteger('is_renewed')->default('0');
             $table->timestamps();
             $table->softDeletes();

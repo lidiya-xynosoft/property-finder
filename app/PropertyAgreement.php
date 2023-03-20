@@ -44,8 +44,13 @@ class PropertyAgreement extends Model
         'rent_free',
         'is_draft',
         'is_published',
+        'is_signed',
         'is_withdraw',
         'date',
         'time'
     ];
+    public function propertyCustomer()
+    {
+        return $this->hasMany(PropertyCustomer::class);
+    }
 }

@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', 'Expense Category')
+@section('title', 'ledger')
 
 @push('styles')
     <!-- JQuery DataTable Css -->
@@ -9,58 +9,38 @@
 
 @section('content')
 
-    <div class="block-header">
-        <a href="{{ route('admin.expense_category.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
-            <i class="material-icons left">add</i>
-            <span>CREATE </span>
-        </a>
-    </div>
+
 
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>EXPENSE CATEGORY LIST</h2>
+                    <h2>LEDGER</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                             <thead>
                                 <tr>
-                                    <th>SL.</th>
+                                    <th>#</th>
+                                    <th>Head</th>
                                     <th>Title</th>
-                                    <th>Description</th>
-                                    <th>type</th>
-                                    <th>Action</th>
+                                    <th>Date & Time</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($expense_categorys as $key => $expense_category)
+                                @foreach ($ledger as $key => $entry)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $expense_category->title }}</td>
-                                        <td>{{ $expense_category->description }}</td>
+                                        <td>{{ $entry->head }}</td>
+                                        <td>{{ $entry->title }}</td>
 
-                                        <td><?php $type = ($expense_category->type == 1) ? 'Payment' : 'Receipt'; ?>
-                                        {{ $type }}</td>
-
-                                        <td class="text-center">
-                                            <a href="{{ route('admin.expense_category.edit', $expense_category->id) }}"
-                                                class="btn btn-info btn-sm waves-effect">
-                                                <i class="material-icons">edit</i>
-                                            </a>
-                                            <button type="button" class="btn btn-danger btn-sm waves-effect"
-                                                onclick="deleteService({{ $expense_category->id }})">
-                                                <i class="material-icons">delete</i>
-                                            </button>
-                                            <form
-                                                action="{{ route('admin.expense_category.destroy', $expense_category->id) }}"
-                                                method="POST" id="del-expense_category-{{ $expense_category->id }}"
-                                                style="display:none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-                                        </td>
+                                        <td>{{ date('d-m-Y', strtotime($entry->date)) }}
+                                            {{ date('h:i a', strtotime($entry->time)) }}</td>
+                                        <td>{{ $entry->debit }}</td>
+                                        <td>{{ $entry->credit }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -102,7 +82,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
-                    document.getElementById('del-expense_category-' + id).submit();
+                    document.getElementById('del-service-' + id).submit();
                     swal(
                         'Deleted!',
                         'Service has been deleted.',

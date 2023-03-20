@@ -16,9 +16,13 @@ class PropertyCustomer extends Model
         'status',
         'start_date',
         'end_date',
-        'is_withdrawd',
+        'is_withdraw',
         'is_renewed',
         'date',
         'time'
     ];
+    public function propertyAgreement()
+    {
+        return $this->belongsTo(PropertyAgreement::class);
+    }
 }

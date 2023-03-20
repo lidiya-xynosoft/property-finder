@@ -86,8 +86,8 @@ class PropertyController extends Controller
             if (!Storage::disk('public')->exists('property')) {
                 Storage::disk('public')->makeDirectory('property');
             }
-            // $propertyimage = Image::make($image)->stream();
-            Storage::disk('public')->put('property/' . $imagename, $imagename);
+            $propertyimage = Image::make($image)->stream();
+            Storage::disk('public')->put('property/' . $imagename, $propertyimage);
         }
 
         $floor_plan = $request->file('floor_plan');
@@ -98,8 +98,8 @@ class PropertyController extends Controller
             if (!Storage::disk('public')->exists('property')) {
                 Storage::disk('public')->makeDirectory('property');
             }
-            // $propertyfloorplan = Image::make($floor_plan)->stream();
-            Storage::disk('public')->put('property/' . $imagefloorplan, $imagefloorplan);
+            $propertyfloorplan = Image::make($floor_plan)->stream();
+            Storage::disk('public')->put('property/' . $imagefloorplan, $propertyfloorplan);
         } else {
             $imagefloorplan = 'default.png';
         }

@@ -1,4 +1,4 @@
-@empty($rows)
+@if(isset($update_data) || !$rows) 
     <div id="manage_property" class="tab-pane fade in active">
         <div class="container-fluid">
 
@@ -582,18 +582,19 @@
                 <tbody>
                     {{-- @foreach ($agreements as $rows) --}}
                     <tr>
-                        <td>{{ $rows->agreement_id }}</td>
-                        <td>{{ $rows->tenant_name }}</td>
+                        <input value="{{ $rows['id'] }}" id="agreement_row_id" hidden>
+                        <td>{{ $rows['agreement_id'] }}</td>
+                        <td>{{ $rows['tenant_name'] }}</td>
 
-                        <td>{{ $rows->phone }}</td>
-                        <td>{{ $rows->lease_period }} </td>
-                        <td>{{ $rows->lease_expiry }}</td>
-                        <td>{{ $rows->monthly_rent }}</td>
-                        <td>{{ $rows->payment_mode }}</td>
-                        <td><a href="{{ url('agreement/generate-pdf?agreement_id=') . $rows->id }}" target="_blank"
+                        <td>{{ $rows['phone'] }}</td>
+                        <td>{{ $rows['lease_period'] }} </td>
+                        <td>{{ $rows['lease_expiry'] }}</td>
+                        <td>{{ $rows['monthly_rent'] }}</td>
+                        <td>{{ $rows['payment_mode'] }}</td>
+                        <td><a href="{{ url('agreement/generate-pdf?agreement_id=') . $rows['id'] }}" target="_blank"
                                 class="btn btn-danger">PDF</a></td>
 
-                        @if ($rows->is_draft == '1')
+                        @if ($rows['is_draft'] == '1')
                             <td>
                                 <div class="badge badge-pill badge-secondary">Not Published</div>
                             </td>
@@ -605,9 +606,9 @@
                         <td>
                             <div class="table-actions">
 
-                                @if ($rows->is_published == '0')
+                                @if ($rows['is_published'] == '0')
                                     <a target="_blank"
-                                        href="{{ url('publish-previewed-agreement?list_id=') . $rows->id }}">
+                                        href="{{ url('publish-previewed-agreement?list_id=') . $rows['id'] }}">
                                         <button data-repeater-create type="button"
                                             class="btn btn-success btn-icon ml-2 mb-2">Publish</button>
                                     </a>
@@ -616,12 +617,12 @@
                                                         <button data-repeater-create type="button"
                                                             class="btn btn-success btn-icon ml-2 mb-2"> View --}}
                                 @endif
-                                <a href="{{ url('agreement/delete-agreement?id=') . $rows->id }}">
+                                {{-- <a href="{{ url('agreement/delete-agreement?id=') . $rows['id'] }}">
                                     <button data-repeater-create type="button" class="btn btn-danger btn-icon ml-2 mb-2">
                                         <i class="material-icons">delete</i></button>
-                                </a>
+                                </a> --}}
 
-                                <a href="{{ url('admin/property/manage/?update_id=') . $rows->id }}">
+                                <a href="{{ url('admin/property/manage/?update_id=') . $rows['id'] }}">
                                     <button data-repeater-create type="button"
                                         class="btn btn-success btn-icon ml-2 mb-2"> <i
                                             class="material-icons">edit</i></button>
@@ -636,4 +637,4 @@
         </div>
     </div>
 
-@endempty
+@endif

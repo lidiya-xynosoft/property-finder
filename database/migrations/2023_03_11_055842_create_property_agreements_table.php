@@ -59,6 +59,7 @@ class CreatePropertyAgreementsTable extends Migration
             $table->date('date')->nullable();
             $table->time('time')->nullable();
             $table->tinyInteger('is_published')->default('0');
+            $table->tinyInteger('is_signed')->default('0');
             $table->tinyInteger('is_withdraw')->default('0');
             $table->timestamps();
             $table->softDeletes();
