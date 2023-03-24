@@ -20,7 +20,7 @@ use App\Message;
 use App\User;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
-use hash;
+use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {

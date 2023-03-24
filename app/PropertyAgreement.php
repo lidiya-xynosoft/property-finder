@@ -53,4 +53,25 @@ class PropertyAgreement extends Model
     {
         return $this->hasMany(PropertyCustomer::class);
     }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+    public function propertyExpense()
+    {
+        return $this->hasMany(PropertyExpense::class);
+    }
+    public function propertyIncome()
+    {
+        return $this->hasMany(PropertyIncome::class);
+    }
+    public function propertyDocument()
+    {
+        return $this->hasMany(PropertyDocument::class);
+    }
+    public function propertyRent()
+    {
+        return $this->hasMany(PropertyRent::class);
+    }
+
 }

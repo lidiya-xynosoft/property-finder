@@ -17,7 +17,7 @@ class CreatePropertyAgreementsTable extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
             $table->foreignId('customer_id')->constrained('customers');
-            $table->string('agreement_id');
+            $table->string('agreement_id')->unique();
             $table->string('tenant_name');
             $table->string('tenant_name_arabic');
             $table->string('tenant_no');

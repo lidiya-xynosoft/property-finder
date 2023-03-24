@@ -40,14 +40,18 @@ Route::post('/contact', 'PagesController@messageContact')->name('contact.message
 
 
 Auth::routes();
+Route::group(['middleware' => ['auth:sanctum']], function () {
+});
 Route::get('publish-previewed-agreement', [AgreementManageController::class, 'publishPreviewedAgreement']);
 Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
 Route::get('agreement/sign-agreement', [AgreementManageController::class, 'signAgreement']);
 Route::post('expense/save-update-expense', [ExpenseManageController::class, 'saveUpdateExpense']);
-Route::post('document/save-update-document', [DocumentController::class, 'saveUpdateDocument']);
+Route::post('rent/save-update-rent', [ExpenseManageController::class, 'rentPayment']);
+// Route::post('document/save-update-document', [DocumentController::class, 'saveUpdateDocument']);
 Route::delete('expense/delete/{id}', [ExpenseManageController::class, 'destroy']);
 Route::delete('document/delete/{id}', [DocumentController::class, 'destroy']);
 Route::get('rent/pay/{id}', [ExpenseManageController::class, 'rentPayment']);
+Route::get('contract/withdrow', [AgreementManageController::class, 'withdrowProperty']);
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
 
@@ -55,23 +59,28 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('tags', 'TagController');
     Route::resource('categories', 'CategoryController');
     Route::resource('posts', 'PostController');
-    Route::resource('features', 'FeatureController');
+    Route::resource('aminities', 'AminityController');
     Route::resource('purposes', 'PurposeController');
     Route::resource('types', 'TypeController');
     Route::resource('properties', 'PropertyController');
     Route::post('properties/gallery/delete', 'PropertyController@galleryImageDelete')->name('gallery-delete');
     Route::get('property/manage/', 'PropertyController@propertyManage')->name('property-manage');
+    Route::get('agreement/manage/', 'AgreementManageController@agreementManage')->name('agreement-show');
 
     Route::post('/agreement/save-update-agreement', 'AgreementManageController@saveUpdateagreement')->name('agreement-manage');
+    Route::post('/document/save-update-document', 'DocumentController@saveUpdateDocument')->name('document-save');
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
-    Route::resource('expense_category', 'ExpenseCategoryController');
+    Route::resource('ledger', 'LedgerController');
 
     Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
+    Route::resource('tenants', 'TenantController');
+    Route::resource('tenant-service', 'TenantServiceController');
     Route::resource('testimonials', 'TestimonialController');
-    Route::get('ledger', 'LedgerController@index')->name('ledger');
+    Route::get('daybook', 'DaybookController@index')->name('transactions');
+    Route::get('tenancy-list', 'TenantController@list')->name('list');
 
     Route::get('galleries/album', 'GalleryController@album')->name('album');
     Route::post('galleries/album/store', 'GalleryController@albumStore')->name('album.store');

@@ -9,14 +9,24 @@ class Ledger extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'property_id',
-        'user_id',
-        'date',
-        'time',
+       
         'title',
-        'head',
-        'debit',
-        'credit',
-        'total',
+        'type',
+        'description',
+        
     ];
+
+    public function daybook()
+    {
+        return $this->hasMany(Daybook::class);
+    }
+
+    public function propertyExpense()
+    {
+        return $this->hasMany(PropertyExpense::class);
+    }
+    public function propertyIncome()
+    {
+        return $this->hasMany(PropertyIncome::class);
+    }
 }

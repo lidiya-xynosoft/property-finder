@@ -20,7 +20,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>SERVICE LIST</h2>
+                    <h2>FEATURES LIST</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">

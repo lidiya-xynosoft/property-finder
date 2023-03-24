@@ -16,7 +16,7 @@ class DocumentController extends Controller
         $request->validate([
             'document_file' => 'required',
             'property_id' => 'required',
-            'document_type_id' => 'required'
+            'property_agreement_id' => 'required',
         ]);
 
         if (isset($request['update_id'])) {
@@ -25,16 +25,33 @@ class DocumentController extends Controller
             $customer_id = $property_agreement_data->customer_id;
         } else {
             // $property_expense = new PropertyExpense();
-            if ($request['documents']) {
-                foreach ($request['documents'] as $document) {
-                    $data =   PropertyDocument::create([
-                        'property_id' => $request['property_id'],
-                        'document_type_id' => $document['document_type_id'],
-                        'file' => $document['document_file'],
-                    ]);
-                }
+            // if ($request['documents']) {
+            $file_name = null;
+            // foreach ($request['documents'] as $key => $document) {
+            if ($request->hasFile('document_file')) {
+                $rules['document_file'] = 'required|mimes:jpg,jpeg,pdf,doc,docx|max:5009';
+                $request->validate($rules);
+                $file = $request->file('document_file');
+                $destinationPath = 'property/documents';
+                $extension = $file->getClientOriginalExtension();;
+                $fileName = time() . '.' . $extension;
+                $uploadSuccess = $file->storeAs($destinationPath, $fileName, 'public');
+                $file_name = $destinationPath . '/' . $fileName;
+                $data =   PropertyDocument::create([
+                    'property_id' => $request['property_id'],
+                    'document_type_id' => $request['document_type_id'],
+                    'property_agreement_id' => $request['property_agreement_id'],
+                    'file' => $file_name,
+                ]);
+                // } else {
+                //     $data = null;
+                // }
             }
-            return $data;
+            // }
+
+            $flash = array('type' => 'success', 'msg' => 'Document created successfully.');
+            session()->flash('flash', $flash);
+            return back();
         }
     }
 

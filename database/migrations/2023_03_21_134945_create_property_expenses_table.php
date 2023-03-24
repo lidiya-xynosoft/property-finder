@@ -15,10 +15,18 @@ class CreatePropertyExpensesTable extends Migration
     {
         Schema::create('property_expenses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('payment_type_id')->constrained('payment_types');
+            $table->foreignId('property_agreement_id')->constrained('property_agreements');
             $table->foreignId('property_id')->constrained('properties');
-            $table->foreignId('expense_category_id')->constrained('expense_categories');
+            $table->foreignId('ledger_id')->constrained('ledgers');
+            $table->string('name');
+            $table->string('reference')->nullable();
+            $table->longText('description')->nullable();
             $table->float('amount', 10, 3)->default(0.00);
-            $table->tinyInteger('is_active')->default('1');
+            $table->date('date');
+            $table->date('expense_date');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

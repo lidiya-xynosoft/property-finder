@@ -35,7 +35,7 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <strong>Price : </strong>
-                            <span class="right"> &dollar;{{ $property->price }}</span>
+                            <span class="right"> {{ $currency }} {{ $property->price }}</span>
                         </li>
                         <li class="list-group-item">
                             <strong>Bedroom : </strong>
@@ -54,8 +54,29 @@
                             <span class="right">{{ $property->address }}</span>
                         </li>
                     </ul>
-                </div>
 
+                    @if (!empty($rows['property_customer']))
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Tenant Name : </strong>
+                                <span class="right" id="customer_name"> {{ $rows['tenant_name'] }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Lease period : </strong>
+                                <span class="right" id="lease_duration">{{ $rows['lease_period'] }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Lease expiry : </strong>
+                                <span class="right" id="expiry_date">{{ $rows['lease_expiry'] }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Monthly rent date : </strong>
+                                <span class="right" id="rent_date">{{ $rows['rent_payment_commencement'] }}</span>
+                            </li>
+
+                        </ul>
+                    @endif
+                </div>
 
             </div>
 
@@ -66,37 +87,33 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#manage_property">Lease Contract</a></li>
                         <li><a data-toggle="tab" href="#sign_agreement_tab">Sign Agreement</a></li>
-                        <li><a data-toggle="tab" href="#fixed_expenses">Expenses</a></li>
-
                         <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
+                        <li><a data-toggle="tab" href="#fixed_expenses">Expenses</a></li>
                         <li><a data-toggle="tab" href="#income">Income</a></li>
                         <li><a data-toggle="tab" href="#document">Documents</a></li>
                         <li><a data-toggle="tab" href="#history">History</a></li>
                     </ul>
 
                     <div class="tab-content">
+
                         <div id="manage_property" class="tab-pane fade in active">
                             @include('admin.properties.partials.agreement-tab')
-
                         </div>
+
                         <div id="sign_agreement_tab" class="tab-pane fade">
                             @include('admin.properties.partials.agreement-sign')
                         </div>
-                        <div id="fixed_expenses" class="tab-pane fade">
-                            @include('admin.properties.partials.fixed_expenses')
-                        </div>
-                        <div id="income" class="tab-pane fade">
-                            @include('admin.properties.partials.income')
-                        </div>
-                        <div id="rent" class="tab-pane fade">
-                            @include('admin.properties.partials.rentals')
-                        </div>
-                        <div id="document" class="tab-pane fade">
-                            @include('admin.properties.partials.documents')
-                        </div>
-                        <div id="history" class="tab-pane fade">
-                            @include('admin.properties.partials.history')
-                        </div>
+
+                        @include('admin.properties.partials.fixed_expenses')
+
+                        @include('admin.properties.partials.income')
+
+                        @include('admin.properties.partials.rentals')
+
+                        @include('admin.properties.partials.documents')
+
+                        @include('admin.properties.partials.history')
+
                     </div>
                 </div>
             </div>
@@ -118,8 +135,8 @@
             $('#lease-section').hide();
             $('#utilities_arabic').hide();
             $('#result_of_dated_check').hide();
-            // $('#customer_details').hide();
-
+            $('#expense_category_id').hide();
+            $('#income_category_id').hide();
             var sourceText = $('#location_english').val();
             var arabicText = translateText(sourceText, '#location_arabic');
 
@@ -137,7 +154,56 @@
             }
             'use strict';
 
-            $(".deleteExpense").click(function() {
+            $(".withdrow").click(function() {
+                var agreement_id = $(this).data("id");
+                var token = $(this).data("token");
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, proceed it!'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url: "/contract/withdrow/",
+                            type: 'get',
+                            dataType: "JSON",
+                            data: {
+                                "id": agreement_id,
+                            },
+                            success: function(res) {
+                                console.log(res);
+                                if (res['success'] == 1) {
+                                    swal(
+                                        'Contract withdrawed!',
+                                        'Agreement has been withdrawed.',
+                                        'success'
+                                    )
+                                    location.reload(); // show response from the php script.
+                                } else {
+                                    swal(
+                                        'Something wrong!',
+                                        'contract not withdrawed',
+                                        'warning'
+                                    )
+                                }
+                            },
+                            error: function() {
+                                swal(
+                                    'Something wrong!',
+                                    'Payment not completed',
+                                    'warning'
+                                )
+                            }
+                        });
+
+                    }
+                })
+            });
+            $("#deleteDocument").click(function() {
                 var id = $(this).data("id");
                 var token = $(this).data("token");
                 swal({
@@ -190,52 +256,8 @@
             $(".payRent").click(function() {
                 var id = $(this).data("id");
                 var token = $(this).data("token");
-                swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, proceed it!'
-                }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url: "/rent/pay/" + id,
-                            type: 'get',
-                            dataType: "JSON",
-                            data: {
-                                "id": id,
-                                "_method": 'get',
-                                "_token": token,
-                            },
-                            success: function(res) {
-                                if (res['success'] == 1) {
-                                    swal(
-                                        'Paid!',
-                                        'Rent has been paid.',
-                                        'success'
-                                    )
-                                    location.reload(); // show response from the php script.
-                                } else {
-                                    swal(
-                                        'Something wrong!',
-                                        'Payment not completed',
-                                        'danger'
-                                    )
-                                }
-                            },
-                            error: function() {
-                                swal(
-                                    'Something wrong!',
-                                    'Payment not completed',
-                                    'warning'
-                                )
-                            }
-                        });
 
-                    }
-                })
+                $('#rent_id').val(id);
             });
             $("#sign_agreement").click(function() {
                 var agree_box = $("input[name='agrement_type']:checked").val();
@@ -304,19 +326,34 @@
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
                 var actionUrl = '/document/save-update-document'
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function(data) {
+                        console.log(data);
+                        // location.reload(); // show response from the php script.
+                    }
+                });
+
+            });
+            $("#rentForm").submit(function(e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var actionUrl = '/rent/save-update-rent'
 
                 $.ajax({
                     type: "POST",
                     url: actionUrl,
                     data: form.serialize(), // serializes the form's elements.
                     success: function(data) {
+                        console.log(data);
                         location.reload(); // show response from the php script.
                     }
                 });
 
             });
             $("#expenseForm").submit(function(e) {
-
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
                 var actionUrl = '/expense/save-update-expense'
@@ -326,60 +363,27 @@
                     url: actionUrl,
                     data: form.serialize(), // serializes the form's elements.
                     success: function(data) {
+                        console.log(data);
                         location.reload(); // show response from the php script.
                     }
                 });
 
             });
-            $(".deleteExpense").click(function() {
-                var id = $(this).data("id");
-                var token = $(this).data("token");
-                swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url: "/expense/delete/" + id,
-                            type: 'DELETE',
-                            dataType: "JSON",
-                            data: {
-                                "id": id,
-                                "_method": 'DELETE',
-                                "_token": token,
-                            },
-                            success: function(res) {
-                                if (res['success'] == 1) {
-                                    swal(
-                                        'Deleted!',
-                                        'expense has been deleted.',
-                                        'success'
-                                    )
-                                    location.reload(); // show response from the php script.
-                                } else {
-                                    swal(
-                                        'Something wrong!',
-                                        'expense has not deleted.',
-                                        'warning'
-                                    )
-                                }
-                            },
-                            error: function() {
-                                swal(
-                                    'Something wrong!',
-                                    'expense has not deleted.',
-                                    'warning'
-                                )
-                            }
-                        });
+            $("#incomeForm").submit(function(e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var actionUrl = '/expense/save-update-expense'
 
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function(data) {
+                        console.log(data);
+                        location.reload(); // show response from the php script.
                     }
-                })
+                });
+
             });
 
             $("#unit_no").click(function() {
@@ -572,6 +576,21 @@
                 var sourceText = $(this).val();
                 var input_id = '#location_arabic';
                 var arabicText = translateText(sourceText, input_id);
+            });
+
+            $(".mode_of_bill_payment").change(function() {
+                var mode_of_bill_payment = $("input[name='mode_of_bill_payment']:checked").val();
+                console.log(mode_of_bill_payment);
+                if (mode_of_bill_payment == 'expense_type') {
+                    $('#expense_category_id').show();
+                    $('#income_category_id').hide();
+                } else if (mode_of_bill_payment == 'income_type') {
+                    $('#expense_category_id').hide();
+                    $('#income_category_id').show();
+
+                }
+
+
             });
 
             function translateText(sourceText, input_id) {

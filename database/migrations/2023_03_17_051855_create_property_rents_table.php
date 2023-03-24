@@ -20,8 +20,8 @@ class CreatePropertyRentsTable extends Migration
             $table->foreignId('payment_type_id')->constrained('payment_types');
             $table->string('month')->nullable();
             $table->string('rental_date')->nullable();
-            $table->payment_date('date')->nullable();
-            $table->payment_time('time')->nullable();
+            $table->date('date')->nullable();
+            $table->time('time')->nullable();
             $table->float('rent_amount', 10, 3)->default(0.00);
             $table->tinyInteger('payment_status')->default('0')->comment('0-not paid,1-paid,2-pending');
             $table->tinyInteger('status')->default('1')->comment('0-not active,1-active');

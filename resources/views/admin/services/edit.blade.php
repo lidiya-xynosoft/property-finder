@@ -19,7 +19,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>EDIT SERVICE</h2>
+                    <h2>EDIT FEATURES</h2>
                 </div>
                 <div class="body">
                     <form action="{{ route('admin.services.update', $service->id) }}" method="POST"  enctype="multipart/form-data">
@@ -29,7 +29,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" name="title" class="form-control" value="{{ $service->title }}">
-                                <label class="form-label">Service Title</label>
+                                <label class="form-label">Feature Title</label>
                             </div>
                         </div>
 

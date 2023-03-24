@@ -10,10 +10,13 @@ use App\PropertyImageGallery;
 use App\Comment;
 use App\DocumentType;
 use App\ExpenseCategory;
+use App\Ledger;
+use App\PaymentType;
 use App\PropertyAgreement;
 use App\PropertyCustomer;
 use App\PropertyDocument;
 use App\PropertyExpense;
+use App\PropertyIncome;
 use App\PropertyRent;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -352,6 +355,10 @@ class PropertyController extends Controller
         }
         $data['rows'] = [];
         $data['income'] = [];
+        $data['total_expense'] = null;
+        $data['fixed_expenses'] = [];
+        $data['total_income'] = null;
+        $data['property_history'] = [];
         if (PropertyAgreement::where(['property_id' => $property_id, 'is_withdraw' => 0])->first()) {
             $data['rows'] = PropertyAgreement::with([
                 'PropertyCustomer' => function ($query) use ($property_id) {
@@ -361,9 +368,10 @@ class PropertyController extends Controller
         }
 
 
-        $data['expense_category'] = ExpenseCategory::all();
+        $data['ledger_expense'] = Ledger::where('type', 1)->get();
+        $data['ledger_income'] = Ledger::where('type', 0)->get();
         $data['document_types'] = DocumentType::all();
-        $data['fixed_expenses'] = PropertyExpense::with('ExpenseCategory')->where('property_id', $property_id)->get()->toArray();
+        $data['payment_types'] = PaymentType::all();
         $data['documents'] = PropertyDocument::with('DocumentType')->where('property_id', $property_id)->get()->toArray();
         $data['rent_months'] = [];
         if (isset($data['rows']) && !empty($data['rows'])) {
@@ -386,12 +394,27 @@ class PropertyController extends Controller
                 $rent_months = PropertyRent::where(['property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1])->get();
                 $data['rent_months'] = $rent_months;
             }
+            $data['fixed_expenses'] = PropertyExpense::with('ExpenseCategory')->where(['property_id' => $property_id, 'status' => 1, 'property_agreement_id' => $data['rows']['id']])->get()->toArray();
 
-            $data['income'] =  PropertyRent::where([
-                'property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1,
-                'payment_status' => 1
+            $data['income'] =  PropertyIncome::with('ExpenseCategory')->where([
+                'property_id' => $property_id, 'status' => 1,
+                'property_agreement_id' => $data['rows']['id']
             ])->get();
+
+            $data['total_expense'] =  PropertyExpense::where([
+                'property_id' => $property_id,
+                'status' => 1,
+                'property_agreement_id' => $data['rows']['id']
+            ])->sum('amount');
+            $data['total_income'] =  PropertyIncome::where([
+                'property_id' => $property_id,
+                'status' => 1,
+                'property_agreement_id' => $data['rows']['id']
+            ])->sum('amount');
         }
+        $data['property_history'] =  PropertyAgreement::where([
+            'property_id' => $property_id,
+        ])->get();
         return view('admin.properties.manage')->with($data);
     }
 }

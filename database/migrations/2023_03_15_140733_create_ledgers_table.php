@@ -15,17 +15,10 @@ class CreateLedgersTable extends Migration
     {
         Schema::create('ledgers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('property_id')->constrained('properties');
-            $table->foreignId('user_id')->constrained('users');
-            $table->date('date')->nullable();
-            $table->time('time')->nullable();
             $table->string('title');
-            $table->string('head');
-            $table->float('debit', 10, 3)->default(0.00);
-            $table->float('credit', 10, 3)->default(0.00);
-            $table->float('total', 10, 3)->default(0.00);
+            $table->boolean('type')->comment('0-recipt 1-payment');
+            $table->string('description')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

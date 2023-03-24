@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', 'Expense Category')
+@section('title', 'Features')
 
 @push('styles')
     <!-- JQuery DataTable Css -->
@@ -10,7 +10,7 @@
 @section('content')
 
     <div class="block-header">
-        <a href="{{ route('admin.expense_category.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
+        <a href="{{ route('admin.aminities.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
             <i class="material-icons left">add</i>
             <span>CREATE </span>
         </a>
@@ -20,7 +20,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>EXPENSE CATEGORY LIST</h2>
+                    <h2>AMINITY LIST</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -28,35 +28,42 @@
                             <thead>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Title</th>
-                                    <th>Description</th>
-                                    <th>type</th>
+                                    <th>Name</th>
+                                    <th>Icon</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>SL.</th>
+                                    <th>Name</th>
+                                    <th>Image</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
                             <tbody>
-                                @foreach ($expense_categorys as $key => $expense_category)
+                                @foreach ($features as $key => $feature)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $expense_category->title }}</td>
-                                        <td>{{ $expense_category->description }}</td>
-
-                                        <td><?php $type = ($expense_category->type == 1) ? 'Payment' : 'Receipt'; ?>
-                                        {{ $type }}</td>
-
+                                        <td>{{ $feature->name }}</td>
+                                        <td>
+                                            @if (Storage::disk('public')->exists('aminity/' . $feature->icon))
+                                                <img src="{{ Storage::url('aminity/' . $feature->icon) }}"
+                                                    alt="{{ $feature->name }}" width="60"
+                                                    class="img-responsive img-rounded">
+                                            @endif
+                                        </td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.expense_category.edit', $expense_category->id) }}"
+                                            <a href="{{ route('admin.aminities.edit', $feature->id) }}"
                                                 class="btn btn-info btn-sm waves-effect">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm waves-effect"
-                                                onclick="deleteService({{ $expense_category->id }})">
+                                            <button type="button" class="btn btn-danger btn-sm waves-effect" id="aminity"
+                                                value="{{ $feature->id }}" onclick="deleteAminity({{ $feature->id }})">
                                                 <i class="material-icons">delete</i>
                                             </button>
-                                            <form
-                                                action="{{ route('admin.expense_category.destroy', $expense_category->id) }}"
-                                                method="POST" id="del-expense_category-{{ $expense_category->id }}"
-                                                style="display:none;">
+                                            <form action="{{ route('admin.aminities.destroy', $feature->id) }}"
+                                                method="POST" id="del-feature-{{ $feature->id }}" style="display:none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -70,12 +77,8 @@
             </div>
         </div>
     </div>
-
 @endsection
-
-
-@push('scripts')
-    <!-- Jquery DataTable Plugin Js -->
+@push('script')
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -88,28 +91,29 @@
 
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
-
     <script>
-        function deleteService(id) {
-
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    document.getElementById('del-expense_category-' + id).submit();
-                    swal(
-                        'Deleted!',
-                        'Service has been deleted.',
-                        'success'
-                    )
-                }
-            })
-        }
+        (function($) {
+            function deleteAminity(id) {
+                alert("here");
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        document.getElementById('del-feature-' + id).submit();
+                        swal(
+                            'Deleted!',
+                            'Feature has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+            }
+        })(jQuery);
     </script>
 @endpush

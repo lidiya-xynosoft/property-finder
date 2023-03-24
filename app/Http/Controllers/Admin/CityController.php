@@ -51,7 +51,6 @@ class CityController extends Controller
         } else {
             $imagename = 'default.png';
         }
-        $slug  = str_slug($request->title);
 
         $city = new City();
         $city->name = $request->title;

@@ -27,6 +27,13 @@
                 </div>
             </div>
         </div>
+        @if($rows['is_withdraw'] == 0)
+        <div class="footer-body right">
+            <button class="btn btn-warning btn-icon ml-2 mb-2 withdrow" data-id="{{ $rows['id'] }}"
+                data-token="{{ csrf_token() }}">
+                Withdrow Agreement</button>
+        </div>
+       @endif
     </div>
 @else
     <div class="property-nearby" id="sign_area">
@@ -47,9 +54,9 @@
                                         class="filled-in" value="1" checked />
                                     <label
                                         for="agrement_type_renew">{{ __('An online contract is an agreement that is drafted, signed and executed
-                                                                                                                                                                                                                                                                electronically via the internet. Online contracts are designed to be read and signed without the need
-                                                                                                                                                                                                                                                                for physical paper. Signing is done using eSignature technology, whereby a signature can be added to the
-                                                                                                                                                                                                                                                                contract in a variety of different ways.') }}</label>
+                                                                                                                                                                                                                                                                                                                                                electronically via the internet. Online contracts are designed to be read and signed without the need
+                                                                                                                                                                                                                                                                                                                                                for physical paper. Signing is done using eSignature technology, whereby a signature can be added to the
+                                                                                                                                                                                                                                                                                                                                                contract in a variety of different ways.') }}</label>
                                 </div>
                             </div>
 

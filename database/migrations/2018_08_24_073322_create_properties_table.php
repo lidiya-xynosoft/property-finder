@@ -20,7 +20,7 @@ class CreatePropertiesTable extends Migration
             $table->foreignId('purpose_id')->constrained('purposes');
             $table->foreignId('type_id')->constrained('types');
             $table->foreignId('city_id')->constrained('cities');
-            $table->string('product_code')->nullable()->default('0');
+            $table->string('product_code')->unique();
             $table->string('slug')->unique();
             $table->double('price', 8, 2);
             $table->boolean('featured')->default(false);

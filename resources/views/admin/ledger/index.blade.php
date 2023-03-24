@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', 'ledger')
+@section('title', 'LEDGER')
 
 @push('styles')
     <!-- JQuery DataTable Css -->
@@ -9,38 +9,58 @@
 
 @section('content')
 
-
+    <div class="block-header">
+        <a href="{{ route('admin.ledger.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
+            <i class="material-icons left">add</i>
+            <span>CREATE </span>
+        </a>
+    </div>
 
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>LEDGER</h2>
+                    <h2>LEDGER LIST</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Head</th>
+                                    <th>SL.</th>
                                     <th>Title</th>
-                                    <th>Date & Time</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
+                                    <th>Description</th>
+                                    <th>type</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($ledger as $key => $entry)
+                                @foreach ($ledger as $key => $expense_category)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $entry->head }}</td>
-                                        <td>{{ $entry->title }}</td>
+                                        <td>{{ $expense_category->title }}</td>
+                                        <td>{{ $expense_category->description }}</td>
 
-                                        <td>{{ date('d-m-Y', strtotime($entry->date)) }}
-                                            {{ date('h:i a', strtotime($entry->time)) }}</td>
-                                        <td>{{ $entry->debit }}</td>
-                                        <td>{{ $entry->credit }}</td>
+                                        <td><?php $type = ($expense_category->type == 1) ? 'Payment' : 'Receipt'; ?>
+                                        {{ $type }}</td>
+
+                                        <td class="text-center">
+                                            <a href="{{ route('admin.ledger.edit', $expense_category->id) }}"
+                                                class="btn btn-info btn-sm waves-effect">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm waves-effect"
+                                                onclick="deleteService({{ $expense_category->id }})">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                            <form
+                                                action="{{ route('admin.ledger.destroy', $expense_category->id) }}"
+                                                method="POST" id="del-ledger-{{ $expense_category->id }}"
+                                                style="display:none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -82,7 +102,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
-                    document.getElementById('del-service-' + id).submit();
+                    document.getElementById('del-ledger-' + id).submit();
                     swal(
                         'Deleted!',
                         'Service has been deleted.',

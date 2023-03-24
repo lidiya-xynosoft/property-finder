@@ -22,7 +22,7 @@
                 </div>
                 <div class="content">
                     <div class="text">TOTAL PROPERTY</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $propertycount }}" data-speed="15" data-fresh-interval="20"></div>
+                    <div class="number count-to" data-from="0" data-to="{{ $propertycount }}" data-speed="15" data-fresh-interval="20">{{ $propertycount }}</div>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="content">
                     <div class="text">TOTAL POST</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $postcount }}" data-speed="1000" data-fresh-interval="20"></div>
+                    <div class="number count-to" data-from="0" data-to="{{ $postcount }}" data-speed="1000" data-fresh-interval="20">{{ $postcount }}</div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="content">
                     <div class="text">TOTAL COMMENT</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $commentcount }}" data-speed="1000" data-fresh-interval="20"></div>
+                    <div class="number count-to" data-from="0" data-to="{{ $commentcount }}" data-speed="1000" data-fresh-interval="20">{{ $commentcount }}</div>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="content">
                     <div class="text">TOTAL USER</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $usercount }}" data-speed="1000" data-fresh-interval="20"></div>
+                    <div class="number count-to" data-from="0" data-to="{{ $usercount }}" data-speed="1000" data-fresh-interval="20">{{ $usercount }}</div>
                 </div>
             </div>
         </div>

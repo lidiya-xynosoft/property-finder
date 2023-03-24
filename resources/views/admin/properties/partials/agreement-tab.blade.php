@@ -320,7 +320,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-line">
-                                    <label for="name">select date<span class="text-red">*</span></label>
+                                    <label for="name">start date<span class="text-red">*</span></label>
                                     <input id="lease_date" type="date" class="form-control" name="lease_date">
                                 </div>
                             </div>
@@ -589,7 +589,7 @@
                         <td>{{ $rows['phone'] }}</td>
                         <td>{{ $rows['lease_period'] }} </td>
                         <td>{{ $rows['lease_expiry'] }}</td>
-                        <td>{{ $rows['monthly_rent'] }}</td>
+                        <td>{{ $currency }} {{ $rows['monthly_rent'] }}</td>
                         <td>{{ $rows['payment_mode'] }}</td>
                         <td><a href="{{ url('agreement/generate-pdf?agreement_id=') . $rows['id'] }}" target="_blank"
                                 class="btn btn-danger">PDF</a></td>

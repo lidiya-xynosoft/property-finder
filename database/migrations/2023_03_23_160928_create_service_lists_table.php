@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateServiceListsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('expense_categories', function (Blueprint $table) {
+        Schema::create('service_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->boolean('type')->comment('0-reciet 1-payment');
-            $table->string('description')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expense_categories');
+        Schema::dropIfExists('service_lists');
     }
-};
+}

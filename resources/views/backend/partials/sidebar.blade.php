@@ -47,17 +47,17 @@
                     </ul>
                 </li>
 
-                <li class="{{ Request::is('admin/features*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.features.index') }}">
+                <li class="{{ Request::is('admin/aminities*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.aminities.index') }}">
                         <i class="material-icons">star</i>
-                        <span>Features</span>
+                        <span>Aminities</span>
                     </a>
                 </li>
 
                 <li class="{{ Request::is('admin/services*') ? 'active' : '' }}">
                     <a href="{{ route('admin.services.index') }}">
                         <i class="material-icons">wb_sunny</i>
-                        <span>Services</span>
+                        <span>Features</span>
                     </a>
                 </li>
 
@@ -68,21 +68,40 @@
                     </a>
                 </li>
                 <li class="header">Accounts</li>
-                <li class="{{ Request::is('admin/expense_category*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.expense_category.index') }}">
+                <li class="{{ Request::is('admin/ledger*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.ledger.index') }}">
                         <i class="material-icons">view_list</i>
-                        <span>Expense Categories</span>
-                    </a>
-                </li>
-                <li class="{{ Request::is('admin/ledger') ? 'active' : '' }}">
-                    <a href="{{ url('admin/ledger') }}">
-                        <i class="material-icons">
-                            account_balance
-                        </i>
                         <span>Ledger</span>
                     </a>
                 </li>
+                <li class="{{ Request::is('admin/daybook') ? 'active' : '' }}">
+                    <a href="{{ url('admin/daybook') }}">
+                        <i class="material-icons">
+                            account_balance
+                        </i>
+                        <span>Transactions</span>
+                    </a>
+                </li>
 
+                <li class="header">Tenants</li>
+                <li class="{{ Request::is('admin/tenants*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.tenants.index') }}">
+                        <i class="material-icons">people</i>
+                        <span>Tenants</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/tenancy-list') ? 'active' : '' }}">
+                    <a href="{{ url('admin/tenancy-list') }}">
+                        <i class="material-icons">list</i>
+                        <span>Tenancy List</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/tenant-service*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.tenant-service.index') }}">
+                        <i class="material-icons">engineering</i>
+                        <span>Tenant Services</span>
+                    </a>
+                </li>
 
                 <li class="header">Blog</li>
                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
@@ -118,6 +137,11 @@
                         <span>Settings</span>
                     </a>
                     <ul class="ml-menu">
+                        <li class="{{ Request::is('admin/message*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.message') }}">
+                                <span>Complaints</span>
+                            </a>
+                        </li>
                         <li class="{{ Request::is('admin/countries*') ? 'active' : '' }}">
                             <a href="{{ route('admin.countries.index') }}">
                                 <span>Country</span>
@@ -148,6 +172,7 @@
                                 <span>Message</span>
                             </a>
                         </li>
+
                     </ul>
                 </li>
 

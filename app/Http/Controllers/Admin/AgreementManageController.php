@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Customer;
+use App\DocumentType;
 use App\Http\Controllers\Controller;
 use App\Property;
 use App\PropertyAgreement;
 use App\PropertyCustomer;
+use App\PropertyDocument;
+use App\PropertyExpense;
+use App\PropertyIncome;
+use App\PropertyRent;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -88,25 +93,30 @@ class AgreementManageController extends Controller
             $customer_id = $property_agreement_data->customer_id;
         } else {
             $property = new PropertyAgreement();
-            $user = User::create([
-                'name'      => $request->input('tenant_name'),
-                'email'     => $request->input('email'),
-                'password'  => Hash::make($request->input('tenant_name')),
-                'username'  => $request->input('tenant_name'),
-                'role_id'   => '3',
-                'country_id' => '98',
-                'contact_no' => $request->input('phone'),
-            ]);
-            $customer = Customer::create([
-                'user_id' => $user->id,
-                'name' => trim($request->input('tenant_name')),
-                'name_arabic' => trim($request->input('tenant_name_arabic')),
-                'tenant_no' => trim($request->input('tenant_no')),
-                'po_box' => $request->input('po_box'),
-                'phone' => trim($request->input('phone')),
-                'email' => trim($request->input('email')),
-            ]);
-            $customer_id = $customer->id;
+            if (User::where('email', $request->input('email'))->first()) {
+                $user = User::where('email', $request->input('email'))->first();
+                $customer_id = Customer::where('user_id', $user->id)->first()->customer_id;
+            } else {
+                $user = User::create([
+                    'name'      => $request->input('tenant_name'),
+                    'email'     => $request->input('email'),
+                    'password'  => Hash::make($request->input('tenant_name')),
+                    'username'  => $request->input('tenant_name'),
+                    'role_id'   => '3',
+                    'country_id' => '98',
+                    'contact_no' => $request->input('phone'),
+                ]);
+                $customer = Customer::create([
+                    'user_id' => $user->id,
+                    'name' => trim($request->input('tenant_name')),
+                    'name_arabic' => trim($request->input('tenant_name_arabic')),
+                    'tenant_no' => trim($request->input('tenant_no')),
+                    'po_box' => $request->input('po_box'),
+                    'phone' => trim($request->input('phone')),
+                    'email' => trim($request->input('email')),
+                ]);
+                $customer_id = $customer->id;
+            }
         }
 
 
@@ -556,32 +566,32 @@ class AgreementManageController extends Controller
 
     }
 
-    public function deleteAgreementById(request $request)
+    public function withdrowProperty(Request $request)
     {
+        $agreement_id = $request['id'];
+        if (PropertyDocument::where('property_agreement_id', $agreement_id)->get()) {
+            PropertyDocument::where('property_agreement_id', $agreement_id)->update(['status' => 0]);
+        }
+        if (PropertyExpense::where('property_agreement_id', $agreement_id)->get()) {
+            PropertyExpense::where('property_agreement_id', $agreement_id)->update(['status' => 0]);
+        }
+        if (PropertyIncome::where('property_agreement_id', $agreement_id)->get()) {
+            PropertyIncome::where('property_agreement_id', $agreement_id)->update(['status' => 0]);
+        }
+        if (PropertyRent::where('property_agreement_id', $agreement_id)->get()) {
+            PropertyRent::where('property_agreement_id', $agreement_id)->update(['status' => 0]);
+        }
+        PropertyCustomer::where('property_agreement_id', $agreement_id)->update(['is_withdraw' => 1]);
 
-        if ($request->has('id')) {
-
-            $where = array(
-                'id' => $request->input('id'),
-            );
-            $getCurrentdataQry = DB::table('property_agreement')->where($where);
-            if ($getCurrentdataQry->count() > 0) {
-
-                $action = DB::table('property_agreement')->where($where)->delete();
-                if ($action) {
-                    $flash = array('type' => 'success', 'msg' => 'Deleted Successfully!');
-                    $request->session()->flash('flash', $flash);
-                    return redirect()->back();
-                } else {
-                    $flash = array('type' => 'success', 'msg' => 'Something went wrong!');
-                    $request->session()->flash('flash', $flash);
-                    return redirect()->back();
-                }
-            } else {
-                $flash = array('type' => 'success', 'msg' => 'Something went wrong!');
-                $request->session()->flash('flash', $flash);
-                return redirect()->back();
-            }
+        $withdrow = PropertyAgreement::where('id', $agreement_id)->update(['is_withdraw' => 1, 'is_published' => 0]);
+        if ($withdrow) {
+            return response([
+                'success' => 1,
+            ]);
+        } else {
+            return response([
+                'success' => 0,
+            ]);
         }
     }
 
@@ -644,5 +654,37 @@ class AgreementManageController extends Controller
                 'success' => 0,
             ]);
         }
+    }
+    public function agreementManage(Request $request)
+    {
+        $agreement_details = PropertyAgreement::find($request['agreement_id']);
+        $data = array();
+
+        $agreement_row_id = $request['agreement_id'];
+
+        $property_id = $agreement_details->property_id;
+
+        $data['property'] = Property::find($property_id);
+
+        $data['agreement_data'] = PropertyAgreement::with([
+            'PropertyCustomer', 'Customer', 'PropertyExpense', 'PropertyIncome', 'PropertyRent', 'PropertyDocument'
+        ])->find($agreement_row_id)->toArray();
+
+        $data['income'] =  PropertyIncome::where([
+            'property_agreement_id' => $agreement_row_id
+        ])->get();
+        $data['document_types'] = DocumentType::all();
+
+        $data['total_expense'] =  PropertyExpense::where([
+            'property_agreement_id' => $agreement_row_id
+        ])->sum('amount');
+        $data['total_income'] =  PropertyIncome::where([
+            'property_agreement_id' => $agreement_row_id
+        ])->sum('amount');
+        $data['documents'] = PropertyDocument::with('DocumentType')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
+
+        $data['fixed_expenses'] = PropertyExpense::with('ExpenseCategory')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
+
+        return view('admin.agreement.manage-agreement')->with($data);
     }
 }

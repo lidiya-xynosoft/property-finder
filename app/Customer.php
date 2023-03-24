@@ -10,11 +10,17 @@ class Customer extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'name',
-        'name_arabic',
-        'tenant_no',
-        'po_box',
+        'first_name',
+        'last_name',
         'phone',
         'email',
     ];
+    public function propertyCustomer()
+    {
+        return $this->hasMany(PropertyCustomer::class);
+    }
+    public function propertyAgreement()
+    {
+        return $this->hasMany(PropertyAgreement::class);
+    }
 }
