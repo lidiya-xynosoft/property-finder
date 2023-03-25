@@ -166,7 +166,21 @@ class DatabaseSeeder extends Seeder
                 'created_at'    => date("Y-m-d H:i:s")
             ],
             [
-                'name'          => 'Card',
+                'name'          => 'Bank',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+        ]);
+        DB::table('document_types')->insert([
+            [
+                'title'          => 'Aadhar',
+                'description'          => 'Aadhar',
+                'is_active'          => '1',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'title'          => 'PAN',
+                'description'          => 'pan',
+                'is_active'          => '1',
                 'created_at'    => date("Y-m-d H:i:s")
             ],
         ]);

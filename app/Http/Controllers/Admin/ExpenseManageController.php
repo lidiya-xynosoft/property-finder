@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\daybook;
-use App\ExpenseCategory;
 use App\Http\Controllers\Controller;
 use App\Ledger;
 use App\Property;
@@ -46,6 +45,7 @@ class ExpenseManageController extends Controller
             );
             daybook::create([
                 'property_id' => $request['property_id'],
+                'property_agreement_id' => $request['property_agreement_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),
@@ -58,6 +58,7 @@ class ExpenseManageController extends Controller
                 [
                     'property_id' => $request['property_id'],
                     'income_date' => $request['date'],
+                    'ledger_id' => $request['ledger_id'],
                     'property_agreement_id' => $request['property_agreement_id'],
                     'date' => Carbon::now()->toDateString(),
                     'name' => $request['name'],
@@ -71,6 +72,7 @@ class ExpenseManageController extends Controller
             );
             daybook::create([
                 'property_id' => $request['property_id'],
+                'property_agreement_id' => $request['property_agreement_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),

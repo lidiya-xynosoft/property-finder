@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Country;
 use App\Customer;
 use App\DocumentType;
 use App\Http\Controllers\Controller;
@@ -95,7 +96,7 @@ class AgreementManageController extends Controller
             $property = new PropertyAgreement();
             if (User::where('email', $request->input('email'))->first()) {
                 $user = User::where('email', $request->input('email'))->first();
-                $customer_id = Customer::where('user_id', $user->id)->first()->customer_id;
+                $customer_id = Customer::where('user_id', $user->id)->first()->id;
             } else {
                 $user = User::create([
                     'name'      => $request->input('tenant_name'),
@@ -103,7 +104,7 @@ class AgreementManageController extends Controller
                     'password'  => Hash::make($request->input('tenant_name')),
                     'username'  => $request->input('tenant_name'),
                     'role_id'   => '3',
-                    'country_id' => '98',
+                    'country_id' => Country::where('is_active', 1)->first()->id,
                     'contact_no' => $request->input('phone'),
                 ]);
                 $customer = Customer::create([
@@ -683,7 +684,7 @@ class AgreementManageController extends Controller
         ])->sum('amount');
         $data['documents'] = PropertyDocument::with('DocumentType')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
 
-        $data['fixed_expenses'] = PropertyExpense::with('ExpenseCategory')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
+        $data['fixed_expenses'] = PropertyExpense::with('Ledger')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
 
         return view('admin.agreement.manage-agreement')->with($data);
     }

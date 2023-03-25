@@ -37,6 +37,9 @@ Route::get('/blog/author/{username}', 'PagesController@blogAuthor')->name('blog.
 
 Route::get('/contact', 'PagesController@contact')->name('contact');
 Route::post('/contact', 'PagesController@messageContact')->name('contact.message');
+Route::get('/tenant/complaint', 'FrontPageController@complaintForm')->name('complaintform');
+// Route::post('/tenant/complaint', 'FrontPageController@tenantComplaints')->name('tenant.complaint');
+Route::post('/find/property-data', 'FrontPageController@tenantComplaints')->name('tenant.complaint');
 
 
 Auth::routes();
@@ -66,7 +69,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('properties/gallery/delete', 'PropertyController@galleryImageDelete')->name('gallery-delete');
     Route::get('property/manage/', 'PropertyController@propertyManage')->name('property-manage');
     Route::get('agreement/manage/', 'AgreementManageController@agreementManage')->name('agreement-show');
-
+    Route::resource('complaints', 'ComplaintController');
     Route::post('/agreement/save-update-agreement', 'AgreementManageController@saveUpdateagreement')->name('agreement-manage');
     Route::post('/document/save-update-document', 'DocumentController@saveUpdateDocument')->name('document-save');
 

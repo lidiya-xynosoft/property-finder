@@ -126,7 +126,7 @@
                          <tr>
                              <td>{{ $key + 1 }}</td>
                              <td>{{ $expense['ledger']['title'] }}</td>
-                             <td>{{ $expense['reference'] }}</td>
+                             <td>{{ $expense['name'] }}</td>
                              <td>{{ $expense['description'] }}</td>
                              <td>{{ $expense['expense_date'] }}</td>
                              <td>{{ $expense['amount'] }}</td>

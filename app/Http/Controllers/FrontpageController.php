@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\City;
+use App\Customer;
 use Illuminate\Http\Request;
 use App\Testimonial;
 use App\Property;
 use App\Service;
 use App\Slider;
 use App\Post;
+use App\PropertyAgreement;
+use App\ServiceList;
 use App\Setting;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -75,5 +78,76 @@ class FrontpageController extends Controller
         $recent_properties     = Property::latest()->where('featured', 0)->with('rating')->withCount('comments')->take(3)->get();
 
         return view('pages.search', compact('properties', 'recent_properties'));
+    }
+
+    // CONATCT PAGE
+    public function complaintForm()
+    {
+        return view('pages.complaint');
+    }
+
+    public function tenantComplaints(Request $request)
+    {
+
+        $rules = [
+            'first_name'      => 'required',
+            'last_name'      => 'required',
+            'email'     => 'required',
+            'phone'     => 'required',
+        ];
+        $request->validate($rules);
+        $details = [];
+        $data = [];
+        if (isset($request['agreement_id'])) {
+
+
+            if ($request->ajax()) {
+                return response()->json(['message' => 'Thank you, We have recieved your enquiry.']);
+            }
+        } else {
+            if (Customer::where('email', $request['email'])->first()) {
+                $customer_id = Customer::where('email', $request['email'])->first()->id;
+                $agreement_data = PropertyAgreement::where('customer_id', $customer_id)->get();
+                if ($agreement_data) {
+                    foreach ($agreement_data as $key => $row) {
+                        $details[] = array(
+                            'agreement_number' => $row->agreement_id,
+                            'property_code' => Property::find($row->property_id)->product_code,
+                            'customer_name' => Customer::find($customer_id)->first_name . ' ' . Customer::find($customer_id)->last_name,
+                            'contract_period' => $row->lease_commencement . ' to ' . $row->lease_expiry,
+                            'property_address' => Property::find($row->property_id)->address
+                        );
+                    }
+                    $data['tenant_properties'] = $details;
+                    $data['customer_data'] = Customer::where('email', $request['email'])->first();
+                    $data['service_list'] = ServiceList::all();
+                }
+            } else {
+                return response()->json(['message' => 'No details found']);
+            }
+            return view('pages.complaint')->with($data);
+        }
+
+        $message  = $request->message;
+        $mailfrom = $request->email;
+
+        // Message::create([
+        //     'agent_id'  => 1,
+        //     'name'      => $request->name,
+        //     'email'     => $mailfrom,
+        //     'phone'     => $request->phone,
+        //     'message'   => $message
+        // ]);
+
+        $adminname  = User::find(1)->name;
+        $mailto     = $request->mailto;
+
+        // Mail::to($mailto)->send(new Contact($message,$adminname,$mailfrom));
+
+        // $flash = array('type' => 'success', 'msg' => 'Thank you, We have recieved your enquiry.');
+        // $request->session()->flash('flash', $flash);
+        // return back();
+
+
     }
 }

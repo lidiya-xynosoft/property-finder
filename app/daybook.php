@@ -10,6 +10,7 @@ class daybook extends Model
     use HasFactory;
     protected $fillable = [
         'property_id',
+        'property_agreement_id',
         'user_id',
         'date',
         'time',

@@ -9,7 +9,7 @@ class PropertyExpense extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'property_id', 'expense_category_id', 'amount', 'status', 'user_id',
+        'property_id', 'ledger_id', 'amount', 'status', 'user_id',
         'payment_type_id', 'name', 'description', 'reference', 'date', 'expense_date', 'property_agreement_id'
     ];
     public function ledger()

@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-12">
                     <h3 class="mb-4">Contact Us</h3>
-                    <form id="contact-us" action="" method="POST">
+                    <form id="contact-us" action="" method="POST" class="contact-form">
                         @csrf
                         <input type="hidden" name="mailto"
                             value="{{ $contactsettings[0]['email'] ?? 'support@findhouses.com' }}">

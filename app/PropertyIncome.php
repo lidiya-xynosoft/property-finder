@@ -9,7 +9,7 @@ class PropertyIncome extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'property_id',  'amount', 'status', 'user_id',
+        'property_id',  'amount', 'status', 'user_id', 'ledger_id',
         'payment_type_id', 'name', 'description', 'reference', 'date', 'income_date', 'property_agreement_id'
     ];
     public function propertyAgreement()

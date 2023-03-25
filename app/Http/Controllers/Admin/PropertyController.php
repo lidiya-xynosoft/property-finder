@@ -9,7 +9,6 @@ use App\Feature;
 use App\PropertyImageGallery;
 use App\Comment;
 use App\DocumentType;
-use App\ExpenseCategory;
 use App\Ledger;
 use App\PaymentType;
 use App\PropertyAgreement;
@@ -394,9 +393,9 @@ class PropertyController extends Controller
                 $rent_months = PropertyRent::where(['property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1])->get();
                 $data['rent_months'] = $rent_months;
             }
-            $data['fixed_expenses'] = PropertyExpense::with('ExpenseCategory')->where(['property_id' => $property_id, 'status' => 1, 'property_agreement_id' => $data['rows']['id']])->get()->toArray();
+            $data['fixed_expenses'] = PropertyExpense::with('Ledger')->where(['property_id' => $property_id, 'status' => 1, 'property_agreement_id' => $data['rows']['id']])->get()->toArray();
 
-            $data['income'] =  PropertyIncome::with('ExpenseCategory')->where([
+            $data['income'] =  PropertyIncome::with('Ledger')->where([
                 'property_id' => $property_id, 'status' => 1,
                 'property_agreement_id' => $data['rows']['id']
             ])->get();

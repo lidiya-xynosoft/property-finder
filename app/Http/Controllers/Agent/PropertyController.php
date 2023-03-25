@@ -299,7 +299,7 @@ class PropertyController extends Controller
         $property->type_id           =  $request->type_id;
         $property->purpose_id           = $request->purpose_id;
         $property->city_id           =  $city_id;
-        // $property->country_id           =  User::find(Auth::id())->country_id;
+        $property->country_id           =  User::find(Auth::id())->country_id;
         $property->description          = $request->description;
         $property->video                = $request->video;
         $property->floor_plan           = $imagefloorplan;

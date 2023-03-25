@@ -56,10 +56,10 @@
                                 <input id="reference" type="text" class="form-control" name="reference">
                             </div>
                             <div class="form-line">
-                                <label for="income_category_id" class="form-label">Select income
+                                <label for="ledger_id" class="form-label">Select income
                                     category<span class="text-red">*</span></label>
 
-                                <select name="income_category_id" class="form-control show-tick">
+                                <select name="ledger_id" class="form-control show-tick">
                                     <option value="">-- Please select --</option>
 
                                     @foreach ($ledger_income as $each_value)
@@ -125,7 +125,7 @@
                         <tr>
                          <td>{{ $key + 1 }}</td>
                              <td>{{ $row['ledger']['title'] }}</td>
-                             <td>{{ $row['reference'] }}</td>
+                             <td>{{ $row['name'] }}</td>
                              <td>{{ $row['description'] }}</td>
                              <td>{{ $row['income_date'] }}</td>
                              <td>{{ $row['amount'] }}</td>

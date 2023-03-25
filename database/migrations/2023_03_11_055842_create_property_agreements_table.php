@@ -33,7 +33,7 @@ class CreatePropertyAgreementsTable extends Migration
             $table->longText('unit_type_arabic');
             $table->string('water_no')->nullable();
             $table->string('electricity_no');
-            $table->integer('building_no')->nullable();
+            $table->string('building_no')->nullable();
             $table->string('zone')->nullable();
             $table->string('street')->nullable();
             $table->longText('location_english');
