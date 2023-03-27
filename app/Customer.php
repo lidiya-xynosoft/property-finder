@@ -23,4 +23,8 @@ class Customer extends Model
     {
         return $this->hasMany(PropertyAgreement::class);
     }
+    public function propertyComplaint()
+    {
+        return $this->hasMany(PropertyComplaint::class);
+    }
 }

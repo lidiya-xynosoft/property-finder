@@ -35,6 +35,16 @@
 
         {{-- @yield('scripts') --}}
     </div>
+    <script>
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error('{{ $error }}', 'Error', {
+                    closeButtor: true,
+                    progressBar: true
+                });
+            @endforeach
+        @endif
+    </script>
 </body>
 
 </html>

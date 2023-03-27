@@ -72,5 +72,5 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
 @endpush

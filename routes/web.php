@@ -95,6 +95,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     Route::get('profile', 'DashboardController@profile')->name('profile');
     Route::post('profile', 'DashboardController@profileUpdate')->name('profile.update');
+    Route::get('complaint', 'DashboardController@complaint')->name('complaint');
+    Route::get('complaint/read/{id}', 'DashboardController@complaintRead')->name('complaint.read');
+    Route::get('complaint/reject/{id}', 'DashboardController@complaintReject')->name('complaint.reject');
+    Route::post('complaint/readunread', 'DashboardController@complaintReadUnread')->name('complaint.readunread');
 
     Route::get('message', 'DashboardController@message')->name('message');
     Route::get('message/read/{id}', 'DashboardController@messageRead')->name('message.read');

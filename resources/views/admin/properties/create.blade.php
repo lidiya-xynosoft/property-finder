@@ -203,7 +203,7 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/fileinput.min.js"></script>
 

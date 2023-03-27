@@ -9,4 +9,8 @@ class ServiceList extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
+    public function propertyComplaint()
+    {
+        return $this->hasMany(PropertyComplaint::class);
+    }
 }

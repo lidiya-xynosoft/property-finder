@@ -50,4 +50,8 @@ class Property extends Model
     {
         return $this->hasMany(Rating::class, 'property_id');
     }
+    public function propertyComplaint()
+    {
+        return $this->hasMany(PropertyComplaint::class);
+    }
 }

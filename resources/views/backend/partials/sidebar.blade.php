@@ -137,8 +137,8 @@
                         <span>Settings</span>
                     </a>
                     <ul class="ml-menu">
-                        <li class="{{ Request::is('admin/message*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.message') }}">
+                        <li class="{{ Request::is('admin/complaint*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.complaint') }}">
                                 <span>Complaints</span>
                             </a>
                         </li>

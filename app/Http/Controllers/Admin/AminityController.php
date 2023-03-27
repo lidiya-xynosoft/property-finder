@@ -112,7 +112,7 @@ class AminityController extends Controller
     {
         $feature = Feature::find($id);
         $feature->delete();
-        $feature->features()->detach();
+        // $feature->features()->detach();
 
         // Toastr::success('message', 'Feature deleted successfully.');
         return back();

@@ -8,6 +8,7 @@ use App\DocumentType;
 use App\Http\Controllers\Controller;
 use App\Property;
 use App\PropertyAgreement;
+use App\PropertyComplaint;
 use App\PropertyCustomer;
 use App\PropertyDocument;
 use App\PropertyExpense;
@@ -685,7 +686,10 @@ class AgreementManageController extends Controller
         $data['documents'] = PropertyDocument::with('DocumentType')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
 
         $data['fixed_expenses'] = PropertyExpense::with('Ledger')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
-
+        $data['complaints'] = [];
+        if (count(PropertyComplaint::where('property_id',  $property_id)->get()) > 0) {
+            $data['complaints'] = PropertyComplaint::with('Property', 'ServiceList')->latest()->get()->toArray();
+        }
         return view('admin.agreement.manage-agreement')->with($data);
     }
 }

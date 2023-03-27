@@ -17,6 +17,8 @@ use App\Comment;
 
 use App\Setting;
 use App\Message;
+use App\PropertyAgreement;
+use App\PropertyComplaint;
 use App\User;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
@@ -117,10 +119,12 @@ class DashboardController extends Controller
             'currentpassword' => 'required',
             'newpassword' => 'required|string|min:6|confirmed',
         ]);
-
-        $user = Auth::user();
-        $user->password = bcrypt($request->get('newpassword'));
-        $user->save();
+        User::whereId(Auth::user()->id)->update([
+            'password' => bcrypt($request->get('newpassword'))
+        ]);
+        // $user = Auth::user();
+        // $user->password = bcrypt($request->get('newpassword'));
+        // $user->save();
         $flash = array('type' => 'success', 'msg' => 'Password changed successfully.');
         session()->flash('flash', $flash);
         return redirect()->back();
@@ -176,6 +180,38 @@ class DashboardController extends Controller
         return back();
     }
 
+    public function complaint()
+    {
+        $complaints = [];
+        if (count(PropertyComplaint::all()) > 0) {
+            $complaints = PropertyComplaint::with('Property', 'ServiceList')->latest()->get()->toArray();
+        }
+
+        return view('admin.settings.complaints.index', compact('complaints'));
+    }
+    public function complaintRead($id)
+    {
+        $data = PropertyComplaint::with('Property', 'ServiceList', 'Customer')->findOrFail($id);
+        $agreement_data = PropertyAgreement::find($data->property_agreement_id);
+        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data'));
+    }
+    public function complaintReadUnread(Request $request)
+    {
+        $status = $request->status;
+        $msgid  = $request->messageid;
+
+        if ($status) {
+            $status = 0;
+        } else {
+            $status = 1;
+        }
+
+        $message = PropertyComplaint::findOrFail($msgid);
+        $message->status = $status;
+        $message->save();
+
+        return redirect()->route('admin.complaint');
+    }
 
     // MESSAGE
     public function message()

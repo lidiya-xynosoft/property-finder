@@ -206,7 +206,7 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
 
     <script src="https://maps.google.com/maps/api/js?v=3&sensor=false"></script>
     <script src="{{ asset('backend/plugins/gmaps/gmaps.js') }}"></script>

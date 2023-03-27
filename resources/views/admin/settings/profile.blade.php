@@ -82,7 +82,7 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
 
 <script>
     $(function(){

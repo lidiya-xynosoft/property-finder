@@ -12,9 +12,12 @@ use App\Service;
 use App\Slider;
 use App\Post;
 use App\PropertyAgreement;
+use App\PropertyComplaint;
 use App\ServiceList;
 use App\Setting;
 use App\User;
+use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class FrontpageController extends Controller
@@ -88,30 +91,41 @@ class FrontpageController extends Controller
 
     public function tenantComplaints(Request $request)
     {
-
-        $rules = [
-            'first_name'      => 'required',
-            'last_name'      => 'required',
+        $request->validate(['first_name'      => 'required',
             'email'     => 'required',
-            'phone'     => 'required',
-        ];
-        $request->validate($rules);
+        ]);
         $details = [];
         $data = [];
         if (isset($request['agreement_id'])) {
-
-
+            $customer_id = $request['customer_id'];
+            $complaint_number =
+                $customer_id . '-' . $request['agreement_id'] . Carbon::now()->timestamp;
+            PropertyComplaint::create([
+                'property_id' => PropertyAgreement::find($request['agreement_id'])->property_id,
+                'complaint_number' => $complaint_number,
+                'property_agreement_id' => $request['agreement_id'],
+                'service_list_id' => $request['service_list_id'],
+                'customer_id' => $customer_id,
+                'complaint' => $request['complaint'],
+            ]);
+            $data['tenant_properties'] = [];
+            $data['customer_data'] = [];
+            $data['service_list'] = [];
             if ($request->ajax()) {
-                return response()->json(['message' => 'Thank you, We have recieved your enquiry.']);
+                $url = URL::to('/tenant/complaint'); // Base URL;
+
+                return response()->json(['message' => 'Thank you, We have recieved your complaint.', 'url' =>  $url]);
             }
+           
         } else {
-            if (Customer::where('email', $request['email'])->first()) {
+            if (Customer::where('email', $request['email'])->first() && PropertyAgreement::where(['customer_id' => Customer::where('email', $request['email'])->first()->id, 'is_withdraw' => 0, 'is_published' => 1])->first()) {
                 $customer_id = Customer::where('email', $request['email'])->first()->id;
                 $agreement_data = PropertyAgreement::where('customer_id', $customer_id)->get();
                 if ($agreement_data) {
                     foreach ($agreement_data as $key => $row) {
                         $details[] = array(
                             'agreement_number' => $row->agreement_id,
+                            'agreement_id' => $row->id,
                             'property_code' => Property::find($row->property_id)->product_code,
                             'customer_name' => Customer::find($customer_id)->first_name . ' ' . Customer::find($customer_id)->last_name,
                             'contract_period' => $row->lease_commencement . ' to ' . $row->lease_expiry,
@@ -123,31 +137,12 @@ class FrontpageController extends Controller
                     $data['service_list'] = ServiceList::all();
                 }
             } else {
-                return response()->json(['message' => 'No details found']);
+                $flash = array('type' => 'error', 'msg' => 'No details found');
+                session()->flash('flash', $flash);
             }
             return view('pages.complaint')->with($data);
         }
 
-        $message  = $request->message;
-        $mailfrom = $request->email;
-
-        // Message::create([
-        //     'agent_id'  => 1,
-        //     'name'      => $request->name,
-        //     'email'     => $mailfrom,
-        //     'phone'     => $request->phone,
-        //     'message'   => $message
-        // ]);
-
-        $adminname  = User::find(1)->name;
-        $mailto     = $request->mailto;
-
-        // Mail::to($mailto)->send(new Contact($message,$adminname,$mailfrom));
-
-        // $flash = array('type' => 'success', 'msg' => 'Thank you, We have recieved your enquiry.');
-        // $request->session()->flash('flash', $flash);
-        // return back();
-
-
+        return view('pages.complaint')->with($data);
     }
 }

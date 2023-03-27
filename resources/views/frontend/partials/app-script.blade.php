@@ -26,18 +26,18 @@
  <script src="{{ asset('frontend/findhouse/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
  <script src="{{ asset('frontend/findhouse/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
  <script>
-     @if ($errors->any())
-         @foreach ($errors->all() as $error)
-             toastr.error('{{ $error }}', 'Error', {
-                 closeButtor: true,
-                 progressBar: true
-             });
-         @endforeach
-     @endif
+    //  @if ($errors->any())
+    //      @foreach ($errors->all() as $error)
+    //          toastr.error('{{ $error }}', 'Error', {
+    //              closeButtor: true,
+    //              progressBar: true
+    //          });
+    //      @endforeach
+    //  @endif
  </script>
  @if(Session::has('message'))
     <script>
-        toastr.success("{{ Session::get('message') }}");
+        // toastr.success("{{ Session::get('message') }}");
     </script>
 @endif
  <!-- MAIN JS -->

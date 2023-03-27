@@ -73,5 +73,5 @@ class PropertyAgreement extends Model
     {
         return $this->hasMany(PropertyRent::class);
     }
-
+   
 }

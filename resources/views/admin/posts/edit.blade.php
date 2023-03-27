@@ -123,7 +123,7 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
     <script src="{{ asset('backend/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
     <script>
         @php

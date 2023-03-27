@@ -69,7 +69,7 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
 
 <script>
     function showImage(fileInput,imgID){

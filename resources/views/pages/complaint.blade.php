@@ -16,23 +16,19 @@
 
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <form action="{{ route('tenant.complaint') }}" method="POST" class="contact-form"  @if (isset($tenant_properties) && !empty($tenant_properties)) id="complaint-us" @endif>
+                    <form action="{{ route('tenant.complaint') }}" method="POST" class="contact-form"
+                        @if (isset($tenant_properties) && !empty($tenant_properties)) id="complaint-us" @endif>
                         @csrf
                         <input type="hidden" name="mailto"
                             value="{{ $contactsettings[0]['email'] ?? 'support@findhouses.com' }}">
 
-                        <div id="success" class="successform">
-                            <p class="alert alert-success font-weight-bold" role="alert">Your message was sent
-                                successfully!</p>
-                        </div>
-                        <div id="error" class="errorform">
-                            <p>Something went wrong, try refreshing and submitting the form again.</p>
-                        </div>
+                        <input type="hidden" name="customer_id"
+                            value="{{ isset($customer_data) ? $customer_data->id : '' }}">
 
                         <div class="form-group">
                             <label class="form-label">First Name</label>
                             <input type="text" class="form-control input-custom input-full validate" name="first_name"
-                                id="name"  value="{{ isset($customer_data) ? $customer_data->first_name : '' }}">
+                                id="name" value="{{ isset($customer_data) ? $customer_data->first_name : '' }}">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Last Name</label>
@@ -44,14 +40,16 @@
                         <div class="form-group">
                             <label class="form-label">Email ( Enter registered email address)</label>
 
-                            <input id="email" name="email" type="email" value="{{ isset($customer_data) ? $customer_data->email : '' }}"
+                            <input id="email" name="email" type="email"
+                                value="{{ isset($customer_data) ? $customer_data->email : '' }}"
                                 class="form-control input-custom input-full validate">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Contact Number</label>
 
-                            <input id="phone" name="phone" type="text" value="{{ isset($customer_data) ? $customer_data->phone : '' }}"
+                            <input id="phone" name="phone" type="text"
+                                value="{{ isset($customer_data) ? $customer_data->phone : '' }}"
                                 class="form-control input-custom input-full validate">
                         </div>
 
@@ -68,7 +66,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control textarea-custom input-full" id="message" name="message" rows="8"
+                            <textarea class="form-control textarea-custom input-full" id="complaint" name="complaint" rows="8"
                                 placeholder="Message"></textarea>
                         </div>
                     </div>
@@ -77,7 +75,7 @@
                             <div class="card card-widget widget-user">
                                 <!-- Add the bg color to the header using any of the bg-* classes -->
                                 <div class="widget-user-header text-white">
-                                    <input type="checkbox" name="agreement_id" value="{{ $value['agreement_number'] }}">
+                                    <input type="checkbox" name="agreement_id" value="{{ $value['agreement_id'] }}">
                                     <h3 class="widget-user-username text-right">{{ $value['property_code'] }}</h3>
                                     <h5 class="widget-user-desc text-right">{{ $value['agreement_number'] }}</h5>
                                 </div>
@@ -130,17 +128,13 @@
     </section>
 
     @push('script')
-
         <script>
-
             $(function() {
                 $(document).on('submit', '#complaint-us', function(e) {
                     e.preventDefault();
-
                     var data = $(this).serialize();
                     var url = "{{ route('tenant.complaint') }}";
                     var btn = $('#msgsubmitbtn');
-
                     $.ajax({
                         type: 'POST',
                         url: url,
@@ -153,11 +147,8 @@
                         },
                         success: function(data) {
                             console.log(data);
-                            if (data.message) {
-                                toastr.success(data.message);
-                               location.reload(); // show response from the php script.
-
-                            }
+                            toastr.success(data.message);
+                            window.location.href = data.url;
                         },
                         error: function(xhr) {
                             console.log(xhr);
@@ -168,10 +159,11 @@
 
                         },
                         complete: function() {
-                            $('form#contact-us')[0].reset();
+                            $('#complaint-us')[0].reset();
                             $(btn).removeClass('disabled');
                             $(btn).empty().append(
                                 '<span>Send</span>');
+
                         },
                         dataType: 'json'
                     });

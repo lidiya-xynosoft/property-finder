@@ -70,11 +70,7 @@
     </div>
 
 @endsection
-
-
-@push('scripts')
-
-    <!-- Jquery DataTable Plugin Js -->
+@push('script')
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -87,9 +83,8 @@
 
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
-
     <script>
-        function deleteTestimonial(id){
+            function deleteTestimonial(id){
             
             swal({
             title: 'Are you sure?',
@@ -111,6 +106,4 @@
             })
         }
     </script>
-
-
 @endpush

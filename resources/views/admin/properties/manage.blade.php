@@ -32,50 +32,58 @@
                 </div>
 
                 <div class="header">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <strong>Price : </strong>
-                            <span class="right"> {{ $currency }} {{ $property->price }}</span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Bedroom : </strong>
-                            <span class="right">{{ $property->bedroom }}</span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Bathroom : </strong>
-                            <span class="right">{{ $property->bathroom }}</span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>City : </strong>
-                            <span class="right">{{ $property->city }}</span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Address : </strong>
-                            <span class="right">{{ $property->address }}</span>
-                        </li>
-                    </ul>
-
-                    @if (!empty($rows['property_customer']))
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <strong>Tenant Name : </strong>
-                                <span class="right" id="customer_name"> {{ $rows['tenant_name'] }}</span>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Lease period : </strong>
-                                <span class="right" id="lease_duration">{{ $rows['lease_period'] }}</span>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Lease expiry : </strong>
-                                <span class="right" id="expiry_date">{{ $rows['lease_expiry'] }}</span>
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Monthly rent date : </strong>
-                                <span class="right" id="rent_date">{{ $rows['rent_payment_commencement'] }}</span>
-                            </li>
-
-                        </ul>
-                    @endif
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>Price : </strong>
+                                    <span class="right"> {{ $currency }} {{ $property->price }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Bedroom : </strong>
+                                    <span class="right">{{ $property->bedroom }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Bathroom : </strong>
+                                    <span class="right">{{ $property->bathroom }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>City : </strong>
+                                    <span class="right">{{ $property->city }}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Address : </strong>
+                                    <span class="right">{{ $property->address }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            @if (!empty($rows['property_customer']))
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>Tenant Name : </strong>
+                                        <span class="right" id="customer_name"> {{ $rows['tenant_name'] }}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Lease period : </strong>
+                                        <span class="right" id="lease_duration">{{ $rows['lease_period'] }}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Lease expiry : </strong>
+                                        <span class="right" id="expiry_date">{{ $rows['lease_expiry'] }}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Monthly rent date : </strong>
+                                        <span class="right" id="rent_date">{{ $rows['rent_payment_commencement'] }}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Address : </strong>
+                                        <span class="right">{{ $property->type }}</span>
+                                    </li>
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
             </div>

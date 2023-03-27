@@ -92,7 +92,6 @@
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
     <script>
-        (function($) {
             function deleteAminity(id) {
                 alert("here");
                 swal({
@@ -114,6 +113,5 @@
                     }
                 })
             }
-        })(jQuery);
     </script>
 @endpush

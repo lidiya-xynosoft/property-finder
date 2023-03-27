@@ -235,7 +235,7 @@
 
 @endsection
 
-@push('scripts')
+@push('script')
 
     <!-- Jquery CountTo Plugin Js -->
     <script src="{{ asset('backend/plugins/jquery-countto/jquery.countTo.js') }}"></script>

@@ -114,7 +114,7 @@
 @endsection
 
 
-@push('scripts')
+@push('script')
 
     <!-- Jquery DataTable Plugin Js -->
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
