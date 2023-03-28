@@ -67,7 +67,22 @@
                         <span>Testimonials</span>
                     </a>
                 </li>
-                <li class="header">Accounts</li>
+                <li class="header">COMPLAINTS & SERVICES</li>
+                <li class="{{ Request::is('admin/tenant-service*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.tenant-service.index') }}">
+                        <i class="material-icons">room_service</i>
+                        <span>Tenant Services</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/complaint*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.complaint') }}">
+                        <i class="material-icons">assistant</i>
+
+                        <span>Tenant Complaints</span>
+                    </a>
+                </li>
+
+                <li class="header">ACCOUNTS</li>
                 <li class="{{ Request::is('admin/ledger*') ? 'active' : '' }}">
                     <a href="{{ route('admin.ledger.index') }}">
                         <i class="material-icons">view_list</i>
@@ -83,7 +98,7 @@
                     </a>
                 </li>
 
-                <li class="header">Tenants</li>
+                <li class="header">TENANTS</li>
                 <li class="{{ Request::is('admin/tenants*') ? 'active' : '' }}">
                     <a href="{{ route('admin.tenants.index') }}">
                         <i class="material-icons">people</i>
@@ -96,14 +111,8 @@
                         <span>Tenancy List</span>
                     </a>
                 </li>
-                <li class="{{ Request::is('admin/tenant-service*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.tenant-service.index') }}">
-                        <i class="material-icons">engineering</i>
-                        <span>Tenant Services</span>
-                    </a>
-                </li>
 
-                <li class="header">Blog</li>
+                <li class="header">BLOG</li>
                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
                     <a href="{{ route('admin.categories.index') }}">
                         <i class="material-icons">category</i>
@@ -124,12 +133,12 @@
                 </li>
 
                 <li class="header"> </li>
-                <li class="{{ Request::is('admin/galleries*') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('admin/galleries*') ? 'active' : '' }}">
                     <a href="{{ route('admin.album') }}">
                         <i class="material-icons">view_list</i>
                         <span>Gallery</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="{{ Request::is('admin/settings*') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="menu-toggle">
@@ -137,11 +146,7 @@
                         <span>Settings</span>
                     </a>
                     <ul class="ml-menu">
-                        <li class="{{ Request::is('admin/complaint*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.complaint') }}">
-                                <span>Complaints</span>
-                            </a>
-                        </li>
+
                         <li class="{{ Request::is('admin/countries*') ? 'active' : '' }}">
                             <a href="{{ route('admin.countries.index') }}">
                                 <span>Country</span>

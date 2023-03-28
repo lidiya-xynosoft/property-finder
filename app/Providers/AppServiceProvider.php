@@ -77,7 +77,7 @@ class AppServiceProvider extends ServiceProvider
             });
 
             view()->composer('backend.partials.navbar', function ($view) {
-                $view->with('countmessages', Message::latest()->where('agent_id', Auth::id())->count());
+                $view->with('countmessages', Message::latest()->where(['agent_id' => Auth::id(), 'status' => 0])->count());
                 $view->with('navbarmessages', Message::latest()->where('agent_id', Auth::id())->take(5)->get());
             });
 

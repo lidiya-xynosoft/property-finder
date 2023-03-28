@@ -115,6 +115,7 @@ class ExpenseManageController extends Controller
                 [
                     'property_id' => $request['property_id'],
                     'property_agreement_id' => $request['property_agreement_id'],
+                    'ledger_id' => $request['ledger_id'],
                     'income_date' => $request['date'],
                     'date' => Carbon::now()->toDateString(),
                     'name' => $request['name'],
@@ -126,15 +127,15 @@ class ExpenseManageController extends Controller
                     'status' => 1,
                 ],
             );
-            Ledger::create([
+            daybook::create([
                 'property_id' => $expense_rent->property_id,
+                'property_agreement_id' => $request['property_agreement_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),
                 'title' => Property::find($expense_rent->property_id)->product_code,
                 'head' => 'Monthly Rent',
                 'credit' => $request['amount'],
-                // 'total'
             ]);
         } else {
             return response()->json([

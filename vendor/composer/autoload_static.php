@@ -644,6 +644,7 @@ class ComposerStaticInit5e6d2540f604129fe1cc2b757691166f
         'App\\Category' => __DIR__ . '/../..' . '/app/Category.php',
         'App\\City' => __DIR__ . '/../..' . '/app/City.php',
         'App\\Comment' => __DIR__ . '/../..' . '/app/Comment.php',
+        'App\\ComplaintImage' => __DIR__ . '/../..' . '/app/ComplaintImage.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Country' => __DIR__ . '/../..' . '/app/Country.php',
         'App\\Customer' => __DIR__ . '/../..' . '/app/Customer.php',

@@ -31,7 +31,7 @@
                               @if (isset($rows['id']))
                                   <input name="property_agreement_id" value="{{ $rows['id'] }}" hidden>
                               @endif
-                              <input name="rent_id" id="rent_id" value="0" type="text">
+                              <input name="rent_id" id="rent_id" value="0" type="text" hidden>
                               <div class="form-line">
                                   <label for="name">Date<span class="text-red">*</span></label>
                                   <input id="date" type="date" class="form-control" name="date">
@@ -50,6 +50,20 @@
 
                                   <input id="expense_amount" type="text" class="form-control" name="amount">
                               </div>
+                                <div class="form-line">
+                                <label for="ledger_id" class="form-label">Select income
+                                    category<span class="text-red">*</span></label>
+
+                                <select name="ledger_id" class="form-control show-tick">
+                                    <option value="">-- Please select --</option>
+
+                                    @foreach ($ledger_income as $each_value)
+                                        <option value="{{ $each_value->id }}">
+                                            {{ $each_value->title }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
                               <div class="col-sm-6">
                                   <label for="Option" class="form-label">Option<span class="text-red">*</span></label>
                                   <div class="form-line">
@@ -81,7 +95,7 @@
               </div>
           </div>
           <div class="table-responsive">
-              <table id="garageListTable" class="table table-striped table-bordered nowrap">
+                        <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                   <thead>
                       <tr>
                           <th>{{ __('SL') }}</th>

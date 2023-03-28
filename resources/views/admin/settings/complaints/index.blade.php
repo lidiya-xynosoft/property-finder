@@ -19,7 +19,60 @@
                     <h2>PROPERTY COMPLAINTS</h2>
                 </div>
                 <div class="body">
+                    <div class="row">
+                        <form action="{{ route('admin.complaint.search') }}" method="POST">
+                            @csrf
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select name="status" class="form-control">
+                                            <option value="">-- select status--</option>
+                                            <option value="0">New</option>
+                                            <option value="1">Approved</option>
+                                            <option value="2">Rejected</option>
+                                            <option value="3">Assigned</option>
+                                            <option value="3">Ressolved</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select name="complaint_id" class="form-control">
+                                            <option value="">-- select complaint --</option>
+                                            @foreach ($complaints as $key => $value)
+                                                <option value="{{ $value['id'] }}">{{ $value['complaint_number'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <select name="property_id" class="form-control">
+                                            <option value="">-- select property --</option>
+                                            @foreach ($properties as $key => $value)
+                                                <option value="{{ $value->id }}">{{ $value->product_code }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-indigo btn-s m-t-15 waves-effect">
+                                        <i class="material-icons">search</i>
+                                        <span>Search</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                             <thead>
@@ -28,8 +81,8 @@
                                     <th>Property</th>
                                     <th>Complaint number</th>
                                     <th>Service Type</th>
-                                    <th>complaint</th>
-                                    <th>complaint Status</th>
+                                    <th>status</th>
+                                    <th>Complaints</th>
 
                                     <th width="150px">Action</th>
                                 </tr>
@@ -44,11 +97,11 @@
                                         <td>{{ $message['service_list']['name'] }}</td>
                                         <td>
                                             @if ($message['status'] == 0)
-                                               <span class="btn-success btn-sm"> New </span>
+                                                <span class="btn-success btn-sm"> New </span>
                                             @elseif($message['status'] == 1)
-                                                {{ 'Approved' }}
+                                                <span class="btn-success btn-sm"> Approved </span>
                                             @elseif($message['status'] == 2)
-                                                {{ 'Rejected' }}
+                                                <span class="btn-danger btn-sm"> Rejected </span>
                                             @elseif($message['status'] == 3)
                                                 {{ 'Assigned to handiman' }}
                                             @elseif($message['status'] == 4)
@@ -57,7 +110,7 @@
                                         </td>
                                         <td>{{ str_limit($message['complaint'], 40, '...') }}</td>
                                         <td>
-                                            @if ($message['status'] == 0)
+                                            @if ($message['status'] == 0 || $message['status'] == 2)
                                                 <a href="{{ route('admin.complaint.read', $message['id']) }}"
                                                     class="btn btn-warning btn-sm waves-effect">
                                                     <i class="material-icons">local_library</i>
@@ -106,7 +159,7 @@
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
     <script>
-          function deleteMessage(id) {
+        function deleteMessage(id) {
 
             swal({
                 title: 'Are you sure?',

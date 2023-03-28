@@ -11,6 +11,7 @@ return array(
     'App\\Category' => $baseDir . '/app/Category.php',
     'App\\City' => $baseDir . '/app/City.php',
     'App\\Comment' => $baseDir . '/app/Comment.php',
+    'App\\ComplaintImage' => $baseDir . '/app/ComplaintImage.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Country' => $baseDir . '/app/Country.php',
     'App\\Customer' => $baseDir . '/app/Customer.php',

@@ -35,4 +35,8 @@ class PropertyComplaint extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function complaintImage()
+    {
+        return $this->hasMany(ComplaintImage::class);
+    }
 }

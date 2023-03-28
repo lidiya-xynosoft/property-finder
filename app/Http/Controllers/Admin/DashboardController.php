@@ -14,7 +14,7 @@ use App\Mail\Contact;
 use App\Property;
 use App\Post;
 use App\Comment;
-
+use App\ComplaintImage;
 use App\Setting;
 use App\Message;
 use App\PropertyAgreement;
@@ -23,6 +23,7 @@ use App\User;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Node\Stmt\While_;
 
 class DashboardController extends Controller
 {
@@ -184,35 +185,66 @@ class DashboardController extends Controller
     {
         $complaints = [];
         if (count(PropertyComplaint::all()) > 0) {
-            $complaints = PropertyComplaint::with('Property', 'ServiceList')->latest()->get()->toArray();
+            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'ComplaintImage')->latest()->get()->toArray();
         }
-
-        return view('admin.settings.complaints.index', compact('complaints'));
+        $properties = Property::all();
+        return view('admin.settings.complaints.index', compact('complaints', 'properties'));
     }
     public function complaintRead($id)
     {
-        $data = PropertyComplaint::with('Property', 'ServiceList', 'Customer')->findOrFail($id);
+        $data = PropertyComplaint::with('Property', 'ServiceList', 'Customer', 'ComplaintImage')->findOrFail($id);
         $agreement_data = PropertyAgreement::find($data->property_agreement_id);
-        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data'));
+        $complaint_image = ComplaintImage::where('property_complaint_id', $data->id)->get();
+        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data', 'complaint_image'));
     }
-    public function complaintReadUnread(Request $request)
+    public function complaintReject($id)
+    {
+        $message = PropertyComplaint::findOrFail($id);
+        $message->status = '2';
+        $message->rejected_time = Carbon::now();
+        $message->save();
+        return redirect()->route('admin.complaint');
+    }
+    public function complaintAction(Request $request)
     {
         $status = $request->status;
-        $msgid  = $request->messageid;
-
-        if ($status) {
-            $status = 0;
-        } else {
-            $status = 1;
-        }
+        $msgid  = $request->complaint_id;
 
         $message = PropertyComplaint::findOrFail($msgid);
         $message->status = $status;
+        $message->approved_time = Carbon::now();
         $message->save();
 
         return redirect()->route('admin.complaint');
     }
+    public function complaintSearch(Request $request)
+    {
+        $where_arry = [];
+        $complaints = [];
+        if (isset($request['status'])) {
+            if ($request['status']) {
+                $where_arry['status'] = $request['status'];
+            }
+        }
+        if (isset($request['property_id'])) {
+            if ($request['property_id'] != 0) {
+                $where_arry['property_id'] = $request['property_id'];
+            }
+        }
+        if (isset($request['complaint_id'])) {
+            if ($request['complaint_id'] != 0) {
+                $where_arry['id'] = $request['complaint_id'];
+            }
+        }
 
+        if (count(PropertyComplaint::where($where_arry)->get()) > 0) {
+            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'ComplaintImage')->where($where_arry)->latest()->get()->toArray();
+        }
+        $properties = Property::all();
+
+
+        return view('admin.settings.complaints.index', compact('complaints', 'properties'));
+    }
     // MESSAGE
     public function message()
     {

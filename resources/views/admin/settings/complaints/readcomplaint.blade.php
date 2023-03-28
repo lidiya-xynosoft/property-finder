@@ -20,6 +20,19 @@
             <div class="card">
                 <div class="header bg-indigo">
                     <h2>{{ $data->complaint_number }} - COMPLAINT</h2>
+                    <div class="text-right">
+                        @if ($data->status == 0)
+                            <span class="btn-success btn-sm"> New </span>
+                        @elseif($data->status == 1)
+                            <span class="btn-success btn-sm"> Approved </span>
+                        @elseif($data->status == 2)
+                            <span class="btn-danger btn-sm"> Rejected </span>
+                        @elseif($data->status == 3)
+                            {{ 'Assigned to handiman' }}
+                        @elseif($data->status == 4)
+                            {{ 'Ressolved' }}
+                        @endif
+                    </div>
                 </div>
                 <div class="header">
                     <div class="row">
@@ -72,28 +85,53 @@
                 </div>
                 <div class="body">
 
-                    <h5>message</h5>
+                    <h5>Complaint</h5>
                     <p>{!! $data->complaint !!}</p>
+
+                    <div class="card">
+                        <div class="header bg-indigo">
+                            <h2>Attachments</h2>
+                        </div>
+                        <div class="gallery-box" id="gallerybox">
+                            @foreach ($complaint_image as $gallery)
+                                <div class="gallery-image-edit" id="gallery-{{ $gallery->id }}">
+                                    {{-- <button type="button" data-id="{{ $gallery->id }}"
+                                            class="btn btn-danger btn-sm"><i
+                                                class="material-icons">delete_forever</i></button> --}}
+                                    <img class="img-responsive"
+                                        src="{{ Storage::url('complaint/gallery/' . $gallery->name) }}"
+                                        alt="{{ $gallery->name }}">
+                                </div>
+                            @endforeach
+                        </div>
+                        {{-- <div class="gallery-box">
+                                <hr>
+                                <input type="file" name="gallaryimage[]" value="UPLOAD" id="gallaryimageupload" multiple>
+                                <button type="button" class="btn btn-info btn-lg right" id="galleryuploadbutton">UPLOAD
+                                    GALLERY IMAGE</button>
+                            </div> --}}
+                    </div>
                     <hr>
 
-                    <a href="{{ route('admin.complaint.readunread', $data->id) }}"
-                        class="btn btn-danger btn-sm waves-effect">
+                    <a href="{{ route('admin.complaint.reject', $data->id) }}" class="btn btn-danger btn-sm waves-effect">
                         <i class="material-icons">replay</i>
                         <span>Reject</span>
                     </a>
 
-                    <form class="right" action="{{ route('admin.complaint.readunread') }}" method="POST">
+                    <form class="right" action="{{ route('admin.complaint.action') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="status" value="{{ $data->status }}">
-                        <input type="hidden" name="dataid" value="{{ $data->id }}">
+                        <input type="hidden" name="complaint_id" value="{{ $data->id }}">
 
                         <button type="submit" class="btn btn-success btn-sm waves-effect">
                             <i class="material-icons">local_library</i>
                             @if ($data->status == 0)
+                                <input type="hidden" name="status" value="1">
                                 <span>Accept</span>
                             @elseif($data->status == 1)
+                                <input type="hidden" name="status" value="3">
                                 <span>Assign</span>
                             @elseif($data->status == 3)
+                                <input type="hidden" name="status" value="4">
                                 <span>Ressolved</span>
                             @endif
                         </button>

@@ -38,8 +38,7 @@ Route::get('/blog/author/{username}', 'PagesController@blogAuthor')->name('blog.
 Route::get('/contact', 'PagesController@contact')->name('contact');
 Route::post('/contact', 'PagesController@messageContact')->name('contact.message');
 Route::get('/tenant/complaint', 'FrontPageController@complaintForm')->name('complaintform');
-// Route::post('/tenant/complaint', 'FrontPageController@tenantComplaints')->name('tenant.complaint');
-Route::post('/find/property-data', 'FrontPageController@tenantComplaints')->name('tenant.complaint');
+Route::post('/tenant/complaint', 'FrontPageController@tenantComplaints')->name('tenant.complaint');
 
 
 Auth::routes();
@@ -98,7 +97,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('complaint', 'DashboardController@complaint')->name('complaint');
     Route::get('complaint/read/{id}', 'DashboardController@complaintRead')->name('complaint.read');
     Route::get('complaint/reject/{id}', 'DashboardController@complaintReject')->name('complaint.reject');
-    Route::post('complaint/readunread', 'DashboardController@complaintReadUnread')->name('complaint.readunread');
+    Route::post('complaint/action', 'DashboardController@complaintAction')->name('complaint.action');
+    Route::post('complaint/search', 'DashboardController@complaintSearch')->name('complaint.search');
 
     Route::get('message', 'DashboardController@message')->name('message');
     Route::get('message/read/{id}', 'DashboardController@messageRead')->name('message.read');

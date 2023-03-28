@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\City;
+use App\ComplaintImage;
+use App\ComplaintImages;
 use App\Customer;
 use Illuminate\Http\Request;
 use App\Testimonial;
@@ -19,6 +21,8 @@ use App\User;
 use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\image;
 
 class FrontpageController extends Controller
 {
@@ -91,7 +95,7 @@ class FrontpageController extends Controller
 
     public function tenantComplaints(Request $request)
     {
-        $request->validate(['first_name'      => 'required',
+        $request->validate([
             'email'     => 'required',
         ]);
         $details = [];
@@ -100,7 +104,9 @@ class FrontpageController extends Controller
             $customer_id = $request['customer_id'];
             $complaint_number =
                 $customer_id . '-' . $request['agreement_id'] . Carbon::now()->timestamp;
-            PropertyComplaint::create([
+
+
+            $registration =  PropertyComplaint::create([
                 'property_id' => PropertyAgreement::find($request['agreement_id'])->property_id,
                 'complaint_number' => $complaint_number,
                 'property_agreement_id' => $request['agreement_id'],
@@ -108,6 +114,26 @@ class FrontpageController extends Controller
                 'customer_id' => $customer_id,
                 'complaint' => $request['complaint'],
             ]);
+
+            $gallary = $request->file('complaintimage');
+            if ($gallary) {
+                foreach ($gallary as $images) {
+                    if (isset($images)) {
+                        $currentDate = Carbon::now()->toDateString();
+                        $galimage['name'] = 'gallary-' . $currentDate . '-' . uniqid() . '.' . $images->getClientOriginalExtension();
+                        // $galimage['size'] = $images->getClientSize();
+                        $galimage['property_complaint_id'] = $registration->id;
+
+                        if (!Storage::disk('public')->exists('complaint/gallery')) {
+                            Storage::disk('public')->makeDirectory('complaint/gallery');
+                        }
+                        $propertyimage = Image::make($images)->stream();
+                        Storage::disk('public')->put('complaint/gallery/' . $galimage['name'], $propertyimage);
+
+                        ComplaintImage::create($galimage);
+                    }
+                }
+            }
             $data['tenant_properties'] = [];
             $data['customer_data'] = [];
             $data['service_list'] = [];
@@ -116,7 +142,6 @@ class FrontpageController extends Controller
 
                 return response()->json(['message' => 'Thank you, We have recieved your complaint.', 'url' =>  $url]);
             }
-           
         } else {
             if (Customer::where('email', $request['email'])->first() && PropertyAgreement::where(['customer_id' => Customer::where('email', $request['email'])->first()->id, 'is_withdraw' => 0, 'is_published' => 1])->first()) {
                 $customer_id = Customer::where('email', $request['email'])->first()->id;

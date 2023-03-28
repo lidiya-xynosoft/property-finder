@@ -7,7 +7,7 @@
             <br />
         </div>
         <div class="table-responsive">
-            <table id="garageListTable" class="table table-striped table-bordered nowrap">
+                        <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                 <thead>
                     <tr>
                         <th>{{ __('SL') }}</th>
