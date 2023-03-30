@@ -2,13 +2,10 @@
 
 @section('title', 'Create Post')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
-@endpush
-
-
 @section('content')
-
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+    @endpush
     <div class="block-header"></div>
 
     <div class="row clearfix">
@@ -48,6 +45,7 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
                 <div class="card">
                     <div class="header">
                         <h2>SELECT CATEGORY</h2>
@@ -64,7 +62,7 @@
                                 </select>
                             </div>
                         </div>
-
+                        <br /><br />
                         <div class="form-group form-float">
                             <div class="form-line {{ $errors->has('tags') ? 'focused error' : '' }}">
                                 <label>Select Tag</label>
@@ -76,11 +74,17 @@
                             </div>
                         </div>
 
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="header bg-indigo">
+                        <h2>FEATURED IMAGE</h2>
+                    </div>
+                    <div class="body">
                         <div class="form-group">
-                            <label for="form-label">Featured Image</label>
                             <input type="file" name="image">
                         </div>
-
 
                         <a href="{{ route('admin.posts.index') }}" class="btn btn-danger btn-lg m-t-15 waves-effect">
                             <i class="material-icons left">arrow_back</i>
@@ -91,7 +95,6 @@
                             <i class="material-icons">save</i>
                             <span>SAVE</span>
                         </button>
-
                     </div>
                 </div>
             </div>

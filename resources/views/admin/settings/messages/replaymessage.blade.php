@@ -2,10 +2,7 @@
 
 @section('title', 'Replay Message')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')

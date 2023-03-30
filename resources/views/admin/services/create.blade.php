@@ -2,10 +2,7 @@
 
 @section('title', 'Create Service')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')

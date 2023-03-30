@@ -2,12 +2,6 @@
 
 @section('title', 'Edit Types')
 
-@push('styles')
-
-    
-@endpush
-
-
 @section('content')
 
     <div class="block-header">
@@ -47,10 +41,3 @@
     </div>
 
 @endsection
-
-
-@push('script')
-
-
-
-@endpush

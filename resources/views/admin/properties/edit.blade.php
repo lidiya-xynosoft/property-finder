@@ -2,16 +2,12 @@
 
 @section('title', 'Edit Property')
 
-@push('styles')
-
-    <link rel="stylesheet" href="{{asset('backend/plugins/bootstrap-select/css/bootstrap-select.css')}}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-
-@endpush
-
-
 @section('content')
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 
+    @endpush
     <div class="block-header"></div>
 
     <div class="row clearfix">

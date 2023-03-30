@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CancellationReason;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,13 @@ use App\Mail\Contact;
 use App\Property;
 use App\Post;
 use App\Comment;
+use App\ComplaintCancellationReason;
 use App\ComplaintImage;
 use App\Setting;
 use App\Message;
 use App\PropertyAgreement;
 use App\PropertyComplaint;
+use App\ServiceList;
 use App\User;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +39,7 @@ class DashboardController extends Controller
 
         $properties    = Property::latest()->with('user')->take(5)->get();
         $posts         = Post::latest()->withCount('comments')->take(5)->get();
-        $users         = User::with('role')->get();
+        $users         = User::with('role')->latest()->take(5)->get();
         $comments      = Comment::with('users')->take(5)->get();
 
         return view('admin.dashboard', compact(
@@ -185,25 +188,34 @@ class DashboardController extends Controller
     {
         $complaints = [];
         if (count(PropertyComplaint::all()) > 0) {
-            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'ComplaintImage')->latest()->get()->toArray();
+            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'Customer')->latest()->get()->toArray();
         }
+
         $properties = Property::all();
-        return view('admin.settings.complaints.index', compact('complaints', 'properties'));
+        $service_lists = ServiceList::all();
+        return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists'));
     }
     public function complaintRead($id)
     {
         $data = PropertyComplaint::with('Property', 'ServiceList', 'Customer', 'ComplaintImage')->findOrFail($id);
         $agreement_data = PropertyAgreement::find($data->property_agreement_id);
         $complaint_image = ComplaintImage::where('property_complaint_id', $data->id)->get();
-        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data', 'complaint_image'));
+        $cancellation_reason = CancellationReason::all();
+
+        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data', 'complaint_image', 'cancellation_reason'));
     }
-    public function complaintReject($id)
+    public function complaintReject(Request $request)
     {
-        $message = PropertyComplaint::findOrFail($id);
+        $message = PropertyComplaint::findOrFail($request['complaint_id']);
         $message->status = '2';
+        ComplaintCancellationReason::create([
+            'property_complaint_id' => $request['complaint_id'],
+            'cancellation_reason_id' => $request['cancellation_reason_id']
+        ]);
         $message->rejected_time = Carbon::now();
         $message->save();
-        return redirect()->route('admin.complaint');
+        $flash = array('type' => 'success', 'msg' => 'rejected successfully.');
+        session()->flash('flash', $flash);
     }
     public function complaintAction(Request $request)
     {
@@ -231,6 +243,11 @@ class DashboardController extends Controller
                 $where_arry['property_id'] = $request['property_id'];
             }
         }
+        if (isset($request['service_list_id'])) {
+            if ($request['service_list_id'] != 0) {
+                $where_arry['service_list_id'] = $request['service_list_id'];
+            }
+        }
         if (isset($request['complaint_id'])) {
             if ($request['complaint_id'] != 0) {
                 $where_arry['id'] = $request['complaint_id'];
@@ -241,9 +258,8 @@ class DashboardController extends Controller
             $complaints = PropertyComplaint::with('Property', 'ServiceList', 'ComplaintImage')->where($where_arry)->latest()->get()->toArray();
         }
         $properties = Property::all();
-
-
-        return view('admin.settings.complaints.index', compact('complaints', 'properties'));
+        $service_lists = ServiceList::all();
+        return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists'));
     }
     // MESSAGE
     public function message()

@@ -2,10 +2,7 @@
 
 @section('title', 'Read Message')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')

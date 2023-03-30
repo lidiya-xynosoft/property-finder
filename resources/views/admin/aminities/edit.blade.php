@@ -2,10 +2,6 @@
 
 @section('title', 'Edit aminities')
 
-@push('styles')
-@endpush
-
-
 @section('content')
 
     <div class="block-header">

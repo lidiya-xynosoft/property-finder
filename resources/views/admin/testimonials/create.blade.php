@@ -2,10 +2,7 @@
 
 @section('title', 'Create Testimonial')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')

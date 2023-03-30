@@ -1,25 +1,23 @@
 @extends('backend.layouts.app')
 
-@section('title', 'Country')
-
+@section('title', 'Tenant Service')
 
 @section('content')
     @push('head')
         <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
     @endpush
-{{-- 
     <div class="block-header">
-        <a href="{{ route('admin.countries.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
+        <a href="{{ route('admin.cancellation-reason.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
             <i class="material-icons left">add</i>
             <span>CREATE </span>
         </a>
-    </div> --}}
+    </div>
 
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>COUNTRY LIST</h2>
+                    <h2>CANCELLATION REASON</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -27,34 +25,35 @@
                             <thead>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Country</th>
-                                    <th>Code</th>
-                                    <th>Currency</th>
-                                    <th>Status</th>
-                                    <th width="100px">Action</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>SL.</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
                             <tbody>
-                                @foreach ($countries as $key => $country)
+                                @foreach ($cancellation_reason as $key => $feature)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $country->name }}</td>
-                                        <td>{{ $country->code }}</td>
-                                     
-                                        <td>{{ $country->currency }}</td>
-                                        <td>{{ $country->is_active }}</td>
-
+                                        <td>{{ $feature->reason }}</td>
+                                      
+                                        </td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.countries.edit', $country->id) }}"
+                                            <a href="{{ route('admin.cancellation-reason.edit', $feature->id) }}"
                                                 class="btn btn-info btn-sm waves-effect">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                            {{-- <button type="button" class="btn btn-danger btn-sm waves-effect"
-                                                onclick="deleteService({{ $country->id }})">
+                                            <button type="button" class="btn btn-danger btn-sm waves-effect" id="cancellation_reason"
+                                                value="{{ $feature->id }}" onclick="deleteTenantService({{ $feature->id }})">
                                                 <i class="material-icons">delete</i>
-                                            </button> --}}
-                                            <form action="{{ route('admin.countries.destroy', $country->id) }}"
-                                                method="POST" id="del-service-{{ $country->id }}" style="display:none;">
+                                            </button>
+                                            <form action="{{ route('admin.cancellation-reason.destroy', $feature->id) }}"
+                                                method="POST" id="del-feature-{{ $feature->id }}" style="display:none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -68,12 +67,8 @@
             </div>
         </div>
     </div>
-
 @endsection
-
-
 @push('script')
-    <!-- Jquery DataTable Plugin Js -->
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -86,28 +81,29 @@
 
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
-
     <script>
-        function deleteService(id) {
-
-            swal({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    document.getElementById('del-service-' + id).submit();
-                    swal(
-                        'Deleted!',
-                        'Service has been deleted.',
-                        'success'
-                    )
-                }
-            })
-        }
+        (function($) {
+            function deleteAminity(id) {
+                alert("here");
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        document.getElementById('del-feature-' + id).submit();
+                        swal(
+                            'Deleted!',
+                            'Feature has been deleted.',
+                            'success'
+                        )
+                    }
+                })
+            }
+        })(jQuery);
     </script>
 @endpush

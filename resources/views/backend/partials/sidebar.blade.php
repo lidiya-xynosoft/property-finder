@@ -74,11 +74,22 @@
                         <span>Tenant Services</span>
                     </a>
                 </li>
+                <li class="{{ Request::is('admin/handyman*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.handyman.index') }}">
+                        <i class="material-icons">format_clear</i>
+                        <span>Handyman</span>
+                    </a>
+                </li>
                 <li class="{{ Request::is('admin/complaint*') ? 'active' : '' }}">
                     <a href="{{ route('admin.complaint') }}">
                         <i class="material-icons">assistant</i>
-
                         <span>Tenant Complaints</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/cancellation-reason*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.cancellation-reason.index') }}">
+                        <i class="material-icons">event_busy</i>
+                        <span>Cancellation Reason</span>
                     </a>
                 </li>
 
@@ -108,7 +119,7 @@
                 <li class="{{ Request::is('admin/tenancy-list') ? 'active' : '' }}">
                     <a href="{{ url('admin/tenancy-list') }}">
                         <i class="material-icons">list</i>
-                        <span>Tenancy List</span>
+                        <span>Tenant List</span>
                     </a>
                 </li>
 

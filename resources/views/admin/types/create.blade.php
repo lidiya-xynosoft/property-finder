@@ -2,10 +2,7 @@
 
 @section('title', 'Create types')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')
@@ -48,8 +45,4 @@
 @endsection
 
 
-@push('script')
 
-
-
-@endpush

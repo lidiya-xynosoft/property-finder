@@ -2,13 +2,10 @@
 
 @section('title', 'Features')
 
-@push('styles')
-    <!-- JQuery DataTable Css -->
-    <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
-@endpush
-
 @section('content')
-
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+    @endpush
     <div class="block-header">
         <a href="{{ route('admin.aminities.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
             <i class="material-icons left">add</i>
@@ -93,7 +90,6 @@
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
     <script>
             function deleteAminity(id) {
-                alert("here");
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -107,7 +103,7 @@
                         document.getElementById('del-feature-' + id).submit();
                         swal(
                             'Deleted!',
-                            'Feature has been deleted.',
+                            'Aminity has been deleted.',
                             'success'
                         )
                     }

@@ -2,10 +2,7 @@
 
 @section('title', 'Create Tenant')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')

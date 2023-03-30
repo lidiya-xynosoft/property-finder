@@ -1,13 +1,12 @@
 @extends('backend.layouts.app')
 
 @section('title', 'Messages')
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
-@endpush
-
-
 @section('content')
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+            integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    @endpush
 
     <div class="block-header"></div>
 
@@ -24,46 +23,59 @@
                             @csrf
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <div class="form-line">
-                                        <select name="status" class="form-control">
-                                            <option value="">-- select status--</option>
-                                            <option value="0">New</option>
-                                            <option value="1">Approved</option>
-                                            <option value="2">Rejected</option>
-                                            <option value="3">Assigned</option>
-                                            <option value="3">Ressolved</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <select name="complaint_id" class="form-control">
-                                            <option value="">-- select complaint --</option>
-                                            @foreach ($complaints as $key => $value)
-                                                <option value="{{ $value['id'] }}">{{ $value['complaint_number'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <select name="property_id" class="form-control">
-                                            <option value="">-- select property --</option>
-                                            @foreach ($properties as $key => $value)
-                                                <option value="{{ $value->id }}">{{ $value->product_code }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                                    <label>&nbsp;</label>
 
+                                    <select name="property_id" class="form-control">
+                                        <option value="">-- select property --</option>
+                                        @foreach ($properties as $key => $value)
+                                            <option value="{{ $value->id }}">{{ $value->product_code }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+
+                                    <select name="status" class="form-control">
+                                        <option value="">-- select status--</option>
+                                        <option value="0">New</option>
+                                        <option value="1">Approved</option>
+                                        <option value="2">Rejected</option>
+                                        <option value="3">Assigned</option>
+                                        <option value="3">Ressolved</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
+                                    <label>&nbsp;</label>
+
+                                    <select name="service_list_id" class="form-control">
+                                        <option value="">-- select Service --</option>
+                                        @foreach ($service_lists as $key => $value)
+                                            <option value="{{ $value->id }}">{{ $value->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+
+                                    <select name="complaint_id" class="form-control">
+                                        <option value="">-- select complaint --</option>
+                                        @foreach ($complaints as $key => $value)
+                                            <option value="{{ $value['id'] }}">{{ $value['complaint_number'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
                                     <button type="submit" class="btn btn-indigo btn-s m-t-15 waves-effect">
                                         <i class="material-icons">search</i>
                                         <span>Search</span>
@@ -79,10 +91,10 @@
                                 <tr>
                                     <th>SL.</th>
                                     <th>Property</th>
+                                    <th>Tenant</th>
                                     <th>Complaint number</th>
                                     <th>Service Type</th>
                                     <th>status</th>
-                                    <th>Complaints</th>
 
                                     <th width="150px">Action</th>
                                 </tr>
@@ -92,23 +104,27 @@
                                 @foreach ($complaints as $key => $message)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $message['property']['product_code'] }}</td>
+                                        <td>{{ $message['property']['product_code'] }}<br />{{ str_limit($message['property']['title'], 30) }}
+                                        </td>
+                                        <td>{{ $message['customer']['first_name'] . ' ' . $message['customer']['last_name'] }}<br />
+                                            {{ $message['customer']['phone'] }}<br />
+                                            {{ $message['customer']['email'] }}
+                                        </td>
                                         <td>{{ $message['complaint_number'] }}</td>
                                         <td>{{ $message['service_list']['name'] }}</td>
                                         <td>
                                             @if ($message['status'] == 0)
-                                                <span class="btn-success btn-sm"> New </span>
+                                                <span class="badge bg-green"> New </span>
                                             @elseif($message['status'] == 1)
-                                                <span class="btn-success btn-sm"> Approved </span>
+                                                <span class="badge bg-green"> Approved </span>
                                             @elseif($message['status'] == 2)
-                                                <span class="btn-danger btn-sm"> Rejected </span>
+                                                <span class="badge bg-red"> Rejected </span>
                                             @elseif($message['status'] == 3)
-                                                {{ 'Assigned to handiman' }}
+                                                <span class="badge bg-blue"> Assigned to handyman </span>
                                             @elseif($message['status'] == 4)
-                                                {{ 'Ressolved' }}
+                                                <span class="badge bg-pink"> Ressolved </span>
                                             @endif
                                         </td>
-                                        <td>{{ str_limit($message['complaint'], 40, '...') }}</td>
                                         <td>
                                             @if ($message['status'] == 0 || $message['status'] == 2)
                                                 <a href="{{ route('admin.complaint.read', $message['id']) }}"
@@ -122,10 +138,10 @@
                                                 </a>
                                             @endif
 
-                                            <button type="button" class="btn btn-danger btn-sm waves-effect"
+                                            {{-- <button type="button" class="btn btn-danger btn-sm waves-effect"
                                                 onclick="deleteMessage({{ $message['id'] }})">
                                                 <i class="material-icons">delete</i>
-                                            </button>
+                                            </button> --}}
                                             <form action="{{ route('admin.messages.destroy', $message['id']) }}"
                                                 method="POST" id="del-message-{{ $message['id'] }}" style="display:none;">
                                                 @csrf
@@ -155,7 +171,8 @@
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
     <script>
@@ -180,5 +197,10 @@
                 }
             })
         }
+        $(document).ready(function() {
+            $('select').selectize({
+                sortField: 'text'
+            });
+        });
     </script>
 @endpush

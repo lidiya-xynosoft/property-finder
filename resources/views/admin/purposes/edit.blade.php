@@ -2,10 +2,7 @@
 
 @section('title', 'Edit Purpose')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')
@@ -49,8 +46,4 @@
 @endsection
 
 
-@push('script')
 
-
-
-@endpush

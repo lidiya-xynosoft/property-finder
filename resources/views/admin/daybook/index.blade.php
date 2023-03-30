@@ -2,13 +2,12 @@
 
 @section('title', 'ledger')
 
-@push('styles')
-    <!-- JQuery DataTable Css -->
-    <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
-@endpush
+    
 
 @section('content')
-
+@push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+    @endpush
 
 
     <div class="row clearfix">

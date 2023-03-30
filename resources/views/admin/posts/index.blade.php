@@ -2,15 +2,12 @@
 
 @section('title', 'Posts')
 
-@push('styles')
 
-    <!-- JQuery DataTable Css -->
-    <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
-
-@endpush
 
 @section('content')
-
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+    @endpush
     <div class="block-header">
         <a href="{{route('admin.posts.create')}}" class="waves-effect waves-light btn right m-b-15 addbtn">
             <i class="material-icons left">add</i>
@@ -48,7 +45,7 @@
                                     <td>{{$key+1}}</td>
                                     <td>
                                         @if(Storage::disk('public')->exists('posts/'.$post->image))
-                                            <img src="{{Storage::url('posts/'.$post->image)}}" alt="{{$post->title}}" class="img-responsive img-rounded">
+                                            <img src="{{Storage::url('posts/'.$post->image)}}" alt="{{$post->title}}" class="img-responsive img-rounded" width="60">
                                         @endif
                                     </td>
                                     <td>

@@ -2,10 +2,6 @@
 
 @section('title', 'Edit Categories')
 
-@push('styles')
-
-    
-@endpush
 
 
 @section('content')
@@ -58,8 +54,4 @@
 @endsection
 
 
-@push('script')
 
-
-
-@endpush

@@ -80,6 +80,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('countries', 'CountryController');
     Route::resource('tenants', 'TenantController');
     Route::resource('tenant-service', 'TenantServiceController');
+    Route::resource('cancellation-reason', 'CancellationReasonController');
+    Route::resource('handyman', 'HandymanController');
     Route::resource('testimonials', 'TestimonialController');
     Route::get('daybook', 'DaybookController@index')->name('transactions');
     Route::get('tenancy-list', 'TenantController@list')->name('list');
@@ -96,7 +98,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('profile', 'DashboardController@profileUpdate')->name('profile.update');
     Route::get('complaint', 'DashboardController@complaint')->name('complaint');
     Route::get('complaint/read/{id}', 'DashboardController@complaintRead')->name('complaint.read');
-    Route::get('complaint/reject/{id}', 'DashboardController@complaintReject')->name('complaint.reject');
+    Route::post('complaint/reject/', 'DashboardController@complaintReject')->name('complaint.reject');
     Route::post('complaint/action', 'DashboardController@complaintAction')->name('complaint.action');
     Route::post('complaint/search', 'DashboardController@complaintSearch')->name('complaint.search');
 

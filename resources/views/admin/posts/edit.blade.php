@@ -2,13 +2,13 @@
 
 @section('title', 'Edit Post')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
-@endpush
 
 
 @section('content')
 
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+    @endpush
     <div class="block-header"></div>
 
     <div class="row clearfix">

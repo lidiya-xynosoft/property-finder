@@ -2,10 +2,7 @@
 
 @section('title', 'Create Sliders')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')

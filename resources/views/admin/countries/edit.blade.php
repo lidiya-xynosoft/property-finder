@@ -2,10 +2,6 @@
 
 @section('title', 'Edit Country')
 
-@push('styles')
-@endpush
-
-
 @section('content')
 
     <div class="block-header">

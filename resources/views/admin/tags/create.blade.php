@@ -2,10 +2,7 @@
 
 @section('title', 'Create Tags')
 
-@push('styles')
 
-    
-@endpush
 
 
 @section('content')
@@ -58,8 +55,4 @@
 @endsection
 
 
-@push('script')
 
-
-
-@endpush

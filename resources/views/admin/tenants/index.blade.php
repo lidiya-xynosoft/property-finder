@@ -2,15 +2,12 @@
 
 @section('title', 'Features')
 
-@push('styles')
-    <!-- JQuery DataTable Css -->
-    <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
-@endpush
-
 @section('content')
-
+    @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+    @endpush
     <div class="block-header">
-        <a href="{{ route('admin.aminities.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
+        <a href="{{ route('admin.tenants.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
             <i class="material-icons left">add</i>
             <span>CREATE </span>
         </a>
@@ -55,7 +52,7 @@
                                                 <i class="material-icons">delete</i>
                                             </button>
                                             <form action="{{ route('admin.tenants.destroy', $tenant->id) }}"
-                                                method="POST" id="del-tenant  -{{ $tenant->id }}" style="display:none;">
+                                                method="POST" id="del-tenant-{{ $tenant->id }}" style="display:none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -84,9 +81,7 @@
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
     <script>
-        (function($) {
-            function deleteAminity(id) {
-                alert("here");
+            function deleteTenant(id) {
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -97,15 +92,14 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
-                        document.getElementById('del-feature-' + id).submit();
+                        document.getElementById('del-tenant-' + id).submit();
                         swal(
                             'Deleted!',
-                            'Feature has been deleted.',
+                            'tenant has been deleted.',
                             'success'
                         )
                     }
                 })
             }
-        })(jQuery);
     </script>
 @endpush

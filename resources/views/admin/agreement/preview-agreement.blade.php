@@ -204,8 +204,6 @@
 
                             </tr>
                         </table>
-
-
                         <div class="sdmn" style="display: flex;     justify-content: space-between;">
                             <h5><U>4. FINANCIAL TERMS</U></h5>
                             <h5 class="text-right"><U>4. الشروط المالية</U></h5>
