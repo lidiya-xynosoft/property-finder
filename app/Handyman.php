@@ -19,4 +19,8 @@ class Handyman extends Model
         'verification',
         'document_type_id'
     ];
+    public function handymanComplaintStatus()
+    {
+        return $this->hasMany(HandymanComplaintStatus::class);
+    }
 }

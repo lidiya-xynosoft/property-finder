@@ -45,11 +45,16 @@
                                         <td>{{ $handyman->phone }}</td>
                                         
                                         <td class="text-center">
-                                            <a href="{{ route('admin.handyman.edit', $handyman->id) }}"
+                                         
+                                            <a href="{{ url('admin/handyman-manage?id='.$handyman->id)}}"
+                                                class="btn btn-warning btn-sm waves-effect">
+                                                <i class="material-icons">manage_accounts</i>
+                                            </a>
+                                               <a href="{{ route('admin.handyman.edit', $handyman->id) }}"
                                                 class="btn btn-info btn-sm waves-effect">
                                                 <i class="material-icons">edit</i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm waves-effect" id="handyman"
+                                            {{-- <button type="button" class="btn btn-danger btn-sm waves-effect" id="handyman"
                                                 value="{{ $handyman->id }}" onclick="deleteHandyman({{ $handyman->id }})">
                                                 <i class="material-icons">delete</i>
                                             </button>
@@ -57,7 +62,7 @@
                                                 method="POST" id="del-handyman-{{ $handyman->id }}" style="display:none;">
                                                 @csrf
                                                 @method('DELETE')
-                                            </form>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach

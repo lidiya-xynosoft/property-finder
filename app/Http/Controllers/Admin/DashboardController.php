@@ -16,11 +16,15 @@ use App\Property;
 use App\Post;
 use App\Comment;
 use App\ComplaintCancellationReason;
+use App\ComplaintHistory;
 use App\ComplaintImage;
+use App\Handyman;
+use App\HandymanComplaintStatus;
 use App\Setting;
 use App\Message;
 use App\PropertyAgreement;
 use App\PropertyComplaint;
+use App\PropertyCustomer;
 use App\ServiceList;
 use App\User;
 use Toastr;
@@ -183,7 +187,6 @@ class DashboardController extends Controller
 
         return back();
     }
-
     public function complaint()
     {
         $complaints = [];
@@ -201,31 +204,72 @@ class DashboardController extends Controller
         $agreement_data = PropertyAgreement::find($data->property_agreement_id);
         $complaint_image = ComplaintImage::where('property_complaint_id', $data->id)->get();
         $cancellation_reason = CancellationReason::all();
-
-        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data', 'complaint_image', 'cancellation_reason'));
+        $handymans = Handyman::where('status', 1)->get();
+        $assigned_handyman = HandymanComplaintStatus::with('Handyman')->where('property_complaint_id', $data->id)->first();
+        return view('admin.settings.complaints.readcomplaint', compact('data', 'agreement_data', 'complaint_image', 'cancellation_reason', 'handymans', 'assigned_handyman'));
     }
     public function complaintReject(Request $request)
     {
-        $message = PropertyComplaint::findOrFail($request['complaint_id']);
-        $message->status = '2';
+        $complaint = PropertyComplaint::findOrFail($request['complaint_id']);
+        $complaint->status = '2';
         ComplaintCancellationReason::create([
             'property_complaint_id' => $request['complaint_id'],
             'cancellation_reason_id' => $request['cancellation_reason_id']
         ]);
-        $message->rejected_time = Carbon::now();
-        $message->save();
+        ComplaintHistory::create(
+            [
+                'property_complaint_id' => $request['complaint_id'], 'customer_id' => $complaint['customer_id'], 'property_agreement_id' => $complaint['property_agreement_id'], 'message' => 'Complaint Rejected successfully', 'title' =>
+                'Complaint Rejection', 'date' => Carbon::now()->toDateString()
+            ]
+        );
+        $complaint->rejected_time = Carbon::now();
+        $complaint->save();
         $flash = array('type' => 'success', 'msg' => 'rejected successfully.');
         session()->flash('flash', $flash);
     }
     public function complaintAction(Request $request)
     {
         $status = $request->status;
-        $msgid  = $request->complaint_id;
+        $complaint_id  = $request->complaint_id;
+        $complaint = PropertyComplaint::findOrFail($complaint_id);
+        if (isset($request['handyman_id']) && $status == 3) {
+            $complaint->status = 3;
 
-        $message = PropertyComplaint::findOrFail($msgid);
-        $message->status = $status;
-        $message->approved_time = Carbon::now();
-        $message->save();
+            $complaint->is_handyman_assigned = 1;
+            $complaint->handyman_id = $request['handyman_id'];
+
+            HandymanComplaintStatus::updateOrCreate(
+                [
+                    'property_complaint_id' => $complaint_id,
+                ],
+                [
+                    'user_id' => Auth::User()->id,
+                    'handyman_id' => $request['handyman_id'],
+                    'handyman_status' => 1,
+                    'service_list_id' => $complaint->service_list_id,
+                    'customer_id' => $complaint->customer_id,
+                    'date' => Carbon::now()->toDateString(),
+                ]
+            );
+            ComplaintHistory::create(
+                [
+                    'property_complaint_id' => $complaint_id, 'customer_id' => $complaint->customer_id, 'property_agreement_id' => $complaint->property_agreement_id, 'message' => 'Complaint Assigned to handyman successfully', 'title' =>
+                    $complaint->complaint_number . ' Assign', 'date' => Carbon::now()->toDateString(),
+                ]
+            );
+        }
+        if ($status == 1) {
+            $complaint->status = 1;
+            $complaint->approved_time = Carbon::now();
+            ComplaintHistory::create(
+                [
+                    'property_complaint_id' => $complaint_id, 'customer_id' => $complaint->customer_id, 'property_agreement_id' => $complaint->property_agreement_id, 'message' => 'Complaint Approved successfully', 'title' =>
+                    $complaint->complaint_number . ' Approved', 'date' => Carbon::now()->toDateString(),
+                ]
+            );
+        }
+
+        $complaint->save();
 
         return redirect()->route('admin.complaint');
     }

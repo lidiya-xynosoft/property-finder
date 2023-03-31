@@ -27,22 +27,23 @@
                         @csrf
                         @method('PUT')
 
-                                  <div class="row">
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="text" name="first_name" class="form-control"
-                                        value="{{ $handyman->first_name }}">
+                                            value="{{ $handyman->first_name }}">
                                         <label class="form-label">First name</label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="number" name="phone" class="form-control" value="{{ $handyman->phone }}">
+                                        <input type="number" name="phone" class="form-control"
+                                            value="{{ $handyman->phone }}">
                                         <label class="form-label">Contact number</label>
                                     </div>
                                 </div>
-                              
+
 
 
                                 <div class="form-group form-float">
@@ -50,34 +51,47 @@
                                         <textarea class="form-control textarea-custom input-full" id="address" name="address" rows="3"></textarea> <label class="form-label">address</label>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
+                                    @if ($handyman->status)
+                                        @php
+                                            $checked = 'checked';
+                                        @endphp
+                                    @else
+                                        @php
+                                            $checked = '';
+                                        @endphp
+                                    @endif
                                     <input type="checkbox" id="published" name="status" class="filled-in" value="1"
-                                        checked />
-                                    <label for="published">Active</label>
+                                        {{ $checked }} />
+                                    <label for="published">Published</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" name="last_name" class="form-control" value="{{ $handyman->last_name }}">
+                                        <input type="text" name="last_name" class="form-control"
+                                            value="{{ $handyman->last_name }}">
                                         <label class="form-label">Last name</label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" name="email" class="form-control" value="{{ $handyman->email }}">
+                                        <input type="text" name="email" class="form-control"
+                                            value="{{ $handyman->email }}">
                                         <label class="form-label">Email</label>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <select name="document_type_id" class="form-control show-tick">
                                             <option value="">-- Document Type--</option>
 
                                             @foreach ($document_types as $document_type)
-                                                <option value="{{ $document_type->id }}">
-                                                    {{ $document_type->title }}</option>
+                                                <option value="{{ $document_type->id }}"
+                                                    {{ $document_type->id == $handyman->document_type_id ? 'selected' : '' }}>
+                                                     {{ $document_type->title }}</option>
                                             @endforeach
                                         </select>
 
@@ -86,7 +100,8 @@
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" name="verification" class="form-control" value="{{ $handyman->verification }}">
+                                        <input type="text" name="verification" class="form-control"
+                                            value="{{ $handyman->verification }}">
                                         <label class="form-label">Document number</label>
                                     </div>
                                 </div>

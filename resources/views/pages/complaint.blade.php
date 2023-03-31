@@ -166,7 +166,6 @@
                     <div class="single-add-property">
                         <h3>Register Complaints</h3>
 
-
                         <div class="property-form-group">
                             <div class="row">
                                 <div class="col-lg-6 col-md-12">

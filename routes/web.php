@@ -101,6 +101,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('complaint/reject/', 'DashboardController@complaintReject')->name('complaint.reject');
     Route::post('complaint/action', 'DashboardController@complaintAction')->name('complaint.action');
     Route::post('complaint/search', 'DashboardController@complaintSearch')->name('complaint.search');
+    Route::get('handyman-manage/', 'HandymanController@handymanManage')->name('handyman-manage');
 
     Route::get('message', 'DashboardController@message')->name('message');
     Route::get('message/read/{id}', 'DashboardController@messageRead')->name('message.read');

@@ -6,6 +6,7 @@ use App\Country;
 use App\DocumentType;
 use App\Handyman;
 use App\Http\Controllers\Controller;
+use App\PropertyComplaint;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -73,7 +74,12 @@ class HandymanController extends Controller
         // Toastr::success('message', 'Handyman created successfully.');
         return redirect()->route('admin.handyman.index');
     }
+    public function show(Handyman $handyman)
+    {
+        $handyman = Handyman::find($handyman->id);
 
+        return view('admin.handyman.show', compact('handyman'));
+    }
     public function edit(Handyman $handyman)
     {
         $data = [];
@@ -122,5 +128,15 @@ class HandymanController extends Controller
 
         // Toastr::success('message', 'Handyman deleted successfully.');
         return back();
+    }
+
+    public function handymanManage(Request $request)
+    {
+        $data = array();
+        $data['handyman'] = Handyman::find($request['id']);
+        $data['handyman_complaints'] =
+        PropertyComplaint::with('Property', 'ServiceList', 'Customer')->where('handyman_id', $request['id'])->latest()->get()->toArray();
+
+        return view('admin.handyman.manage')->with($data);
     }
 }

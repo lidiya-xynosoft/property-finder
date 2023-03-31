@@ -20,8 +20,8 @@ class CreatePropertyComplaintsTable extends Migration
             $table->foreignId('property_agreement_id')->constrained('property_agreements');
             $table->foreignId('service_list_id')->constrained('service_lists');
             $table->foreignId('customer_id')->constrained('customers');
-            // $table->foreignId('handiman_id')->constrained('handimans');
-            $table->boolean('is_handiman_assigned')->default('0');
+            $table->foreignId('handyman_id')->constrained('handymens');
+            $table->boolean('is_handyman_assigned')->default('0');
             $table->longText('complaint')->nullable();
             $table->tinyInteger('status')->default('0')->comment('0-new,1-approved,2-rejected,3-assigned,4-resolved');
             $table->dateTime('approved_time')->nullable();

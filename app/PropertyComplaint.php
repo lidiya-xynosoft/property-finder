@@ -14,8 +14,8 @@ class PropertyComplaint extends Model
         'property_agreement_id',
         'service_list_id',
         'customer_id',
-        // 'handiman_id',
-        'is_handiman_assigned',
+        'handyman_id',
+        'is_handyman_assigned',
         'complaint',
         'status',
         'approved_time',
@@ -38,5 +38,9 @@ class PropertyComplaint extends Model
     public function complaintImage()
     {
         return $this->hasMany(ComplaintImage::class);
+    }
+    public function handymanComplaintStatus()
+    {
+        return $this->hasMany(HandymanComplaintStatus::class);
     }
 }
