@@ -25,11 +25,11 @@ class TenantController extends Controller
     public function list()
     {
         $data = array();
-        $data['tenants'] = Customer::with('PropertyCustomer', 'PropertyAgreement')->latest()->get()->toArray();
+        $data['tenants'] = Customer::with('PropertyCustomer', 'PropertyAgreement')->get()->toArray();
         // return $data;
         return view('admin.tenants.list')->with($data);
     }
-
+   
     public function create()
     {
         return view('admin.tenants.create');
@@ -107,5 +107,12 @@ class TenantController extends Controller
 
         // Toastr::success('message', 'Customer deleted successfully.');
         return back();
+    }
+    public function show($tenant)
+    {
+        $tenant = Customer::whereId($tenant)->first()->toArray();
+
+        // Toastr::success('message', 'Customer deleted successfully.');
+        return $tenant;
     }
 }

@@ -130,7 +130,7 @@
 
 @endsection
 @push('script')
- <!-- Jquery DataTable Plugin Js -->
+    <!-- Jquery DataTable Plugin Js -->
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -144,7 +144,7 @@
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
 
-   
+
     <script src="{{ asset('backend/plugins/select2/dist/js/select2.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
     <script>
@@ -173,6 +173,7 @@
                 // document.getElementById("utilities_arabic").classList.remove('d-none');
                 $('#lease-section').show();
                 $('#utilities_arabic').show();
+                $('#result_of_dated_check').show();
                 // document.getElementById("result_of_dated_check").classList.remove('d-none');
             }
             'use strict';
@@ -198,7 +199,6 @@
                                 "id": agreement_id,
                             },
                             success: function(res) {
-                                console.log(res);
                                 if (res['success'] == 1) {
                                     swal(
                                         'Contract withdrawed!',
@@ -354,7 +354,6 @@
                     url: actionUrl,
                     data: form.serialize(), // serializes the form's elements.
                     success: function(data) {
-                        console.log(data);
                         // location.reload(); // show response from the php script.
                     }
                 });
@@ -370,11 +369,28 @@
                     url: actionUrl,
                     data: form.serialize(), // serializes the form's elements.
                     success: function(data) {
-                        console.log(data);
                         location.reload(); // show response from the php script.
                     }
                 });
 
+            });
+            $("#customer_id").change(function() {
+                var id = $('#customer_id').val()
+                $.ajax({
+                    url: "/admin/tenants/" + id,
+                    type: 'get',
+                    data: {
+                        //    id:$('#customer_id').val(),
+                    },
+                    success: function(res) {
+                        $('#tenant_name').val(res['first_name'] +' ' + res['last_name']);
+                        $('#email').val(res['email']);
+                        $('#phone').val(res['phone']);
+                    },
+                    error: function() {
+
+                    }
+                });
             });
             $("#expenseForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -386,7 +402,6 @@
                     url: actionUrl,
                     data: form.serialize(), // serializes the form's elements.
                     success: function(data) {
-                        console.log(data);
                         location.reload(); // show response from the php script.
                     }
                 });
@@ -402,7 +417,6 @@
                     url: actionUrl,
                     data: form.serialize(), // serializes the form's elements.
                     success: function(data) {
-                        console.log(data);
                         location.reload(); // show response from the php script.
                     }
                 });
@@ -442,8 +456,6 @@
                 }
                 var currentDate = moment(lease_date);
                 var commencement = currentDate.format('LL');
-
-                console.log(commencement);
 
                 var lease_mode = $("input[name='lease_mode']:checked").val();
                 if (lease_mode == 'month') {
@@ -487,7 +499,6 @@
                 $('#lease_expiry').val(expiryDate);
                 $('#lease_period').val(period);
                 $('#lease_commencement').val(commencement);
-                // document.getElementById("lease-section").classList.remove('d-none');
                 $('#lease-section').show();
                 var input_id = '#lease_expiry_arabic';
                 var lease_expiry_arabic = translateText(expiryDate, input_id);
@@ -504,19 +515,13 @@
 
             $(".utility_case").change(function() {
                 var utility_mode = $("input[name='utility_case']:checked").val();
-                console.log(utility_mode);
-                $('#utilities').val('');
                 if (utility_mode == 'excluded') {
                     $('#utilities').val('Excluded');
                     $('#utilities_arabic').val('مستبعد');
                 } else if (utility_mode == 'included') {
-                    var utilities = $('#premises_utilities').val();
-                    $('#utilities').val(utilities);
-                    var input_id = '#utilities_arabic';
-                    var utilities_arabic = translateText(utilities, input_id);
-                    $('#utilities_arabic').val();
+                    $('#utilities').val('');
+                    $('#utilities_arabic').val('');
                 }
-                // document.getElementById('utilities_arabic').classList.remove('d-none');
                 $('#utilities_arabic').show();
 
 
@@ -524,9 +529,7 @@
 
             $("#payment_mode").change(function() {
                 var payment_mode = $('#payment_mode').val();
-                console.log(payment_mode);
                 if (payment_mode == 'post_dated_check') {
-
                     $('#no_of_dated_check').removeAttr("disabled");
                     var no_of_check = $('#no_of_dated_check').val();
                     if (no_of_check > 0) {
@@ -541,19 +544,13 @@
                     $("#post_dated_check_value_arabic").val('التحويل المصرفي');
                     var displayText = 'التحويل المصرفي';
                     $('#result_of_dated_check').html(displayText);
-                    // document.getElementById("result_of_dated_check").classList.remove('d-none');
                     $('#result_of_dated_check').show();
 
                 }
 
             });
             $("#no_of_dated_check").change(function() {
-                // document.getElementById("result_of_dated_check").classList.remove('d-none');
                 $('#result_of_dated_check').show();
-
-                // document.getElementById("result_of_dated_check").classList.add('d-block');
-                $('#result_of_dated_check').hide();
-
                 var no_of_check = $('#no_of_dated_check').val();
                 var displayText = no_of_check + ' Post dated check / ' + 'تفتيش مؤرخة ' + no_of_check;
                 $('#result_of_dated_check').html(displayText);
@@ -577,6 +574,11 @@
             $("#tenant_name").change(function() {
                 var sourceText = $(this).val();
                 var input_id = '#tenant_name_arabic';
+                var arabicText = translateText(sourceText, input_id);
+            });
+            $("#utilities").change(function() {
+                var sourceText = $(this).val();
+                var input_id = '#utilities_arabic';
                 var arabicText = translateText(sourceText, input_id);
             });
 
@@ -603,7 +605,6 @@
 
             $(".mode_of_bill_payment").change(function() {
                 var mode_of_bill_payment = $("input[name='mode_of_bill_payment']:checked").val();
-                console.log(mode_of_bill_payment);
                 if (mode_of_bill_payment == 'expense_type') {
                     $('#expense_category_id').show();
                     $('#income_category_id').hide();
@@ -617,7 +618,6 @@
             });
 
             function translateText(sourceText, input_id) {
-                console.log(sourceText, input_id);
                 var sourceLang = "en";
                 var targetLang = "ar";
 
@@ -630,7 +630,6 @@
                         'sourceText': sourceText,
                         'translatedText': translatedText
                     };
-                    console.log(json);
                     $(input_id).val(translatedText);
                 });
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\ComplaintHistory;
 use App\Country;
 use App\DocumentType;
 use App\Handyman;
+use App\HandymanComplaintStatus;
 use App\Http\Controllers\Controller;
 use App\PropertyComplaint;
 use App\User;
@@ -134,9 +136,99 @@ class HandymanController extends Controller
     {
         $data = array();
         $data['handyman'] = Handyman::find($request['id']);
-        $data['handyman_complaints'] =
-        PropertyComplaint::with('Property', 'ServiceList', 'Customer')->where('handyman_id', $request['id'])->latest()->get()->toArray();
-
+        $data['new_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 1])->latest()->get()->toArray();
+        $data['accepted_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 2])->latest()->get()->toArray();
+        $data['process_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 3])->latest()->get()->toArray();
+        $data['completed_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 4])->latest()->get()->toArray();
         return view('admin.handyman.manage')->with($data);
+    }
+
+    public function changeHandymanStatus(Request $request)
+    {
+        $property_customer_id = HandymanComplaintStatus::whereId($request['id'])->first()->customer_id;
+
+        $handyman_data = HandymanComplaintStatus::whereId($request['id'])->first();
+
+        $property_complaint_id = HandymanComplaintStatus::whereId($request['id'])->first()->property_complaint_id;
+        $order_number = isset($property_complaint_id) ? PropertyComplaint::find($property_complaint_id)->complaint_number : null;
+        $check_handyman_complaint_status = HandymanComplaintStatus::checkDriverOrderStatus($property_complaint_id, $request['status']);
+
+        if ($check_handyman_complaint_status == true) {
+            $flash = array('type' => 'success', 'msg' => 'Unable to perform , Action has been assigned before.');
+            session()->flash('flash', $flash);
+            $handyman = Handyman::latest()->get();
+
+            return view('admin.handyman.index', compact('handyman'));
+        }
+        if ($request['status'] == 2 && $handyman_data->handyman_status == 1) {
+
+            HandymanComplaintStatus::whereId($request['id'])->update([
+                'handyman_status' => 2,
+                'is_handyman_assigned' => true
+            ]);
+            PropertyComplaint::whereId($property_complaint_id)->update([
+                'assigned_time' => Carbon::now(),
+            ]);
+            ComplaintHistory::create(
+                [
+                    'property_complaint_id' => $property_complaint_id,
+                    'customer_id' => $property_customer_id,
+                    'property_agreement_id' => PropertyComplaint::find($property_complaint_id)->property_agreement_id,
+                    'message' => 'Your complaint (#' . $order_number . ') has been Accepted!',
+                    'title' =>  'Handyman Accepted',
+                    'date' => Carbon::now()->toDateString(),
+                ]
+            );
+        }
+        if ($request['status'] == 3) {
+
+            HandymanComplaintStatus::whereId($request['id'])->update([
+                'work_start_time' => Carbon::now(),
+            ]);
+            ComplaintHistory::create(
+                [
+                    'property_complaint_id' => $property_complaint_id,
+                    'customer_id' => $property_customer_id,
+                    'property_agreement_id' => PropertyComplaint::find($property_complaint_id)->property_agreement_id,
+                    'message' => 'Your complaint (#' . $order_number . ') under maintenance',
+                    'title' =>  'Complaint progress',
+                    'date' => Carbon::now()->toDateString(),
+                ]
+            );
+        }
+        if ($request['status'] == 4) {
+
+            $work_start_time = HandymanComplaintStatus::whereId($request['id'])->first()->work_start_time;
+            $work_end_time = Carbon::now();
+
+            // $startTime = Carbon::parse($work_start_time);
+            // $endTime = Carbon::parse($work_end_time);
+            $totalDuration = $work_end_time->diff($work_start_time)->format('%H:%I:%S');
+            HandymanComplaintStatus::whereId($request['id'])->update([
+                'work_end_time' => $work_end_time,
+                'elapsed_time' => $totalDuration,
+                'handyman_status' => 4
+            ]);
+            PropertyComplaint::whereId($property_complaint_id)->update([
+                'status' => 4,
+                'resolved_time' =>  Carbon::now(),
+            ]);
+
+            ComplaintHistory::create(
+                [
+                    'property_complaint_id' => $property_complaint_id,
+                    'customer_id' => $property_customer_id,
+                    'property_agreement_id' => PropertyComplaint::find($property_complaint_id)->property_agreement_id,
+                    'message' => 'Your complaint (#' . $order_number . ') ressolved',
+                    'title' =>  'Completed',
+                    'date' => Carbon::now()->toDateString(),
+                ]
+            );
+        }
+        HandymanComplaintStatus::whereId($request['id'])->update([
+            'handyman_status' => $request['status'],
+        ]);
+
+        // return redirect()->route('admin.complaint');
     }
 }

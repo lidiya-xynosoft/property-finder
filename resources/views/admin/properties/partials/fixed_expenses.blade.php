@@ -7,14 +7,14 @@
                  <div class="block-header">
                      <div class="row">
                          <div class="col-lg-12 col-md-4 col-sm-4 col-xs-12">
-                             <div class="info-box bg-light-green hover-expand-effect">
+                             <div class="info-box bg-indigo hover-expand-effect">
                                  <div class="icon">
                                      <i class="material-icons">credit_score</i>
                                  </div>
                                  <div class="content">
-                                     <div class="text">TOTAL INCOME</div>
-                                     <div class="number count-to" data-from="0" data-to="{{ $total_income }}"
-                                         data-speed="15" data-fresh-interval="20">{{ $total_income }}</div>
+                                     <div class="text">TOTAL EXPENSE</div>
+                                     <div class="number count-to" data-from="0" data-to="{{ $total_expense }}"
+                                         data-speed="15" data-fresh-interval="20">{{ $total_expense }}</div>
                                  </div>
                              </div>
                          </div>

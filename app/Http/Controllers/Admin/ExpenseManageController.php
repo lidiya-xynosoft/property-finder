@@ -24,7 +24,10 @@ class ExpenseManageController extends Controller
         $request->validate([
             'name' => 'required',
             'date' => 'required',
-            'amount' => 'required'
+            'amount' => 'required',
+            'property_agreement_id' => 'required',
+            'ledger_id' => 'required',
+            'payment_type_id' => 'required',
         ]);
         if ($request['mode_of_bill_payment'] == 'expense_type') {
             $data = PropertyExpense::create(

@@ -20,90 +20,227 @@
                 <div class="header">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#new_complaints">New Complaints</a></li>
-                        <li><a data-toggle="tab" href="#handyman_complaints">Handyman Complaints </a></li>
+                        <li><a data-toggle="tab" href="#accepted_complaints">Accepted Complaints </a></li>
                         <li><a data-toggle="tab" href="#progress">Complaints in Progress</a></li>
                         <li><a data-toggle="tab" href="#ressolved">Ressolved</a></li>
 
                     </ul>
 
                     <div class="tab-content">
-                        <div id="new_complaints" class="tab-pane fade in">
+                        <div id="new_complaints" class="tab-pane fade in active">
                             <div class="header">
-                                <div class="body">
-                                   
-                                </div>
+
                                 <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                            <thead>
-                                <tr>
-                                    <th>SL.</th>
-                                    <th>Property</th>
-                                    <th>Tenant</th>
-                                    <th>Complaint number</th>
-                                    <th>Service Type</th>
-                                    <th>status</th>
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.</th>
+                                                <th>Property</th>
+                                                <th>Tenant</th>
+                                                <th>Complaint number</th>
+                                                <th>Service Type</th>
+                                                <th width="150px">Action</th>
+                                            </tr>
+                                        </thead>
 
-                                    <th width="150px">Action</th>
-                                </tr>
-                            </thead>
+                                        <tbody>
+                                            @foreach ($new_complaints as $key => $message)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $message['property_complaint']['property']['product_code'] }}<br />{{ str_limit($message['property_complaint']['property']['title'], 30) }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['customer']['first_name'] . ' ' . $message['property_complaint']['customer']['last_name'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['phone'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['email'] }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['complaint_number'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
 
-                            <tbody>
-                                @foreach ($handyman_complaints as $key => $message)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $message['property']['product_code'] }}<br />{{ str_limit($message['property']['title'], 30) }}
-                                        </td>
-                                        <td>{{ $message['customer']['first_name'] . ' ' . $message['customer']['last_name'] }}<br />
-                                            {{ $message['customer']['phone'] }}<br />
-                                            {{ $message['customer']['email'] }}
-                                        </td>
-                                        <td>{{ $message['complaint_number'] }}</td>
-                                        <td>{{ $message['service_list']['name'] }}</td>
-                                        <td>
-                                            @if ($message['status'] == 0)
-                                                <span class="badge bg-green"> New </span>
-                                            @elseif($message['status'] == 1)
-                                                <span class="badge bg-green"> Approved </span>
-                                            @elseif($message['status'] == 2)
-                                                <span class="badge bg-red"> Rejected </span>
-                                            @elseif($message['status'] == 3)
-                                                <span class="badge bg-blue"> Assigned to handyman </span>
-                                            @elseif($message['status'] == 4)
-                                                <span class="badge bg-pink"> Ressolved </span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($message['status'] != 4 )
-                                                <a href="{{ route('admin.complaint.read', $message['id']) }}"
-                                                    class="btn btn-warning btn-sm waves-effect">
-                                                    <i class="material-icons">local_library</i>
-                                                </a>
-                                            @else
-                                                <a href="{{ route('admin.complaint.read', $message['id']) }}"
-                                                    class="btn btn-success btn-sm waves-effect">
-                                                    <i class="material-icons">done</i>
-                                                </a>
-                                            @endif
+                                                    @if ($message['handyman_status'] == 1)
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-success btn-sm waves-effect"
+                                                                onclick="deleteCom({{ $message['id'] }},2)">
+                                                                <i class="material-icons">local_library</i>
+                                                            </button>
 
-                                            {{-- <button type="button" class="btn btn-danger btn-sm waves-effect"
-                                                onclick="deleteMessage({{ $message['id'] }})">
-                                                <i class="material-icons">delete</i>
-                                            </button> 
-                                            <form action="{{ route('admin.messages.destroy', $message['id']) }}"
-                                                method="POST" id="del-message-{{ $message['id'] }}" style="display:none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>--}}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                                            <button type="button"
+                                                                class="btn btn-danger btn-sm waves-effect"
+                                                                onclick="deleteCom({{ $message['id'] }},5)">
+                                                                <i class="material-icons">delete</i>
+                                                            </button>
+                                                        </td>
+                                                    @endif
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                        <div id="accepted_complaints" class="tab-pane fade in active">
+                            <div class="header">
+                                {{-- <div class="body">
+                                   
+                                </div> --}}
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.</th>
+                                                <th>Property</th>
+                                                <th>Tenant</th>
+                                                <th>Complaint number</th>
+                                                <th>Service Type</th>
+                                                {{-- <th>status</th> --}}
+
+                                                <th width="150px">Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach ($accepted_complaints as $key => $message)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $message['property_complaint']['property']['product_code'] }}<br />{{ str_limit($message['property_complaint']['property']['title'], 30) }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['customer']['first_name'] . ' ' . $message['property_complaint']['customer']['last_name'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['phone'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['email'] }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['complaint_number'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+                                                    {{-- <td>
+                                            @if ($message['handyman_status'] == 0)
+                                                <span class="badge bg-green"> New </span>
+                                            @elseif($message['handyman_status'] == 1)
+                                                <span class="badge bg-green"> Approved </span>
+                                            @elseif($message['handyman_status'] == 2)
+                                                <span class="badge bg-red"> Rejected </span>
+                                            @elseif($message['handyman_status'] == 3)
+                                                <span class="badge bg-blue"> Assigned to handyman </span>
+                                            @elseif($message['handyman_status'] == 4)
+                                                <span class="badge bg-pink"> Ressolved </span>
+                                            @endif
+                                        </td> --}}
+                                                    @if ($message['handyman_status'] == 2)
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-success btn-sm waves-effect"
+                                                                onclick="deleteCom({{ $message['id'] }},3)">
+                                                                <i class="material-icons">local_library</i> Work Start
+                                                            </button>
 
 
+                                                            {{--  <form action="{{ route('admin.messages.destroy', $message['id']) }}"
+                                                method="POST" id="del-message-{{ $message['id'] }}" style="display:none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form> --}}
+                                                        </td>
+                                                    @endif
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="progress" class="tab-pane fade in active">
+                            <div class="header">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.</th>
+                                                <th>Property</th>
+                                                <th>Tenant</th>
+                                                <th>Complaint number</th>
+                                                <th>Service Type</th>
+                                                <th width="150px">Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach ($process_complaints as $key => $message)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $message['property_complaint']['property']['product_code'] }}<br />{{ str_limit($message['property_complaint']['property']['title'], 30) }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['customer']['first_name'] . ' ' . $message['property_complaint']['customer']['last_name'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['phone'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['email'] }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['complaint_number'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+
+                                                    @if ($message['handyman_status']==3)
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-success btn-sm waves-effect"
+                                                                onclick="deleteCom({{ $message['id'] }},4)">
+                                                                <i class="material-icons">local_library</i> work Completed
+                                                            </button>
+
+                                                        </td>
+                                                    @endif
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                          <div id="ressolved" class="tab-pane fade in active">
+                            <div class="header">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                        <thead>
+                                            <tr>
+                                                <th>SL.</th>
+                                                <th>Property</th>
+                                                <th>Tenant</th>
+                                                <th>Complaint number</th>
+                                                <th>Service Type</th>
+                                                <th width="150px">Action</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach ($completed_complaints as $key => $message)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $message['property_complaint']['property']['product_code'] }}<br />{{ str_limit($message['property_complaint']['property']['title'], 30) }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['customer']['first_name'] . ' ' . $message['property_complaint']['customer']['last_name'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['phone'] }}<br />
+                                                        {{ $message['property_complaint']['customer']['email'] }}
+                                                    </td>
+                                                    <td>{{ $message['property_complaint']['complaint_number'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+
+                                                    @if ($message['handyman_status']==4)
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-success btn-sm waves-effect"> 
+                                                                <i class="material-icons">local_library</i> Completed
+                                                            </button>
+
+                                                        </td>
+                                                    @endif
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,8 +266,52 @@
 
     <script src="{{ asset('backend/plugins/select2/dist/js/select2.min.js') }}"></script>
     <script>
-        (function($) {
+        function deleteCom(id, status) {
 
-        })(jQuery);
+            swal({
+                title: 'Are you sure?',
+                text: "Changing work status",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: "/admin/change-handyman-status",
+                        type: 'get',
+                        data: {
+                            id: id,
+                            status: status,
+                        },
+                        success: function(res) {
+                            // if (res['success'] == 1) {
+                                swal(
+                                    'Status Changed!',
+                                    'Complaint has been changed.',
+                                    'success'
+                                )
+                                location.reload(); // show response from the php script.
+                            // } else {
+                            //     swal(
+                            //         'Something wrong!',
+                            //         'document has not deleted.',
+                            //         'warning'
+                            //     )
+                            // }
+                        },
+                        error: function() {
+                            swal(
+                                'Something wrong!',
+                                'document has not deleted.',
+                                'warning'
+                            )
+                        }
+                    });
+
+                }
+            })
+        };
     </script>
 @endpush

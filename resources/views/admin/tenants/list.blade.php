@@ -76,7 +76,7 @@
                                                         <td>{{ $data['agreement_id'] }}</td>
                                                         <td>{{ $data['lease_commencement'] . ' - ' . $data['lease_expiry'] }}
                                                         </td>
-                                                        <td>{{ $data['agreement_id'] }}</td>
+                                                        <td>@if($data['is_published'] == 1 && $data['is_withdraw'] ==0) Active @endif</td>
                                                         <td class="text-center">
                                                             {{-- <a target="_blank"
                                                                 href="{{ url('publish-previewed-agreement?list_id=') .$data['id'] }}">

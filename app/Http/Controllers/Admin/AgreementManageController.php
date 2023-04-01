@@ -14,6 +14,7 @@ use App\PropertyDocument;
 use App\PropertyExpense;
 use App\PropertyIncome;
 use App\PropertyRent;
+use App\Setting;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -56,7 +57,6 @@ class AgreementManageController extends Controller
     public function saveUpdateAgreement(Request $request)
     {
         $request->validate([
-            'agreement_number' => 'required',
             'property_id' => 'required',
             'tenant_name' => 'required',
             'tenant_no' => 'required',
@@ -95,76 +95,36 @@ class AgreementManageController extends Controller
             $customer_id = $property_agreement_data->customer_id;
         } else {
             $property = new PropertyAgreement();
-            if (User::where('email', $request->input('email'))->first()) {
-                $user = User::where('email', $request->input('email'))->first();
-                $customer_id = Customer::where('user_id', $user->id)->first()->id;
-            } else {
-                $user = User::create([
-                    'name'      => $request->input('tenant_name'),
-                    'email'     => $request->input('email'),
-                    'password'  => Hash::make($request->input('tenant_name')),
-                    'username'  => $request->input('tenant_name'),
-                    'role_id'   => '3',
-                    'country_id' => Country::where('is_active', 1)->first()->id,
-                    'contact_no' => $request->input('phone'),
-                ]);
-                $customer = Customer::create([
-                    'user_id' => $user->id,
-                    'name' => trim($request->input('tenant_name')),
-                    'name_arabic' => trim($request->input('tenant_name_arabic')),
-                    'tenant_no' => trim($request->input('tenant_no')),
-                    'po_box' => $request->input('po_box'),
-                    'phone' => trim($request->input('phone')),
-                    'email' => trim($request->input('email')),
-                ]);
-                $customer_id = $customer->id;
-            }
+            // if (User::where('email', $request->input('email'))->first()) {
+            //     $user = User::where('email', $request->input('email'))->first();
+            //     $customer_id = Customer::where('user_id', $user->id)->first()->id;
+            // } else {
+            // $user = User::create([
+            //     'name'      => $request->input('tenant_name'),
+            //     'email'     => $request->input('email'),
+            //     'password'  => Hash::make($request->input('tenant_name')),
+            //     'username'  => $request->input('tenant_name'),
+            //     'role_id'   => '3',
+            //     'country_id' => Country::where('is_active', 1)->first()->id,
+            //     'contact_no' => $request->input('phone'),
+            // ]);
+            // $customer = Customer::create([
+            //     'user_id' => $user->id,
+            //     'name' => trim($request->input('tenant_name')),
+            //     'name_arabic' => trim($request->input('tenant_name_arabic')),
+            //     'tenant_no' => trim($request->input('tenant_no')),
+            //     'po_box' => $request->input('po_box'),
+            //     'phone' => trim($request->input('phone')),
+            //     'email' => trim($request->input('email')),
+            // ]);
+            // $customer_id = $customer->id;
+            // }
+            $customer_id = $request['customer_id'];
         }
+        $currentDate = Carbon::now()->toDateString();
+        $agreement_count = PropertyAgreement::withTrashed()->count() + 1;
 
-
-        // $ins_data = array(
-        //     'agreement_id' => trim($request->input('agreement_number')),
-        //     'property_id' => $request->input('property_id'),
-        //     'customer_id' => $customer->id,
-        //     'tenant_name' => trim($request->input('tenant_name')),
-        //     'tenant_name_arabic' => trim($request->input('tenant_name_arabic')),
-        //     'tenant_no' => trim($request->input('tenant_no')),
-        //     'po_box' => trim($request->input('po_box')),
-        //     'phone' => trim($request->input('phone')),
-        //     'email' => trim($request->input('email')),
-        //     'unit_no' => trim($request->input('unit_no')),
-        //     'unit_no_arabic' => $request->input('unit_no_arabic'),
-        //     'building_name_english' => trim($request->input('building_name_english')),
-        //     'building_name_arabic' => trim($request->input('building_name_arabic')),
-        //     'unit_type_english' => trim($request->input('unit_type_english')),
-        //     'unit_type_arabic' => trim($request->input('unit_type_arabic')),
-        //     'electricity_no' => trim($request->input('electricity_no')),
-        //     'water_no' => trim($request->input('water_no')),
-        //     'location_english' => trim($request->input('location_english')),
-        //     'lease_period' => trim($request->input('lease_period')),
-        //     'lease_commencement' => trim($request->input('lease_commencement')),
-        //     'lease_expiry' => trim($request->input('lease_expiry')),
-        //     'lease_period_arabic' => trim($request->input('lease_period_arabic')),
-        //     'lease_commencement_arabic' => trim($request->input('lease_commencement_arabic')),
-        //     'lease_expiry_arabic' => trim($request->input('lease_expiry_arabic')),
-        //     'monthly_rent' => trim($request->input('monthly_rent')),
-        //     'utilities' => trim($request->input('utilities')),
-        //     'payment_mode' => $mode_value,
-        //     'payment_mode_arabic' => $request->input('post_dated_check_value_arabic'),
-        //     'security_deposit' => trim($request->input('security_deposit')),
-        //     'rent_payment_commencement' => trim($request->input('payment_commencement')),
-        //     'monthly_rent_arabic' => trim($request->input('monthly_rent_arabic')),
-        //     'utilities_arabic' => trim($request->input('utilities_arabic')),
-        //     'payment_mode_arabic' => $mode_value,
-        //     'security_deposit_arabic' => trim($request->input('security_deposit_arabic')),
-        //     'rent_payment_commencement_arabic' => trim($request->input('payment_commencement_arabic')),
-        //     'rent_free' => trim($request->input('rent_free')),
-        //     'is_draft' => '1',
-        //     'is_published' => false,
-        // );
-        // $agreement = PropertyAgreement::create([$ins_data]);
-
-        $property->agreement_id = trim($request->input('agreement_number'));
+        $property->agreement_id = 'agreement-' . $agreement_count;
         $property->property_id = $request->input('property_id');
         $property->customer_id = $customer_id;
         $property->tenant_name = trim($request->input('tenant_name'));
@@ -221,7 +181,9 @@ class AgreementManageController extends Controller
             $flash = array('type' => 'success', 'msg' => 'agreement created successfully.');
         }
         session()->flash('flash', $flash);
-        return view('admin.agreement.preview-agreement', compact('agreement', 'property'));
+        $settings = Setting::first();
+
+        return view('admin.agreement.preview-agreement', compact('agreement', 'property', 'settings'));
     }
 
     public function getPremisesDetailsByID(Request $request)
@@ -253,9 +215,11 @@ class AgreementManageController extends Controller
 
     public function generate_pdf(Request $request)
     {
+        $settings = Setting::first();
+
         $agreement = PropertyAgreement::where('id', $request->agreement_id)->first();
         $mpdf = new \Mpdf\Mpdf();
-        $invoice_pdf_footer = "AL JAZI REAL ESTATE";
+        $invoice_pdf_footer = strtoupper($settings->name);
 
         $header = '<table width="100%" style="border-top: 1px solid; vertical-align: bottom; font-family: Nunito; font-size: 8pt; color: #000000;"><tr>
         <td  align="center" style="font-style: italic;"></td>
@@ -313,23 +277,21 @@ class AgreementManageController extends Controller
         $html .= ' <table style="font-family: arial, sans-serif;border-collapse: collapse;width: 100%;padding-bottom: 10px;">
                 <tr>
                     <td style="border: 1px solid;padding: 5px;font-size: 12px;">Name:</td>
-                    <td style="text-align:center;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">Al Jazi Real Estate
-                        Investment / الجازي للاستثمار
-                        العقاري
-                    </td>
+                    <td style="text-align:center;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">' . strtoupper($settings->name)
+            . '</td>
                     <td style="direction:rtl;text-align:end;border: 1px solid;padding: 5px;font-size: 16px;font-weight:bold">اسم</td>
 
                 </tr>
                 <tr>
                     <td style="border: 1px solid;padding: 5px;font-size: 12px;">P O Box No:</td>
-                    <td style="text-align:center;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">22880</td>
+                    <td style="text-align:center;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">' . $settings->address . '</td>
                     <td style="direction: rtl;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">صندوق بريد
                     </td>
 
                 </tr>
                 <tr>
                     <td style="border: 1px solid;padding: 5px;font-size: 12px;">Telephone:</td>
-                    <td style="text-align:center;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">+974 4483 3706/8786</td>
+                    <td style="text-align:center;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">' . $settings->phone . '</td>
                     <td style="direction: rtl;border: 1px solid;padding: 5px;font-size: 12px;font-weight:bold">هاتف</td>
 
                 </tr>
@@ -608,13 +570,10 @@ class AgreementManageController extends Controller
                 'is_draft' => false,
                 'is_published' => true,
             );
-            // $PropertyCustomer = PropertyCustomer::create([
-            //     'property_id' => PropertyAgreement::find($id)->property_id,
-            //     'property_agreement_id' => $id,
-            //     'customer_id' => PropertyAgreement::find($id)->customer_id,
-            // ]);
+          
             PropertyAgreement::where('id', $id)->update($ins_data);
         }
+        $data['settings'] = Setting::first();
 
         $data['agreement'] =
             PropertyAgreement::where('id', $id)->first();

@@ -2,6 +2,13 @@
 @section('title', 'Complaint')
 
 @section('content')
+    @push('head')
+        <style>
+            .error {
+                color: red;
+            }
+        </style>
+    @endpush
     <section class="user-page section-padding pt-5">
 
         <div class="container">
@@ -48,74 +55,59 @@
                     <div class="single-add-property">
                         <h3>Property Information</h3>
                         <div class="property-form-group">
-
-                            {{-- <div class="sidebar-widget author-widget2">
-                                 <div class="col-md-6">
-                                <input id="check-a" type="checkbox" name="check">
-                                <div class="author-box clearfix">
-                                    <h4 class="author__title">Lisa Clark</h4>
-                                    <p class="author__meta">Agent of Property</p>
-                                </div>
-                                <ul class="author__contact">
-                                    <li><span class="la la-map-marker"><i class="fa fa-map-marker"></i></span>302 Av Park,
-                                        New
-                                        York</li>
-                                    <li><span class="la la-phone"><i class="fa fa-phone" aria-hidden="true"></i></span><a
-                                            href="#">(234) 0200 17813</a></li>
-                                    <li><span class="la la-envelope-o"><i class="fa fa-envelope"
-                                                aria-hidden="true"></i></span><a href="#">lisa@gmail.com</a></li>
-                                </ul>
-
-                            </div> --}}
-                            {{-- </div> --}}
+                            <div id="agreement_error" class="error">
+                                <p>Please select property</p>
+                            </div>
                             <div class="row">
                                 @foreach ($tenant_properties as $key => $value)
-                                    <div class="card card-widget widget-user">
-                                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                                        <div class="widget-user-header text-white">
-                                            <input type="checkbox" name="agreement_id" value="{{ $value['agreement_id'] }}">
-                                            <h3 class="widget-user-username text-right">
-                                                {{ $value['property_code'] }}</h3>
-                                            <h5 class="widget-user-desc text-right">
-                                                {{ $value['agreement_number'] }}</h5>
-                                        </div>
+                                    <div class="col-lg-6">
 
-                                        <div class="card-footer">
-                                            <div class="row">
-                                                <div class="col-sm-6 border-right">
-                                                    <div class="description-block">
-                                                        <p class="description-header">{{ $value['customer_name'] }}
-                                                        </p>
-                                                        {{-- <span class="description-text">SALES</span> --}}
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
-                                                <div class="col-sm-6">
-                                                    <div class="description-block">
-                                                        <p class="description-header">
-                                                            {{ $value['contract_period'] }}</p>
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
-                                                <div class="col-sm-12">
-                                                    <div class="description-block">
-                                                        <p class="description-header">
-                                                            {{ $value['property_address'] }}</p>
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
+
+                                        <div class="card card-widget widget-user">
+                                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                                            <div class="widget-user-header text-white">
+                                                <input type="checkbox" name="agreement_id"
+                                                    value="{{ $value['agreement_id'] }}">
+                                                <h3 class="widget-user-username text-right">
+                                                    {{ $value['property_code'] }}</h3>
+                                                <h5 class="widget-user-desc text-right">
+                                                    {{ $value['agreement_number'] }}</h5>
                                             </div>
-                                            <!-- /.row -->
+
+                                            <div class="card-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-6 border-right">
+                                                        <div class="description-block">
+                                                            <p class="description-header">{{ $value['customer_name'] }}
+                                                            </p>
+                                                            {{-- <span class="description-text">SALES</span> --}}
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-6">
+                                                        <div class="description-block">
+                                                            <p class="description-header">
+                                                                {{ $value['contract_period'] }}</p>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-12">
+                                                        <div class="description-block">
+                                                            <p class="description-header">
+                                                                {{ $value['property_address'] }}</p>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                </div>
+                                                <!-- /.row -->
+                                            </div>
                                         </div>
                                     </div>
                                 @endforeach
                             </div>
-
-
-
                         </div>
                     </div>
                     <div class="single-add-property">
@@ -125,15 +117,17 @@
                                 <div class="col-lg-8 col-md-12">
 
                                     <div class="input-with-label text-left">
+                                        <span id="service_error" class="">Select Service</span>
+
                                         <select name="service_list_id">
-                                            <option value="">-- Select Service--</option>
+                                            <option value="">-- select--</option>
                                             @foreach ($service_list as $key => $list)
                                                 <option value="{{ $list->id }}">{{ $list->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="input-with-label text-left">
-                                        <span>Enter Complaint</span>
+                                        <span id="complaint_error" class="">Enter Complaint</span>
                                         <textarea class="form-control textarea-custom input-full" id="complaint" name="complaint" rows="8"
                                             placeholder="Message"></textarea>
                                     </div>
@@ -165,6 +159,7 @@
                 @else
                     <div class="single-add-property">
                         <h3>Register Complaints</h3>
+
 
                         <div class="property-form-group">
                             <div class="row">
@@ -217,11 +212,25 @@
     @push('script')
         <script>
             $(function() {
+                $('#agreement_error').hide();
                 // $(document).on('submit', '#complaint-us', function(e) {
                 $("#complaint-us").on('submit', (function(e) {
                     e.preventDefault();
                     console.log(new FormData(this));
-                    // var formData = $(this).serialize();
+                    var customer_id = $("#customer_id").val();
+                    if (customer_id != '') {
+                        var agreement_id = $("#agreement_id").val();
+                        if (!agreement_id) {
+                            $('#agreement_error').show();
+                        }
+                        if (!$("#service_list_id").val()) {
+                            var element = document.getElementById("service_error");
+                            element.classList.add("error");
+                        }
+                        if (!$("#complaint").val()) {
+                            document.getElementById("complaint_error").classList.add("error");
+                        }
+                    }
                     var formData = new FormData(this);
                     console.log(formData);
                     var url = "{{ route('tenant.complaint') }}";
@@ -240,7 +249,6 @@
                             );
                         },
                         success: function(data) {
-                            console.log(data);
                             toastr.success(data.message);
                             window.location.href = data.url;
                         },

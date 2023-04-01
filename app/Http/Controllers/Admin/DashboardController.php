@@ -277,6 +277,11 @@ class DashboardController extends Controller
     {
         $where_arry = [];
         $complaints = [];
+        if (!$request['status'] || !$request['property_id'] || !$request['service_list_id'] || !$request['complaint_id']) {
+            $flash = array('type' => 'error', 'msg' => 'Choose any data for search');
+            session()->flash('flash', $flash);
+            return redirect()->back();
+        }
         if (isset($request['status'])) {
             if ($request['status']) {
                 $where_arry['status'] = $request['status'];
@@ -304,6 +309,15 @@ class DashboardController extends Controller
         $properties = Property::all();
         $service_lists = ServiceList::all();
         return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists'));
+    }
+    public function complaintHistory(Request $request)
+    {
+        $data = [];
+        $complaint_id = $request['id'];
+        $data['property_title'] = Property::find(PropertyComplaint::find($complaint_id)->property_id)->title;
+        $data['complaint_number'] = PropertyComplaint::find($complaint_id)->complaint_number;
+        $data['histories'] = ComplaintHistory::with('Customer')->where('property_complaint_id', $complaint_id)->latest()->get();
+        return view('admin.settings.complaints.history')->with($data);
     }
     // MESSAGE
     public function message()

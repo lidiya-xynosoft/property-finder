@@ -31,7 +31,7 @@ class AminityController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:features|max:255',
-            'icon' => 'required|mimes:jpeg,jpg,png',
+            // 'icon' => 'required|mimes:jpeg,jpg,png',
         ]);
         $image = $request->file('icon');
         $slug  = str_slug($request->name);
@@ -75,7 +75,7 @@ class AminityController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'icon' => 'required|mimes:jpeg,jpg,png'
+            // 'icon' => 'required|mimes:jpeg,jpg,png'
         ]);
         $image = $request->file('icon');
         $slug  = str_slug($request->name);

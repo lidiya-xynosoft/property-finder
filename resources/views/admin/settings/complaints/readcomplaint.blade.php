@@ -28,7 +28,8 @@
                         @elseif($data->status == 2)
                             <span class="btn-danger btn-sm"> Rejected </span>
                         @elseif($data->status == 3)
-                            <span class="btn-warning btn-sm"> Assigned to {{ $assigned_handyman->handyman->first_name }} </span>
+                            <span class="btn-warning btn-sm"> Assigned to {{ $assigned_handyman->handyman->first_name }}
+                            </span>
                         @elseif($data->status == 4)
                             <span class="btn-warning btn-sm"> Ressolved </span>
                         @endif
@@ -104,7 +105,22 @@
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Handyman status : </strong>
-                                        <span class="right">{{ $assigned_handyman->handyman_status }}</span>
+                                        <span class="right">
+
+                                          
+                                                @if ($assigned_handyman->handyman_status == 1)
+                                                    <span class="btn-info btn-sm">Pending to Accept</span>
+                                                @elseif($assigned_handyman->handyman_status == 2)
+                                                    <span class="btn-success btn-sm">Complaint Accepted</span>
+                                                @elseif($assigned_handyman->handyman_status == 3)
+                                                    <span class="badge bg-indigo">Complaint Processing</span>  {{ $assigned_handyman->work_start_time }}
+                                                @elseif($assigned_handyman->handyman_status == 4)
+                                                    <span class="badge bg-pink">Complaint closed</span> 
+                                                    {{ $assigned_handyman->work_end_time }}
+                                                @endif
+                                            </button>
+
+                                        </span>
                                     </li>
 
                                 </ul>
@@ -147,7 +163,7 @@
                         </button>
                     @endif
 
-                    @if ($data->status == 0 || $data->status == 4)
+                    @if ($data->status == 0)
                         <form class="right" action="{{ route('admin.complaint.action') }}" method="POST">
                             @csrf
                             <input type="hidden" name="complaint_id" id="complaint_id" value="{{ $data->id }}">
@@ -156,9 +172,9 @@
                                 @if ($data->status == 0)
                                     <input type="hidden" name="status" value="1">
                                     <span>Accept</span>
-                                @elseif($data->status == 4)
+                                    {{-- @elseif($data->status == 4)
                                     <input type="hidden" name="status" value="4">
-                                    <span>Ressolved</span>
+                                    <span>Ressolved</span> --}}
                                 @endif
                             </button>
                         </form>
@@ -166,17 +182,19 @@
 
 
                     @if ($data->status == 1 || $data->status == 3)
-                        <button type="submit" class="btn btn-warning btn-sm waves-effect" data-toggle="modal"
-                            data-target="#actionModal" data-whatever="@mdo">
-                            <i class="material-icons">local_library</i>
-                            @if ($data->status == 1)
-                                <input type="hidden" name="status" value="3">
-                                <span>Assign to Handyman</span>
-                            @elseif($data->status == 3)
-                                <input type="hidden" name="status" value="4">
-                                <span>Reassign to Handyman</span>
-                            @endif
-                        </button>
+                        @if (empty($assigned_handyman->handyman_status) || $assigned_handyman->handyman_status == 1)
+                            <button type="submit" class="btn btn-warning btn-sm waves-effect" data-toggle="modal"
+                                data-target="#actionModal" data-whatever="@mdo">
+                                <i class="material-icons">local_library</i>
+                                @if ($data->status == 1)
+                                    <input type="hidden" name="status" value="3">
+                                    <span>Assign to Handyman</span>
+                                @elseif($data->status == 3 && $assigned_handyman->handyman_status == 1)
+                                    <input type="hidden" name="status" value="4">
+                                    <span>Reassign to Handyman</span>
+                                @endif
+                            </button>
+                        @endif
                     @endif
                     </form>
                     <br />

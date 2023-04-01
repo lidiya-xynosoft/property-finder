@@ -21,6 +21,12 @@ class HandymanComplaintStatus extends Model
         'elapsed_time',
         'date',
     ];
+    public static function checkDriverOrderStatus($property_complaint_id, $status)
+    {
+        $order_data = self::where(['property_complaint_id' => $property_complaint_id, 'handyman_status' => $status])->first();
+        if (!empty($order_data))
+            return true;
+    }
     public function propertyComplaint()
     {
         return $this->belongsTo(PropertyComplaint::class);

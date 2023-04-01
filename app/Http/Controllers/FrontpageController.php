@@ -102,13 +102,13 @@ class FrontpageController extends Controller
         $data = [];
         if (isset($request['agreement_id'])) {
             $customer_id = $request['customer_id'];
-            $complaint_number =
-                $customer_id . '-' . $request['agreement_id'] . Carbon::now()->timestamp;
+            // $complaint_number =
+            //     $customer_id . '-' . $request['agreement_id'] . Carbon::now()->timestamp;
 
 
             $registration =  PropertyComplaint::create([
                 'property_id' => PropertyAgreement::find($request['agreement_id'])->property_id,
-                'complaint_number' => $complaint_number,
+                'complaint_number' =>  PropertyComplaint::withTrashed()->count() + 1,
                 'property_agreement_id' => $request['agreement_id'],
                 'service_list_id' => $request['service_list_id'],
                 'customer_id' => $customer_id,

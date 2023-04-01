@@ -27,4 +27,8 @@ class Customer extends Model
     {
         return $this->hasMany(PropertyComplaint::class);
     }
+    public function complaintHistory()
+    {
+        return $this->hasMany(ComplaintHistory::class);
+    }
 }

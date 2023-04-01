@@ -126,7 +126,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($message['status'] != 4 )
+                                            @if ($message['status'] != 4)
                                                 <a href="{{ route('admin.complaint.read', $message['id']) }}"
                                                     class="btn btn-warning btn-sm waves-effect">
                                                     <i class="material-icons">local_library</i>
@@ -137,16 +137,11 @@
                                                     <i class="material-icons">done</i>
                                                 </a>
                                             @endif
-
-                                            {{-- <button type="button" class="btn btn-danger btn-sm waves-effect"
-                                                onclick="deleteMessage({{ $message['id'] }})">
-                                                <i class="material-icons">delete</i>
-                                            </button> 
-                                            <form action="{{ route('admin.messages.destroy', $message['id']) }}"
-                                                method="POST" id="del-message-{{ $message['id'] }}" style="display:none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>--}}
+                                            <a href="{{ url('admin/complaint-history?id=' .$message['id']) }}"
+                                                class="btn btn-info btn-sm waves-effect">
+                                                <i class="material-icons">history</i>
+                                            </a>
+                                         
                                         </td>
                                     </tr>
                                 @endforeach

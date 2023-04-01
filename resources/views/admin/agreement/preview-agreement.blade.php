@@ -8,7 +8,6 @@
             border-collapse: collapse;
             width: 100%;
         }
-
         td,
         th {
             border: 1px solid #dddddd;
@@ -50,7 +49,7 @@
 @section('content')
 
     <div class="container-fluid">
-    
+
         <div class="row">
 
             <div class="col-md-12">
@@ -81,19 +80,19 @@
                         <table style="width:100%">
                             <tr>
                                 <td>Name:</td>
-                                <td class="text-center">Al Jazi Real Estate Investment / الجازي للاستثمار العقاري</td>
+                                <td class="text-center">{{ $settings->name }}ي</td>
                                 <td class="text-right">اسم</td>
 
                             </tr>
                             <tr>
-                                <td>P O Box No:</td>
-                                <td class="text-center">22880</td>
+                                <td>Address:</td>
+                                <td class="text-center">{{ $settings->address }}</td>
                                 <td class="text-right">صندوق بريد</td>
 
                             </tr>
                             <tr>
                                 <td>Telephone:</td>
-                                <td class="text-center">+974 4483 3706/8786</td>
+                                <td class="text-center">{{ $settings->phone }}</td>
                                 <td class="text-right">هاتف</td>
 
                             </tr>
@@ -250,19 +249,20 @@
                         </table>
                         <input type="hidden" id="agreement_row_id" value="{{ $agreement->id }}">
                         <div class="card-footer" align="right" id="save_content">
-                            <a href="{{ url('admin/property/manage?property_id='.$agreement->property_id) }}">
+                            <a href="{{ url('admin/property/manage?property_id=' . $agreement->property_id) }}">
                                 <button class="btn btn-dark">{{ __('Back to Edit') }}</button>
                             </a>
                             <button id="save_publish" class="btn btn-primary mr-2">{{ __('Save & Publish') }}</button>
-                            <button type="button" id="pdf_view" class="btn btn-primary d-none" data-toggle="modal"
-                                data-target="#demoModal">{{ __('VIEW PDF3') }}</button>
+
+                            <button type="button" id="pdf_view" class="btn btn-primary" data-toggle="modal"
+                                data-target="#demoModal">{{ __('VIEW PDF') }}</button>
                         </div>
-                        <div class="card-footer d-none" align="right" id="view_pdf">
-                            <a href="{{ url('admin/property/manage?property_id='.$agreement->property_id) }}">
+                        <div class="card-footer" align="right" id="view_pdf">
+                            <a href="{{ url('admin/property/manage?property_id=' . $agreement->property_id) }}">
                                 <button class="btn btn-dark">{{ __('Back') }}</button>
                             </a>
                             <a target="_blank" href="{{ url('agreement/generate-pdf?agreement_id=') . $agreement->id }}">
-                                <button class="btn btn-primary mr-2">{{ __('View PDf2') }}</button>
+                                <button class="btn btn-primary mr-2">{{ __('View PDf') }}</button>
                             </a>
                         </div>
 
@@ -285,7 +285,7 @@
                                         data-dismiss="modal">{{ __('Close') }}</button>
                                     <a target="_blank"
                                         href="{{ url('agreement/generate-pdf?agreement_id=') . $agreement->id }}">
-                                        <button type="button" class="btn btn-primary">{{ __('View PDF1') }}</button>
+                                        <button type="button" class="btn btn-primary">{{ __('View PDF') }}</button>
                                     </a>
                                 </div>
                             </div>
@@ -299,54 +299,31 @@
     @endsection
     @push('script')
         <script>
-            // (function($) {
-            //     'use strict';
-
-                $("#save_publish").click(function() {
-
-                    $.ajax({
-                        url: "/publish-previewed-agreement",
-                        type: 'get',
-                        data: {
-                            // tenant_name_arabic: document.getElementById("tenant_name_arabic").innerHTML,
-                            agreement_row_id: $('#agreement_row_id').val(),
-                        },
-                        success: function(res) {
-                            console.log(res);
-                            if (res['success'] == 1) {
-                                document.getElementById('view_pdf').classList.remove('d-none');
-                                $('#pdf_view').click();
-                                $('#save_content').hide();
-                            }
-                        },
-                        error: function() {
-                            alert('failed...');
+            $('#pdf_view').hide();
+            $('#view_pdf').hide();
+            $("#save_publish").click(function() {
+                $.ajax({
+                    url: "/publish-previewed-agreement",
+                    type: 'get',
+                    data: {
+                        // tenant_name_arabic: document.getElementById("tenant_name_arabic").innerHTML,
+                        agreement_row_id: $('#agreement_row_id').val(),
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        if (res['success'] == 1) {
+                            $('#view_pdf').show();
+                            // document.getElementById('view_pdf').classList.remove('d-none');
+                            $('#pdf_view').click();
+                            $('#save_content').hide();
+                        }
+                    },
+                    error: function() {
+                        alert('failed...');
                         return;
 
-                        }
-                    });
+                    }
                 });
-                // $("#view_pdf").click(function() {
-                //     $.ajax({
-                //         url: "/agreement/generate-pdf",
-                //         type: 'get',
-                //         data: {
-                //             agreement_id : $('#agreement_row_id').val(),
-                //         },
-                //         success: function(res) {
-                //             console.log(res);
-                //             if (res['success'] == 1) {
-                //                 document.getElementById('view_pdf').classList.remove('d-none');
-                //                 $('#pdf_view').click();
-                //                 $('#save_content').hide();
-                //             }
-                //         },
-                //         error: function() {
-                //             alert('failed...');
-
-                //         }
-                //     });
-                // });
-            // })(jQuery);
+            });
         </script>
     @endpush

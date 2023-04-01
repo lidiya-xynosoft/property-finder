@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Property;
 use App\Feature;
 use App\PropertyImageGallery;
 use App\Comment;
+use App\Customer;
 use App\DocumentType;
 use App\Ledger;
+use App\NearbyCategory;
+use App\NearbyProperty;
 use App\PaymentType;
 use App\PropertyAgreement;
 use App\PropertyCustomer;
@@ -17,6 +21,11 @@ use App\PropertyDocument;
 use App\PropertyExpense;
 use App\PropertyIncome;
 use App\PropertyRent;
+use App\Purpose;
+use App\Setting;
+use App\Tag;
+use App\Type;
+use App\User;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
@@ -38,9 +47,17 @@ class PropertyController extends Controller
 
     public function create()
     {
-        $features = Feature::all();
+        $data = [];
+        $data['features'] = Feature::all();
+        $data['tags'] = Tag::where('type', 'property')->get();
+        $data['purposes'] = Purpose::all();
+        $data['types'] = Type::all();
+        $data['nearby_categories'] = NearbyCategory::all();
+        $data['cities'] = City::all();
 
-        return view('admin.properties.create', compact('features'));
+        $user_data = User::with('country')->where('id', Auth::id())->first();
+        $data['currency'] = $user_data->country->currency;
+        return view('admin.properties.create')->with($data);
     }
 
 
@@ -49,18 +66,18 @@ class PropertyController extends Controller
         $request->validate([
             'title'     => 'required|unique:properties|max:255',
             'price'     => 'required',
-            'purpose'   => 'required',
-            'type'      => 'required',
+            'purpose_id'   => 'required',
+            'type_id'      => 'required',
             'bedroom'   => 'required',
             'bathroom'  => 'required',
-            'city'      => 'required',
+            'city_id'      => 'required',
             'address'   => 'required',
             'area'      => 'required',
             'image'     => 'required|image|mimes:jpeg,jpg,png',
             'floor_plan' => 'image|mimes:jpeg,jpg,png',
             'description'        => 'required',
-            'location_latitude'  => 'required',
-            'location_longitude' => 'required',
+            'latitude'  => 'required',
+            'longitude' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -91,34 +108,69 @@ class PropertyController extends Controller
             $imagefloorplan = 'default.png';
         }
 
+        $city_id = $request->city_id;
+
+        $product_count = Property::withTrashed()->count() + 1;
+        $product_code = Auth::id() . '-' . $product_count . Carbon::now()->timestamp;
+
         $property = new Property();
         $property->title    = $request->title;
+        $property->product_code    = $product_code;
         $property->slug     = $slug;
         $property->price    = $request->price;
-        $property->purpose  = $request->purpose;
-        $property->type     = $request->type;
+        $property->purpose  = Purpose::find($request->purpose_id)->name;
+        $property->type     = Type::find($request->type_id)->name;
+        $property->garage     = $request->garage;
+        $property->built_year     = $request->built_year;
         $property->image    = $imagename;
         $property->bedroom  = $request->bedroom;
         $property->bathroom = $request->bathroom;
-        $property->city     = $request->city;
-        $property->city_slug = str_slug($request->city);
-        $property->address  = $request->address;
+        $property->city     = City::find($city_id)->name;
+        $property->city_slug = City::find($city_id)->slug;
+        $property->address  = $request->address . $request->input('address1', null);
         $property->area     = $request->area;
 
         if (isset($request->featured)) {
             $property->featured = true;
         }
-        $property->agent_id = Auth::id();
-        $property->description          = $request->description;
-        $property->video                = $request->video;
-        $property->floor_plan           = $imagefloorplan;
-        $property->location_latitude    = $request->location_latitude;
-        $property->location_longitude   = $request->location_longitude;
-        $property->nearby               = $request->nearby;
+        $property->agent_id           = Auth::id();
+        $property->type_id           =  $request->type_id;
+        $property->purpose_id           = $request->purpose_id;
+        $property->city_id           =  $city_id;
+        // $property->country_id           =  User::find(Auth::id())->country_id;
+        $property->video              = $request->video;
+        $property->floor_plan         = $imagefloorplan;
+        $property->description        = $request->description;
+        $property->location_latitude  = $request->latitude;
+        $property->location_longitude = $request->longitude;
         $property->save();
+
+        $nearbyCategories = NearbyCategory::all();
+        if ($nearbyCategories) {
+            foreach ($nearbyCategories as $key => $near_category) {
+
+                if (isset($request[$near_category->slug]) && !empty($request[$near_category->slug])) {
+                    if (isset($request[$near_category->slug][0][$near_category->slug . '_name']) && !empty($request[$near_category->slug][0][$near_category->slug . '_name'])) {
+
+                        foreach ($request[$near_category->slug] as $each_items) {
+
+                            $ins_data = array(
+                                'nearby_category_id' => $near_category->id,
+                                'property_id' => $property->id,
+                                'title' => $each_items[$near_category->slug . '_name'],
+                                'distance' =>  $each_items[$near_category->slug . '_distance'],
+                            );
+
+                            NearbyProperty::create($ins_data);
+                        }
+                    }
+                }
+            }
+        }
 
         $property->features()->attach($request->features);
 
+        $property->tags()->attach($request->tags);
 
         $gallary = $request->file('gallaryimage');
 
@@ -158,31 +210,40 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $features = Feature::all();
-        $property = Property::find($property->id);
+        $property = Property::where('slug', $property->slug)->first();
+        $purposes = Purpose::all();
+        $types = Type::all();
+        $nearby_categories = NearbyCategory::all();
+        $property_nearby = NearbyProperty::where('property_id', $property->id)->get();
 
+        $cities = City::all();
+        $tags = Tag::where('type', 'property')->get();
+        $user_data = User::with('country')->where('id', Auth::id())->first();
+        $currency = $user_data->country->currency;
         $videoembed = $this->convertYoutube($property->video);
 
-        return view('admin.properties.edit', compact('property', 'features', 'videoembed'));
+        return view('admin.properties.edit', compact('property', 'features', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency', 'videoembed'));
     }
 
 
     public function update(Request $request, $property)
     {
+
         $request->validate([
             'title'     => 'required|max:255',
             'price'     => 'required',
-            'purpose'   => 'required',
-            'type'      => 'required',
+            'purpose_id'   => 'required',
+            'type_id'      => 'required',
             'bedroom'   => 'required',
             'bathroom'  => 'required',
-            'city'      => 'required',
+            'city_id'      => 'required',
             'address'   => 'required',
             'area'      => 'required',
-            'image'     => 'image|mimes:jpeg,jpg,png',
+            // 'image'     => 'required|image|mimes:jpeg,jpg,png',
             'floor_plan' => 'image|mimes:jpeg,jpg,png',
             'description'        => 'required',
-            'location_latitude'  => 'required',
-            'location_longitude' => 'required'
+            'latitude'  => 'required',
+            'longitude' => 'required',
         ]);
 
         $image = $request->file('image');
@@ -225,42 +286,77 @@ class PropertyController extends Controller
             $imagefloorplan = $property->floor_plan;
         }
 
-        $property->title        = $request->title;
-        $property->slug         = $slug;
-        $property->price        = $request->price;
-        $property->purpose      = $request->purpose;
-        $property->type         = $request->type;
-        $property->image        = $imagename;
-        $property->bedroom      = $request->bedroom;
-        $property->bathroom     = $request->bathroom;
-        $property->city         = $request->city;
-        $property->city_slug    = str_slug($request->city);
-        $property->address      = $request->address;
-        $property->area         = $request->area;
+        $city_id = $request->city_id;
+
+        $product_count = Property::withTrashed()->count() + 1;
+        $product_code = Auth::id() . '-' . $product_count . Carbon::now()->timestamp;
+
+        $property->title    = $request->title;
+        // $property->product_code    = $product_code;
+        $property->slug     = $slug;
+        $property->price    = $request->price;
+        $property->purpose  = Purpose::find($request->purpose_id)->name;
+        $property->type     = Type::find($request->type_id)->name;
+        $property->garage     = $request->garage;
+        $property->built_year     = $request->built_year;
+        $property->image    = $imagename;
+        $property->bedroom  = $request->bedroom;
+        $property->bathroom = $request->bathroom;
+        $property->city     = City::find($city_id)->name;
+        $property->city_slug = City::find($city_id)->slug;
+        $property->address  = $request->address . $request->input('address1', null);
+        $property->area     = $request->area;
 
         if (isset($request->featured)) {
             $property->featured = true;
         } else {
             $property->featured = false;
         }
-
-        $property->description  = $request->description;
-        $property->video        = $request->video;
-        $property->floor_plan   = $imagefloorplan;
-        $property->location_latitude  = $request->location_latitude;
-        $property->location_longitude = $request->location_longitude;
-        $property->nearby             = $request->nearby;
+        $property->type_id           =  $request->type_id;
+        $property->purpose_id           = $request->purpose_id;
+        $property->city_id           =  $city_id;
+        $property->country_id           =  User::find(Auth::id())->country_id;
+        $property->description          = $request->description;
+        $property->video                = $request->video;
+        $property->floor_plan           = $imagefloorplan;
+        $property->location_latitude    = $request->latitude;
+        $property->location_longitude   = $request->longitude;
         $property->save();
 
         $property->features()->sync($request->features);
+        $property->tags()->sync($request->tags);
 
+        $nearbyCategories = NearbyCategory::all();
+        if ($nearbyCategories) {
+            foreach ($nearbyCategories as $key => $near_category) {
+
+                if (isset($request[$near_category->slug]) && !empty($request[$near_category->slug])) {
+                    if (isset($request[$near_category->slug][0][$near_category->slug . '_name']) && !empty($request[$near_category->slug][0][$near_category->slug . '_name'])) {
+
+                        NearbyProperty::where('property_id', $property->id)->delete();
+
+                        foreach ($request[$near_category->slug] as $each_items) {
+
+
+                            $ins_data = array(
+                                'nearby_category_id' => $near_category->id,
+                                'property_id' => $property->id,
+                                'title' => $each_items[$near_category->slug . '_name'],
+                                'distance' =>  $each_items[$near_category->slug . '_distance'],
+                            );
+                            NearbyProperty::create($ins_data);
+                        }
+                    }
+                }
+            }
+        }
         $gallary = $request->file('gallaryimage');
         if ($gallary) {
             foreach ($gallary as $images) {
                 if (isset($images)) {
                     $currentDate = Carbon::now()->toDateString();
                     $galimage['name'] = 'gallary-' . $currentDate . '-' . uniqid() . '.' . $images->getClientOriginalExtension();
-                    // $galimage['size'] = $images->getClientSize();
+                    $galimage['size'] = $images->getClientSize();
                     $galimage['property_id'] = $property->id;
 
                     if (!Storage::disk('public')->exists('property/gallery')) {
@@ -273,9 +369,8 @@ class PropertyController extends Controller
                 }
             }
         }
-        $flash = array('type' => 'success', 'msg' => 'Property updated successfully');
+        $flash = array('type' => 'success', 'msg' => 'Property updated successfully.');
         $request->session()->flash('flash', $flash);
-        // Toastr::success('message', 'Property updated successfully.');
         return redirect()->route('admin.properties.index');
     }
 
@@ -413,7 +508,9 @@ class PropertyController extends Controller
         }
         $data['property_history'] =  PropertyAgreement::where([
             'property_id' => $property_id,
-        ])->get();
+        ])->latest()->get();
+        $data['settings'] = Setting::first();
+        $data['customers'] = Customer::all();
         return view('admin.properties.manage')->with($data);
     }
 }

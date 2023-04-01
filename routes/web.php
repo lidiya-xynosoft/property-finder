@@ -71,6 +71,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('complaints', 'ComplaintController');
     Route::post('/agreement/save-update-agreement', 'AgreementManageController@saveUpdateagreement')->name('agreement-manage');
     Route::post('/document/save-update-document', 'DocumentController@saveUpdateDocument')->name('document-save');
+    Route::get('/change-handyman-status', 'HandymanController@changeHandymanStatus')->name('change-handyman');
+    Route::get('complaint-history/', 'DashboardController@complaintHistory')->name('complaint-history');
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
