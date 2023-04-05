@@ -5,11 +5,12 @@
              <div class="row">
                  <div class="col-lg-3 col-md-6">
                      <div class="netabout">
-                         <a href="index.html" class="logo">
-                             <img src="images/logo-footer.svg" alt="netcom">
+                         <a href="{{ route('home') }}" class="logo">
+                             <img src="{{ asset('frontend/findhouse/images/logo-footer.svg') }}"
+                                 alt="{{ $footersettings[0]['name'] }}">
                          </a>
                          @if (isset($footersettings[0]) && $footersettings[0]['aboutus'])
-                             <p>{{ $footersettings[0]['aboutus'] }}</p>
+                             <p>{{ str_limit($footersettings[0]['aboutus'], 130) }}</p>
                          @else
                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum incidunt architecto soluta
                                  laboriosam, perspiciatis, aspernatur officiis esse.</p>
@@ -20,19 +21,27 @@
                              <li>
                                  <div class="info">
                                      <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                     <p class="in-p">95 South Park Avenue, USA</p>
+                                     <p class="in-p">
+                                         @if (isset($footersettings[0]) && $footersettings[0]['address'])
+                                             {{ $footersettings[0]['address'] }}
+                                         @endif
+                                     </p>
                                  </div>
                              </li>
                              <li>
                                  <div class="info">
                                      <i class="fa fa-phone" aria-hidden="true"></i>
-                                     <p class="in-p">+456 875 369 208</p>
+                                     <p class="in-p"> @if (isset($footersettings[0]) && $footersettings[0]['phone'])
+                                             {{ $footersettings[0]['phone'] }}
+                                         @endif</p>
                                  </div>
                              </li>
                              <li>
                                  <div class="info">
                                      <i class="fa fa-envelope" aria-hidden="true"></i>
-                                     <p class="in-p ti">support@findhouses.com</p>
+                                     <p class="in-p ti"> @if (isset($footersettings[0]) && $footersettings[0]['email'])
+                                             {{ $footersettings[0]['email'] }}
+                                         @endif</p>
                                  </div>
                              </li>
                          </ul>
@@ -80,13 +89,11 @@
                                      <div class="single-item">
                                          <div class="icon-holder">
                                              @if (Storage::disk('public')->exists('property/' . $post->image) && $post->image)
-                                                  
-                                                      <a href="{{ url('property/' . $post->id . '/' . $post->slug) }}">
-                                                   
+                                                 <a href="{{ url('property/' . $post->id . '/' . $post->slug) }}">
+
                                                      <i class="fa fa-post" aria-hidden="true"></i>
 
                                                  </a>
-                                                  
                                              @endif
 
                                          </div>

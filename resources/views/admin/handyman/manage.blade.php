@@ -15,8 +15,6 @@
                 <div class="header bg-indigo">
                     <h2> {{ $handyman->first_name }}</h2>
                 </div>
-            </div>
-            <div class="card">
                 <div class="header">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#new_complaints">New Complaints</a></li>
@@ -25,11 +23,11 @@
                         <li><a data-toggle="tab" href="#ressolved">Ressolved</a></li>
 
                     </ul>
-
-                    <div class="tab-content">
-                        <div id="new_complaints" class="tab-pane fade in active">
-                            <div class="header">
-
+                </div>
+                <div class="tab-content">
+                    <div id="new_complaints" class="tab-pane fade in active">
+                        <div class="body">
+                            @if (!empty($new_complaints))
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
@@ -54,7 +52,8 @@
                                                         {{ $message['property_complaint']['customer']['email'] }}
                                                     </td>
                                                     <td>{{ $message['property_complaint']['complaint_number'] }}</td>
-                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}
+                                                    </td>
 
                                                     @if ($message['handyman_status'] == 1)
                                                         <td>
@@ -77,13 +76,14 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            @else
+                                {{ __('No records found') }}
+                            @endif
                         </div>
-                        <div id="accepted_complaints" class="tab-pane fade in active">
-                            <div class="header">
-                                {{-- <div class="body">
-                                   
-                                </div> --}}
+                    </div>
+                    <div id="accepted_complaints" class="tab-pane fade">
+                        <div class="body">
+                            @if (!empty($accepted_complaints))
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
@@ -110,7 +110,8 @@
                                                         {{ $message['property_complaint']['customer']['email'] }}
                                                     </td>
                                                     <td>{{ $message['property_complaint']['complaint_number'] }}</td>
-                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}
+                                                    </td>
                                                     {{-- <td>
                                             @if ($message['handyman_status'] == 0)
                                                 <span class="badge bg-green"> New </span>
@@ -146,11 +147,14 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            @else
+                                {{ __('No records found') }}
+                            @endif
                         </div>
-                        <div id="progress" class="tab-pane fade in active">
-                            <div class="header">
-
+                    </div>
+                    <div id="progress" class="tab-pane fade">
+                        <div class="body">
+                            @if (!empty($process_complaints))
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
@@ -175,14 +179,16 @@
                                                         {{ $message['property_complaint']['customer']['email'] }}
                                                     </td>
                                                     <td>{{ $message['property_complaint']['complaint_number'] }}</td>
-                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}
+                                                    </td>
 
-                                                    @if ($message['handyman_status']==3)
+                                                    @if ($message['handyman_status'] == 3)
                                                         <td>
                                                             <button type="button"
                                                                 class="btn btn-success btn-sm waves-effect"
                                                                 onclick="deleteCom({{ $message['id'] }},4)">
-                                                                <i class="material-icons">local_library</i> work Completed
+                                                                <i class="material-icons">local_library</i> work
+                                                                Completed
                                                             </button>
 
                                                         </td>
@@ -193,11 +199,14 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            @else
+                                {{ __('No records found') }}
+                            @endif
                         </div>
-                          <div id="ressolved" class="tab-pane fade in active">
-                            <div class="header">
-
+                    </div>
+                    <div id="ressolved" class="tab-pane fade">
+                        <div class="body">
+                            @if (!empty($completed_complaints))
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
@@ -222,12 +231,13 @@
                                                         {{ $message['property_complaint']['customer']['email'] }}
                                                     </td>
                                                     <td>{{ $message['property_complaint']['complaint_number'] }}</td>
-                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}</td>
+                                                    <td>{{ $message['property_complaint']['service_list']['name'] }}
+                                                    </td>
 
-                                                    @if ($message['handyman_status']==4)
+                                                    @if ($message['handyman_status'] == 4)
                                                         <td>
                                                             <button type="button"
-                                                                class="btn btn-success btn-sm waves-effect"> 
+                                                                class="btn btn-success btn-sm waves-effect">
                                                                 <i class="material-icons">local_library</i> Completed
                                                             </button>
 
@@ -239,11 +249,14 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            @else
+                                {{ __('No records found') }}
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -287,12 +300,12 @@
                         },
                         success: function(res) {
                             // if (res['success'] == 1) {
-                                swal(
-                                    'Status Changed!',
-                                    'Complaint has been changed.',
-                                    'success'
-                                )
-                                location.reload(); // show response from the php script.
+                            swal(
+                                'Status Changed!',
+                                'Complaint has been changed.',
+                                'success'
+                            )
+                            location.reload(); // show response from the php script.
                             // } else {
                             //     swal(
                             //         'Something wrong!',

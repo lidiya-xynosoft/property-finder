@@ -15,7 +15,7 @@ class Property extends Model
         'slug',     'bedroom',      'bathroom',     'city',     'city_slug',    'address',
         'area',     'agent_id',     'description',  'video',    'floor_plan', 'country_id',
         'location_latitude',        'location_longitude', 'city_id', 'garage', 'built_year', 'country_id',
-        'purpose_id', 'type_id', 'product_code'
+        'purpose_id', 'type_id', 'product_code', 'electricity_no', 'water_no', 'zone_no', 'street_no', 'building_no'
     ];
 
     public function features()

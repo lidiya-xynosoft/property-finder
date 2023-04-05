@@ -47,8 +47,8 @@
                                         <td class="text-center">
                                          
                                             <a href="{{ url('admin/handyman-manage?id='.$handyman->id)}}"
-                                                class="btn btn-warning btn-sm waves-effect">
-                                                <i class="material-icons">manage_accounts</i>
+                                                class="btn btn-success btn-sm waves-effect">
+                                                <i class="material-icons">visibility</i>
                                             </a>
                                                <a href="{{ route('admin.handyman.edit', $handyman->id) }}"
                                                 class="btn btn-info btn-sm waves-effect">

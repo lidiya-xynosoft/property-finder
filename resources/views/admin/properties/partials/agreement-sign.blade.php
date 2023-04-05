@@ -31,7 +31,7 @@
         <div class="footer-body right">
             <button class="btn btn-warning btn-icon ml-2 mb-2 withdrow" data-id="{{ $rows['id'] }}"
                 data-token="{{ csrf_token() }}">
-                Withdrow Agreement</button>
+                Withdraw Agreement</button>
         </div>
        @endif
     </div>

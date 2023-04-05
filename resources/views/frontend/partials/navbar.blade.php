@@ -140,7 +140,7 @@
                    <!-- lang-wrap end-->
                    <!-- Right Side Content / End -->
 
-                   <div class="right-side d-none d-none d-lg-none d-xl-flex sign ml-0">
+                   <div class="right-side d-lg-none d-xl-flex sign ml-0">
                        <!-- Header Widget -->
                        <div class="header-widget sign-in">
                            <div><a href="{{ route('login') }}">Sign In</a></div>

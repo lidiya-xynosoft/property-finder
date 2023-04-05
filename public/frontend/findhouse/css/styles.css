@@ -7740,8 +7740,8 @@ html input[disabled] {
 }
 
 .hd-white .right-side.sign {
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
+  /* border-left: 1px solid #000;
+  border-right: 1px solid #000; */
 }
 
 .hd-white a.button.border, a.button {
@@ -7765,8 +7765,8 @@ html input[disabled] {
   float: right;
   width: 90px;
   padding: 0 10px 0 20px;
-  border-left: 1px solid #fff;
-  border-right: 1px solid #fff;
+  /* border-left: 1px solid #fff;
+  border-right: 1px solid #fff; */
   margin-top: 20px;
   margin-left: 0px !important;
   margin-right: 55px;

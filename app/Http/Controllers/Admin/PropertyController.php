@@ -129,6 +129,11 @@ class PropertyController extends Controller
         $property->city_slug = City::find($city_id)->slug;
         $property->address  = $request->address . $request->input('address1', null);
         $property->area     = $request->area;
+        $property->electricity_no     = $request->electricity_no;
+        $property->water_no     = $request->water_no;
+        $property->street_no     = $request->street_no;
+        $property->zone_no     = $request->zone_no;
+        $property->building_no     = $request->building_no;
 
         if (isset($request->featured)) {
             $property->featured = true;
@@ -306,7 +311,11 @@ class PropertyController extends Controller
         $property->city_slug = City::find($city_id)->slug;
         $property->address  = $request->address . $request->input('address1', null);
         $property->area     = $request->area;
-
+        $property->electricity_no     = $request->electricity_no;
+        $property->water_no     = $request->water_no;
+        $property->street_no     = $request->street_no;
+        $property->zone_no     = $request->zone_no;
+        $property->building_no     = $request->building_no;
         if (isset($request->featured)) {
             $property->featured = true;
         } else {

@@ -1,12 +1,12 @@
 @extends('backend.layouts.app')
 
 @section('title', 'Properties')
-
+@push('head')
+    <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
+@endpush
 
 @section('content')
-    @push('head')
-        <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
-    @endpush
+
     <div class="block-header">
         <a href="{{ route('admin.properties.create') }}" class="waves-effect waves-light btn right m-b-15 addbtn">
             <i class="material-icons left">add</i>
@@ -30,10 +30,10 @@
                                     <th>Author</th>
                                     <th>Type</th>
                                     <th>Purpose</th>
-                                    <th>Beds</th>
-                                    <th>Baths</th>
+                                    {{-- <th>Beds</th>
+                                    <th>Baths</th> --}}
                                     <th><i class="material-icons small">comment</i></th>
-                                    <th width="150">Action</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
 
@@ -50,14 +50,14 @@
                                         </td>
                                         <td>
                                             <span title="{{ $property->title }}">
-                                                {{ str_limit($property->title, 10) }}
+                                                {{ str_limit($property->title, 22) }}
                                             </span>
                                         </td>
                                         <td>{{ $property->user->name }}</td>
                                         <td>{{ $property->type }}</td>
                                         <td>{{ $property->purpose }}</td>
-                                        <td>{{ $property->bedroom }}</td>
-                                        <td>{{ $property->bathroom }}</td>
+                                        {{-- <td>{{ $property->bedroom }}</td>
+                                        <td>{{ $property->bathroom }}</td> --}}
 
                                         <td>
                                             <span class="badge bg-indigo">{{ $property->comments_count }}</span>
@@ -68,9 +68,9 @@
                                                 class="btn btn-success btn-sm waves-effect">
                                                 <i class="material-icons">visibility</i>
                                             </a> --}}
-                                            <a href="{{ url('admin/property/manage/?property_id='.$property->id)}}"
-                                                class="btn btn-warning btn-sm waves-effect">
-                                                <i class="material-icons">manage_accounts</i>
+                                            <a href="{{ url('admin/property/manage/?property_id=' . $property->id) }}"
+                                                class="btn btn-success btn-sm waves-effect">
+                                                <i class="material-icons">visibility</i>
                                             </a>
                                             <a href="{{ route('admin.properties.edit', $property->slug) }}"
                                                 class="btn btn-info btn-sm waves-effect">

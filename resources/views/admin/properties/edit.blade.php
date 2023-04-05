@@ -81,7 +81,18 @@
                                 {{ $property->featured ? 'checked' : '' }} />
                             <label for="featured">Featured</label>
                         </div>
-
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" class="form-control" name="electricity_no" value="{{ $property->electricity_no }}">
+                                <label class="form-label">Electricity number</label>
+                            </div>
+                        </div>
+                        <div class="form-group form-float">
+                            <div class="form-line">
+                                <input type="text" class="form-control" name="water_no" value="{{ $property->water_no }}">
+                                <label class="form-label">Water number</label>
+                            </div>
+                        </div>
                         <hr>
                         <div class="form-group">
                             <label for="tinymce">Description</label>
@@ -90,57 +101,7 @@
 
                     </div>
                 </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>PROPERTY NEARBY</h2>
-                    </div>
-                    <div class="body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="property-nearby">
-                                    @foreach ($nearby_categories as $key => $nearby_category)
-                                        <div class="nearby-info mb-4 repeater">
-                                            <div data-repeater-list="{{ $nearby_category->slug }}">
-                                                <span class="nearby-title mb-3 d-block {{ $nearby_category->class }}">
-                                                    <i class="{{ $nearby_category->icon }}"></i><b
-                                                        class="title">{{ $nearby_category->name }}</b>
-                                                    <button data-repeater-create type="button"
-                                                        class="btn btn-success btn-sm m-t-15 waves-effect">
-                                                        <i class="material-icons">add</i>
-                                                    </button>
-                                                </span>
 
-                                                <div data-repeater-item class="d-flex mb-2">
-
-
-                                                    <label class="sr-only"
-                                                        for="inlineFormInputGroup1">{{ __('Users') }}</label>
-
-                                                    <input type="text" class="form-control"
-                                                        name="{{ $nearby_category->slug }}_name"
-                                                        placeholder="Enter item name">
-                                                    &nbsp;&nbsp;&nbsp;
-                                                    <input type="text" class="form-control"
-                                                        name="{{ $nearby_category->slug }}_distance"
-                                                        placeholder="Enter distance ">
-
-
-                                                    <button data-repeater-delete type="submit"
-                                                        class="btn btn-danger btn-sm m-t-15 waves-effect text-right">
-                                                        <i class="material-icons">cancel</i>
-                                                    </button>
-                                                    <br />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card">
                     <div class="header">
                         <h2>PROPERTY LOCATION</h2>
@@ -148,7 +109,7 @@
                     <div class="body">
                         <div class="row">
 
-                            <div class="col-lg-12 col-md-12">
+                            <div class="col-lg-6 col-md-12">
 
                                 <p>
                                     <label for="city">Select City </label>
@@ -171,15 +132,6 @@
 
                                 </p>
                             </div>
-
-                            <div class="col-lg-6 col-md-12">
-
-                                <div class="form-line">
-                                    <label class="form-label">Address line1</label>
-
-                                    <input type="text" class="form-control" value="{{ $property->address }}" name="address" id="address" required>
-                                </div>
-                            </div>
                             <div class="col-lg-6 col-md-12">
                                 <p>
                                     <label for="address">Find Property</label>
@@ -190,9 +142,44 @@
                             <div class="col-lg-6 col-md-12">
 
                                 <div class="form-line">
+                                    <label class="form-label">Address line1</label>
+
+                                    <input type="text" class="form-control" value="{{ $property->address }}"
+                                        name="address" id="address" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-12">
+
+                                <div class="form-line">
                                     <label for="address">Address line2</label>
-                                    <input type="text" id="address1"  value="{{ $property->address1 }}" class="form-control" name="address1"
-                                        placeholder="Enter Your Address">
+                                    <input type="text" id="address1" value="{{ $property->address1 }}"
+                                        class="form-control" name="address1" placeholder="Enter Your Address">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+
+                                <div class="form-line">
+                                    <label class="form-label">Building no</label>
+
+                                    <input type="text" placeholder="Biulding no" class="form-control"
+                                        name="building_no" id="building_no" value="{{ $property->building_no }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+
+                                <div class="form-line">
+                                    <label for="address">Zone No</label>
+                                    <input type="text" id="zone_no" class="form-control" name="zone_no"
+                                        placeholder="Enter Zone no" value="{{ $property->zone_no }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+
+                                <div class="form-line">
+                                    <label for="address">Street No</label>
+                                    <input type="text" id="street_no" class="form-control" name="street_no" 
+                                        placeholder="Enter Street no" value="{{ $property->street_no }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12" id="map_area">
@@ -210,16 +197,64 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-line">
                                     <label for="latitude">Latitude</label>
-                                    <input id="latitude" name="latitude" type="text" class="form-control"  value="{{ $property->latitude }}"
-                                        placeholder="Google Maps latitude">
+                                    <input id="latitude" name="latitude" type="text" class="form-control"
+                                        value="{{ $property->latitude }}" placeholder="Google Maps latitude">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-line">
                                     <label for="longitude">Longitude</label>
-                                    <input type="text" id="longitude" name="longitude" class="form-control"  value="{{ $property->longitude }}"
-                                        placeholder="Google Maps longitude">
+                                    <input type="text" id="longitude" name="longitude" class="form-control"
+                                        value="{{ $property->longitude }}" placeholder="Google Maps longitude">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="header">
+                        <h2>PROPERTY NEARBY</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="property-nearby">
+                                    @foreach ($nearby_categories as $key => $nearby_category)
+                                        <div class="nearby-info mb-4 repeater">
+                                            <div data-repeater-list="{{ $nearby_category->slug }}">
+                                                <div class="col-md-10">
+                                                    <span class="nearby-title mb-3 {{ $nearby_category->class }}">
+                                                        <i class="{{ $nearby_category->icon }}"></i><b
+                                                            class="title">{{ $nearby_category->name }}</b>
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <span data-repeater-create class="btn badge bg-green"> + </span>
+                                                </div>
+
+                                                <div data-repeater-item class="d-flex mb-2">
+
+
+                                                    <div class="col-md-5">
+                                                        <input type="text" class="form-control"
+                                                            name="{{ $nearby_category->slug }}_name"
+                                                            placeholder="Enter item name">
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <input type="text" class="form-control"
+                                                            name="{{ $nearby_category->slug }}_distance"
+                                                            placeholder="Enter distance ">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <span data-repeater-delete class="btn badge bg-red"> x </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -323,8 +358,7 @@
                     <div class="body">
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" name="video"
-                                    value="{{ $videoembed }}">
+                                <input type="text" class="form-control" name="video" value="{{ $videoembed }}">
                                 <label class="form-label">Video</label>
                             </div>
                             <div class="help-info">Youtube Link</div>
