@@ -75,6 +75,7 @@ return array(
     'App\\Post' => $baseDir . '/app/Post.php',
     'App\\Property' => $baseDir . '/app/Property.php',
     'App\\PropertyAgreement' => $baseDir . '/app/PropertyAgreement.php',
+    'App\\PropertyAgreementDocument' => $baseDir . '/app/PropertyAgreementDocument.php',
     'App\\PropertyComplaint' => $baseDir . '/app/PropertyComplaint.php',
     'App\\PropertyCustomer' => $baseDir . '/app/PropertyCustomer.php',
     'App\\PropertyDocument' => $baseDir . '/app/PropertyDocument.php',

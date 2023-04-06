@@ -65,9 +65,9 @@ class PropertyAgreement extends Model
     {
         return $this->hasMany(PropertyIncome::class);
     }
-    public function propertyDocument()
+    public function propertyAgreementDocument()
     {
-        return $this->hasMany(PropertyDocument::class);
+        return $this->hasMany(PropertyAgreementDocument::class);
     }
     public function propertyRent()
     {

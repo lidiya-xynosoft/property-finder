@@ -708,6 +708,7 @@ class ComposerStaticInit5e6d2540f604129fe1cc2b757691166f
         'App\\Post' => __DIR__ . '/../..' . '/app/Post.php',
         'App\\Property' => __DIR__ . '/../..' . '/app/Property.php',
         'App\\PropertyAgreement' => __DIR__ . '/../..' . '/app/PropertyAgreement.php',
+        'App\\PropertyAgreementDocument' => __DIR__ . '/../..' . '/app/PropertyAgreementDocument.php',
         'App\\PropertyComplaint' => __DIR__ . '/../..' . '/app/PropertyComplaint.php',
         'App\\PropertyCustomer' => __DIR__ . '/../..' . '/app/PropertyCustomer.php',
         'App\\PropertyDocument' => __DIR__ . '/../..' . '/app/PropertyDocument.php',

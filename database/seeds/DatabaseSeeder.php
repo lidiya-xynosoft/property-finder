@@ -179,12 +179,14 @@ class DatabaseSeeder extends Seeder
             [
                 'title'          => 'Aadhar',
                 'description'          => 'Aadhar',
+                'type' => '0',
                 'is_active'          => '1',
                 'created_at'    => date("Y-m-d H:i:s")
             ],
             [
                 'title'          => 'PAN',
                 'description'          => 'pan',
+                'type' => '0',
                 'is_active'          => '1',
                 'created_at'    => date("Y-m-d H:i:s")
             ],

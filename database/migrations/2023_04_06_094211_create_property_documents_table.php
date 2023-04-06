@@ -17,7 +17,6 @@ class CreatePropertyDocumentsTable extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
             $table->foreignId('document_type_id')->constrained('document_types');
-            $table->foreignId('property_agreement_id')->constrained('property_agreements');
             $table->tinyInteger('status')->default(1);
             $table->string('file');
             $table->timestamps();

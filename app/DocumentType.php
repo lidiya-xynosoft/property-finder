@@ -10,8 +10,8 @@ class DocumentType extends Model
 {
     use HasFactory;
     protected $fillable = ['title', 'description', 'is_active'];
-    public function PropertyDocument()
+    public function propertyAgreementDocument()
     {
-        return $this->hasMany(PropertyDocument::class);
+        return $this->hasMany(PropertyAgreementDocument::class);
     }
 }

@@ -59,6 +59,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     Route::get('dashboard', 'DashboardController@index')->name('dashboard');
     Route::resource('tags', 'TagController');
+    Route::resource('document-type', 'DocumentTypeController');
     Route::resource('categories', 'CategoryController');
     Route::resource('posts', 'PostController');
     Route::resource('aminities', 'AminityController');

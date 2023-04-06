@@ -42,6 +42,12 @@
                                 <span>Purpose</span>
                             </a>
                         </li>
+                         <li class="{{ Request::is('admin/document-type*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.document-type.index') }}">
+                                {{-- <i class="material-icons">grading</i> --}}
+                                <span>Document Type</span>
+                            </a>
+                        </li>
 
 
                     </ul>

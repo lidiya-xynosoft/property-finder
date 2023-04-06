@@ -16,6 +16,7 @@ use App\NearbyCategory;
 use App\NearbyProperty;
 use App\PaymentType;
 use App\PropertyAgreement;
+use App\PropertyAgreementDocument;
 use App\PropertyCustomer;
 use App\PropertyDocument;
 use App\PropertyExpense;
@@ -54,6 +55,7 @@ class PropertyController extends Controller
         $data['types'] = Type::all();
         $data['nearby_categories'] = NearbyCategory::all();
         $data['cities'] = City::all();
+        $data['document_types'] = DocumentType::where('type', 1)->get();
 
         $user_data = User::with('country')->where('id', Auth::id())->first();
         $data['currency'] = $user_data->country->currency;
@@ -63,6 +65,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        // return $request;
         $request->validate([
             'title'     => 'required|unique:properties|max:255',
             'price'     => 'required',
@@ -150,6 +153,30 @@ class PropertyController extends Controller
         $property->location_longitude = $request->longitude;
         $property->save();
 
+        if (isset($request['documents']) && !empty($request['documents'])) {
+
+            foreach ($request['documents'] as $each_items) {
+
+                if (isset($request['document_file'])) {
+                    $rules['document_file'] = 'required|mimes:jpg,jpeg,pdf,doc,docx|max:5009';
+                    $request->validate($rules);
+                    $file = $request->file('document_file');
+                    $destinationPath = 'property/files';
+                    $extension = $file->getClientOriginalExtension();;
+                    $fileName = time() . '.' . $extension;
+                    $uploadSuccess = $file->storeAs($destinationPath, $fileName, 'public');
+                    $file_name = $destinationPath . '/' . $fileName;
+                    $data =   PropertyDocument::create([
+                        'property_id' => $request['property_id'],
+                        'document_type_id' => $request['document_type_id'],
+                        'file' => $file_name,
+                    ]);
+                    // } else {
+                    //     $data = null;
+                    // }
+                }
+            }
+        }
         $nearbyCategories = NearbyCategory::all();
         if ($nearbyCategories) {
             foreach ($nearbyCategories as $key => $near_category) {
@@ -469,13 +496,11 @@ class PropertyController extends Controller
                 },
             ])->where(['property_id' => $property_id, 'is_withdraw' => 0])->first()->toArray();
         }
-
-
         $data['ledger_expense'] = Ledger::where('type', 1)->get();
         $data['ledger_income'] = Ledger::where('type', 0)->get();
-        $data['document_types'] = DocumentType::all();
+        $data['document_types'] = DocumentType::where('type', 0)->get();
         $data['payment_types'] = PaymentType::all();
-        $data['documents'] = PropertyDocument::with('DocumentType')->where('property_id', $property_id)->get()->toArray();
+        $data['documents'] = PropertyAgreementDocument::with('DocumentType')->where(['property_id' => $property_id])->get()->toArray();
         $data['rent_months'] = [];
         if (isset($data['rows']) && !empty($data['rows'])) {
             $rent_months = PropertyRent::where(['property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1])->get();

@@ -9,7 +9,7 @@
                  @endif
                  <div class="nearby-info mb-4 repeater">
                      <span class="nearby-title mb-3 d-block text-danger">
-                         <i class="fas fa-car mr-2"></i><b class="title">Add Document</b>
+                         <i class="fas fa-car mr-2"></i><b class="title">Add document</b>
                          {{-- <a data-repeater-create class="btn btn-warning btn-sm waves-effect">
                              <i class="material-icons">add</i>
                          </a> --}}
