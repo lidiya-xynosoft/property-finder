@@ -83,13 +83,15 @@
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" name="electricity_no" value="{{ $property->electricity_no }}">
+                                <input type="text" class="form-control" name="electricity_no"
+                                    value="{{ $property->electricity_no }}">
                                 <label class="form-label">Electricity number</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="text" class="form-control" name="water_no" value="{{ $property->water_no }}">
+                                <input type="text" class="form-control" name="water_no"
+                                    value="{{ $property->water_no }}">
                                 <label class="form-label">Water number</label>
                             </div>
                         </div>
@@ -178,7 +180,7 @@
 
                                 <div class="form-line">
                                     <label for="address">Street No</label>
-                                    <input type="text" id="street_no" class="form-control" name="street_no" 
+                                    <input type="text" id="street_no" class="form-control" name="street_no"
                                         placeholder="Enter Street no" value="{{ $property->street_no }}">
                                 </div>
                             </div>
@@ -257,6 +259,81 @@
 
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="header">
+                        <h2>DOCUMENT FILES</h2>
+                    </div>
+                    <div class="body">
+                        <div class="gallery-box" id="gallerybox">
+                            <div class="nearby-info mb-4 repeater">
+                                <div data-repeater-list="documents">
+                                    <div class="col-md-10">
+                                        <span class="nearby-title mb-3">
+                                            <i class=""></i><b class="title">Add multiple Documents</b>
+                                        </span>
+                                    </div>
+                                    @if (count($documents)>0)
+                                        @foreach ($documents as $document)
+                                            <div class="col-md-2">
+                                                <span data-repeater-create class="btn badge bg-green"> + </span>
+                                            </div>
+                                            <div data-repeater-item class="d-flex mb-2">
+                                                <div class="col-md-5">
+                                                    <select name="document_type_id" class="form-control show-tick">
+                                                        <option value="">-- Please select --</option>
+                                                        @foreach ($document_types as $document_type)
+                                                            <option value="{{ $document_type->id }}"
+                                                                {{ $document_type->id == $document->document_type_id ? 'selected' : '' }}>
+                                                                {{ $document_type->title }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-line">
+                                                        <label for="document_file" class="form-label">Document file<span
+                                                                class="text-red">*</span></label>
+                                                        <input type="file" name="document_file"
+                                                            value="{{ $document->file }}">
+                                                        {{ $document->file }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <span data-repeater-delete class="btn badge bg-red"> x </span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="col-md-2">
+                                            <span data-repeater-create class="btn badge bg-green"> + </span>
+                                        </div>
+                                        <div data-repeater-item class="d-flex mb-2">
+                                            <div class="col-md-5">
+                                                <select name="document_type_id" class="form-control show-tick">
+                                                    <option value="">-- Please select --</option>
+                                                    @foreach ($document_types as $document_type)
+                                                        <option value="{{ $document_type->id }}">
+                                                            {{ $document_type->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-line">
+                                                    <label for="document_file" class="form-label">Document file<span
+                                                            class="text-red">*</span></label>
+                                                    <input type="file" name="document_file">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <span data-repeater-delete class="btn badge bg-red"> x </span>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="card">

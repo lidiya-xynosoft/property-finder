@@ -7,10 +7,10 @@ use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\ExpenseManageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'FrontpageController@index')->name('home');
-Route::get('/slider', 'FrontpageController@slider')->name('slider.index');
+Route::get('/', 'FrontPageController@index')->name('home');
+Route::get('/slider', 'FrontPageController@slider')->name('slider.index');
 
-Route::post('/search', 'FrontpageController@search')->name('search');
+Route::post('/search', 'FrontPageController@search')->name('search');
 
 Route::get('/property', 'PagesController@properties')->name('property');
 Route::get('/property/{id}/{slug}', 'PagesController@propertieshow')->name('property.show');

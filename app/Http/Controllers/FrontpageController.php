@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\image;
 
-class FrontpageController extends Controller
+class FrontPageController extends Controller
 {
 
     public function index()

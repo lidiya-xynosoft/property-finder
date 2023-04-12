@@ -157,18 +157,17 @@ class PropertyController extends Controller
 
             foreach ($request['documents'] as $each_items) {
 
-                if (isset($request['document_file'])) {
-                    $rules['document_file'] = 'required|mimes:jpg,jpeg,pdf,doc,docx|max:5009';
-                    $request->validate($rules);
-                    $file = $request->file('document_file');
+                if (isset($each_items['document_file'])) {
+                    // $rules['document_file'] = 'required|mimes:jpg,jpeg,pdf,doc,docx|max:5009';
+                    // $request->validate($rules);
+                    $file = $each_items['document_file'];
                     $destinationPath = 'property/files';
                     $extension = $file->getClientOriginalExtension();;
                     $fileName = time() . '.' . $extension;
                     $uploadSuccess = $file->storeAs($destinationPath, $fileName, 'public');
                     $file_name = $destinationPath . '/' . $fileName;
-                    $data =   PropertyDocument::create([
-                        'property_id' => $request['property_id'],
-                        'document_type_id' => $request['document_type_id'],
+                    $data =   PropertyDocument::create(['property_id' => $property->id,
+                        'document_type_id' => $each_items['document_type_id'],
                         'file' => $file_name,
                     ]);
                     // } else {
@@ -232,10 +231,10 @@ class PropertyController extends Controller
     public function show(Property $property)
     {
         $property = Property::withCount('comments')->find($property->id);
-
+        $documents = PropertyDocument::where('property_id', $property->id)->get();
         $videoembed = $this->convertYoutube($property->video, 560, 315);
 
-        return view('admin.properties.show', compact('property', 'videoembed'));
+        return view('admin.properties.show', compact('property', 'videoembed', 'documents'));
     }
 
 
@@ -247,6 +246,8 @@ class PropertyController extends Controller
         $types = Type::all();
         $nearby_categories = NearbyCategory::all();
         $property_nearby = NearbyProperty::where('property_id', $property->id)->get();
+        $documents = PropertyDocument::where('property_id', $property->id)->get();
+        $document_types = DocumentType::where('type', 1)->get();
 
         $cities = City::all();
         $tags = Tag::where('type', 'property')->get();
@@ -254,7 +255,7 @@ class PropertyController extends Controller
         $currency = $user_data->country->currency;
         $videoembed = $this->convertYoutube($property->video);
 
-        return view('admin.properties.edit', compact('property', 'features', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency', 'videoembed'));
+        return view('admin.properties.edit', compact('property', 'features', 'documents', 'document_types', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency', 'videoembed'));
     }
 
 
@@ -358,6 +359,31 @@ class PropertyController extends Controller
         $property->location_latitude    = $request->latitude;
         $property->location_longitude   = $request->longitude;
         $property->save();
+
+        if (isset($request['documents']) && !empty($request['documents'])) {
+
+            foreach ($request['documents'] as $each_items) {
+
+                if (isset($each_items['document_file'])) {
+                    // $rules['document_file'] = 'required|mimes:jpg,jpeg,pdf,doc,docx|max:5009';
+                    // $request->validate($rules);
+                    $file = $each_items['document_file'];
+                    $destinationPath = 'property/files';
+                    $extension = $file->getClientOriginalExtension();;
+                    $fileName = time() . '.' . $extension;
+                    $uploadSuccess = $file->storeAs($destinationPath, $fileName, 'public');
+                    $file_name = $destinationPath . '/' . $fileName;
+                    $data =   PropertyDocument::create([
+                        'property_id' => $property->id,
+                        'document_type_id' => $each_items['document_type_id'],
+                        'file' => $file_name,
+                    ]);
+                    // } else {
+                    //     $data = null;
+                    // }
+                }
+            }
+        }
 
         $property->features()->sync($request->features);
         $property->tags()->sync($request->tags);

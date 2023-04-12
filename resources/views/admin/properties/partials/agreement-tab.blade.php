@@ -223,7 +223,7 @@
                                     <label for="name">Water Number<span class="text-red">*</span></label>
                                     <input required id="water_no" type="text" class="form-control "
                                         name="water_no"
-                                        value="{{ isset($update_data) ? $update_data->water_no : '' }}"
+                                        value="{{ isset($property) ? $property->water_no : '' }}"
                                         placeholder="Enter Water Number">
                                     <div class="help-block with-errors"></div>
 
@@ -257,7 +257,7 @@
                                     <label for="name">Electricity Number:<span class="text-red">*</span></label>
                                     <input required id="electricity_no" type="text" class="form-control "
                                         name="electricity_no"
-                                        value="{{ isset($update_data) ? $update_data->electricity_no : '' }}"
+                                        value="{{ isset($property) ? $property->electricity_no : '' }}"
                                         placeholder="Enter Electricity Number">
                                     <div class="help-block with-errors"></div>
 
@@ -268,7 +268,7 @@
                                     <label for="name">Building Number:<span class="text-red">*</span></label>
                                     <input required id="building_no" type="text" class="form-control "
                                         name="building_no"
-                                        value="{{ isset($update_data) ? $update_data->building_no : '' }}"
+                                          value="{{ isset($property) ? $property->building_no : '' }}"
                                         placeholder="Enter building number">
                                     <div class="help-block with-errors"></div>
 
@@ -278,7 +278,7 @@
                                 <div class="form-line">
                                     <label for="name">Zone:<span class="text-red">*</span></label>
                                     <input required id="zone" type="text" class="form-control "
-                                        name="zone" value="{{ isset($update_data) ? $update_data->zone : '' }}"
+                                        name="zone" value="{{ isset($property) ? $property->zone_no : '' }}"
                                         placeholder="Enter Zone">
                                     <div class="help-block with-errors"></div>
 
@@ -288,7 +288,7 @@
                                 <div class="form-line">
                                     <label for="name">Street:<span class="text-red">*</span></label>
                                     <input required id="street" type="text" class="form-control "
-                                        name="street" value="{{ isset($update_data) ? $update_data->street : '' }}"
+                                        name="street" value="{{ isset($property) ? $property->street_no : '' }}"
                                         placeholder="Enter street">
                                     <div class="help-block with-errors"></div>
 
@@ -571,7 +571,7 @@
                     <input type="submit" name="save_draft" value="Save as Draft" class="btn btn-primary mr-2">
                     <input type="reset" value="Clear Form" class="btn btn-light" />
                 @endif
-                
+
             </div>
 
             </form>
