@@ -64,10 +64,10 @@
                                         </td>
 
                                         <td class="text-center">
-                                            {{-- <a href="{{ route('admin.properties.show', $property->slug) }}"
-                                                class="btn btn-success btn-sm waves-effect">
+                                            <a href="{{ url('admin/landloard-property/manage/?property_id=' . $property->id) }}"
+                                                class="btn btn-warning btn-sm waves-effect">
                                                 <i class="material-icons">visibility</i>
-                                            </a> --}}
+                                            </a>
                                             <a href="{{ url('admin/property/manage/?property_id=' . $property->id) }}"
                                                 class="btn btn-success btn-sm waves-effect">
                                                 <i class="material-icons">visibility</i>

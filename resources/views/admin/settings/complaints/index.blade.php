@@ -66,8 +66,8 @@
 
                                     <select name="complaint_id" class="form-control">
                                         <option value="">-- select complaint --</option>
-                                        @foreach ($complaints as $key => $value)
-                                            <option value="{{ $value['id'] }}">{{ $value['complaint_number'] }}
+                                        @foreach ($complaint_lists as $key => $value)
+                                            <option value="{{ $value->id }}">{{ $value->complaint_number }}
                                             </option>
                                         @endforeach
                                     </select>

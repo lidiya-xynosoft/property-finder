@@ -7,10 +7,10 @@
 
                 {{-- <div class="card"> --}}
                 <div class="card-header">
-                    <h4> {{ __('Generate Lease Agreement') }}</h4>
+                    <h4> {{ __('Generate Contract') }}</h4>
                 </div>
-                <form action="{{ url('admin/agreement/save-update-agreement') }}" enctype="multipart/form-data"
-                    method="POST" id="agreementForm">
+                <form action="{{ url('admin/landloard/save-update-contract') }}" enctype="multipart/form-data"
+                    method="POST" id="contractForm">
                     @csrf
                     <div class="card-body">
                         <div class="row">
@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-sm-3">&nbsp;</div>
                         </div>
-                        <div class="card-header">
+                        {{-- <div class="card-header">
                             <h4>{{ __('1.Landlord Details') }}</h4>
                         </div>
                         <div class="row">
@@ -71,9 +71,9 @@
 
                                 </tbody>
                             </table>
-                        </div>
+                        </div> --}}
                         <div class="card-header">
-                            <h4>{{ __('2. Tenant Details') }}</h4>
+                            <h4>{{ __('2. Landloard Details') }}</h4>
                         </div>
                         <br />
                         <input id="property_id" type="hidden" name="property_id"
@@ -81,17 +81,19 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-line">
-                                    <label for="name">Choose Customer<span class="text-red">*</span></label>
+                                    <label for="name">Choose Landloard<span class="text-red">*</span></label>
 
-                                    <select class="form-control" name="customer_id" id="customer_id" required>
+                                    <select class="form-control" name="landloard_id" id="landloard_id" required>
 
-                                        @foreach ($customers as $customer)
+                                        @foreach ($landloards as $customer)
                                             @if (isset($update_data))
                                                 <option value="{{ $customer->id }}"
-                                                    {{ $customer->id == $update_data->customer_id ? 'selected' : '' }}>
+                                                    {{ $customer->id == $update_data->landloard_id ? 'selected' : '' }}>
                                                     {{ $customer->first_name }} {{ $customer->last_name }}
                                                 </option>
                                             @else
+                                                                                        <option>--select--</option>
+
                                                 <option value="{{ $customer->id }}">
                                                     {{ $customer->first_name }} {{ $customer->last_name }}
                                                 </option>
@@ -102,40 +104,18 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-line">
-                                    <label for="name" class="form-label">Tenant Name:<span
+                                    <label for="name" class="form-label">Landloard Name:<span
                                             class="text-red">*</span></label>
-                                    <input id="tenant_name" type="text" class="form-control" readonly
-                                        name="tenant_name"
+                                    <input id="landloard_name" type="text" class="form-control" readonly
+                                        name="landloard_name"
                                         value="{{ isset($update_data) ? $update_data->tenant_name : '' }}"
                                         required="">
-                                    <input id="tenant_name_arabic" type="hidden" class="form-control "
-                                        name="tenant_name_arabic"
-                                        value="{{ isset($update_data) ? $update_data->tenant_name_arabic : '' }}">
+                                   
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-line">
-                                    <label for="name">Tenant QID/CR No:
-                                        <span class="text-red">*</span> <input id="tenant_no" type="text"
-                                            class="form-control " name="tenant_no"
-                                            value="{{ isset($update_data) ? $update_data->tenant_no : '' }}"
-                                            placeholder="Enter user name" required="">
-                                        <div class="help-block with-errors"></div>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-line">
-                                    <label for="name">P.O Box: </label>
-                                    <input id="po_box" type="text" class="form-control " name="po_box"
-                                        value="{{ isset($update_data) ? $update_data->po_box : '' }}"
-                                        placeholder="Enter Box no">
-                                    <div class="help-block with-errors"></div>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
+                       
+                            <div class="col-sm-4">
                                 <div class="form-line">
                                     <label for="name">Telephone<span class="text-red">*</span></label>
                                     <input id="phone" type="text" readonly class="form-control " name="phone"
@@ -145,7 +125,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="form-line">
                                     <label for="name">Email address<span class="text-red">*</span></label>
                                     <input id="email" type="text" readonly class="form-control " name="email"
@@ -155,8 +135,19 @@
 
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="form-line">
+                                    <label for="name">address<span class="text-red">*</span></label>
+                                    <input required id="address" type="text" class="form-control "
+                                        name="address"
+                                       value="{{ isset($update_data) ? $update_data->address : '' }}"
+                                        placeholder="Enter Location">
+                                    <div class="help-block with-errors"></div>
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-header">
+                        {{-- <div class="card-header">
                             <h4>{{ __('3. Premises Details') }}</h4>
                         </div>
                         <br />
@@ -294,10 +285,10 @@
                                 </div>
                             </div>
                             <input id="premises_utilities" type="hidden" name="premises_utilities" value="">
-                        </div>
+                        </div> --}}
 
                         <div class="card-header">
-                            <h4>{{ __('3. Lease Terms') }}</h4>
+                            <h4>{{ __('3. Contract Terms') }}</h4>
                         </div>
 
                         <br />
@@ -435,7 +426,7 @@
                             </div>
                         </div>
 
-                        <div class="card-header">
+                        {{-- <div class="card-header">
                             <div class="col-sm-3">
                                 <strong>{{ __('4. Financial Terms') }} </strong>
                             </div>
@@ -450,8 +441,8 @@
                                     {{ __('Excluded') }}
                                 </label>
                             </div>
-                        </div>
-                        <div class="radio-inline">
+                        </div> --}}
+                        {{-- <div class="radio-inline">
                             <div class="form-check">
                                 <input class="form-check-input utility_case" type="radio" name="utility_case"
                                     id="utility_case_included" value="included">
@@ -459,41 +450,12 @@
                                     {{ __('Included') }}
                                 </label>
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <div class="row">
 
-
                         <div class="col-sm-4">
-                            <div class="form-line">
-                                <label for="">{{ __('Mode of Payment:') }}<span class="text-red">*</span>
-                                </label>
-                                <select class="form-control" name="payment_mode" id="payment_mode" required>
-
-                                    <option value="bank_transfer">Bank transfer</option>
-                                    <option value="post_dated_check">Post dated Check</option>
-                                </select>
-                                <input type="hidden" id="post_dated_check_value" name="post_dated_check_value">
-                                <input type="hidden" id="post_dated_check_value_arabic"
-                                    name="post_dated_check_value_arabic"
-                                    value={{ isset($update_data) ? $update_data->payment_mode_arabic : '' }}>
-                            </div>
-                            <div class="badge badge-secondary" id="result_of_dated_check">
-                                {{ isset($update_data) ? $update_data->payment_mode_arabic : 'ssss' }}
-                            </div>
-
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-line" id="no_of_dated_check_area">
-                                <label for="">{{ __(' Number of check:') }}<span class="text-red">*</span>
-                                </label>
-
-                                <input type="number" class="form-control" name="no_of_dated_check"
-                                    id="no_of_dated_check" min="1" max="10" disabled>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
                             <div class="form-line">
                                 <label for="">{{ __('Monthly rent') }}<span class="text-red">*</span>
                                 </label>
@@ -505,18 +467,7 @@
                             </div>
 
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-line">
-                                <label for="name">Utilities<span class="text-red">*</span></label>
-                                <input id="utilities" type="text" class="form-control" name="utilities"
-                                    value="{{ isset($update_data) ? $update_data->utilities : '' }}"
-                                    placeholder="Enter Utilities" required="">
-                                <div class="help-block with-errors"></div>
-                            </div>
-                            <input type="text" name="utilities_arabic" class="form-control text-right d-none"
-                                id="utilities_arabic"
-                                value="{{ isset($update_data) ? $update_data->utilities_arabic : '' }}">
-                        </div>
+                     
 
                         <div class="col-sm-4">
                             <div class="form-line">
@@ -543,16 +494,7 @@
                                     value="{{ isset($update_data) ? $update_data->rent_payment_commencement_arabic : '' }}">
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-line">
-                                <label for="name">Rent Free:</label>
-                                <input id="rent_free" type="text" class="form-control " name="rent_free"
-                                    value="{{ isset($update_data) ? $update_data->rent_free : '' }}"
-                                    placeholder="Enter rent free">
-                                <div class="help-block with-errors"></div>
-
-                            </div>
-                        </div>
+                   
                     </div>
             </div>
 
@@ -593,8 +535,7 @@
                         <th>{{ __('Lease Period') }}</th>
                         <th>{{ __('Lease Expiry') }}</th>
                         <th>{{ __('Monthly rent') }}</th>
-                        <th>{{ __('Mode Of Pay') }}</th>
-                        <th>{{ __('PDF') }}</th>
+                        <th>{{ __('Email') }}</th>
                         <th>{{ __('Status') }}</th>
                         <th>{{ __('Actions') }}</th>
                     </tr>
@@ -603,26 +544,17 @@
                     {{-- @foreach ($agreements as $rows) --}}
                     <tr>
                         <input value="{{ $rows['id'] }}" id="agreement_row_id" hidden>
-                        <td>{{ $rows['agreement_id'] }}</td>
-                        <td>{{ $rows['tenant_name'] }}</td>
+                        <td>{{ $rows['contract_no'] }}</td>
+                        <td>{{ $rows['landloard']['first_name'] }}</td>
 
-                        <td>{{ $rows['phone'] }}</td>
+                        <td>{{ $rows['landloard']['phone'] }}</td>
                         <td>{{ $rows['lease_period'] }} </td>
                         <td>{{ $rows['lease_expiry'] }}</td>
                         <td>{{ $currency }} {{ $rows['monthly_rent'] }}</td>
-                        <td>{{ $rows['payment_mode'] }}</td>
-                        <td><a href="{{ url('agreement/generate-pdf?agreement_id=') . $rows['id'] }}" target="_blank"
-                                class="btn btn-danger">PDF</a></td>
+                        <td>{{ $rows['landloard']['email'] }}</td>
+                     
 
-                        @if ($rows['is_draft'] == '1')
-                            <td>
-                                <div class="badge badge-pill badge-secondary">Not Published</div>
-                            </td>
-                        @else
-                            <td>
-                                <div class="badge badge-pill badge-primary">Published</div>
-                            </td>
-                        @endif
+                      
                         <td>
                             <div class="table-actions">
 
@@ -632,16 +564,9 @@
                                         <button data-repeater-create type="button"
                                             class="btn btn-success btn-icon ml-2 mb-2">Publish</button>
                                     </a>
-                                    {{-- @else
-                                                     
-                                                        <button data-repeater-create type="button"
-                                                            class="btn btn-success btn-icon ml-2 mb-2"> View --}}
+                                  
                                 @endif
-                                {{-- <a href="{{ url('agreement/delete-agreement?id=') . $rows['id'] }}">
-                                    <button data-repeater-create type="button" class="btn btn-danger btn-icon ml-2 mb-2">
-                                        <i class="material-icons">delete</i></button>
-                                </a> --}}
-
+                               
                                 <a href="{{ url('admin/property/manage/?update_id=') . $rows['id'] }}">
                                     <button data-repeater-create type="button"
                                         class="btn btn-success btn-icon ml-2 mb-2"> <i

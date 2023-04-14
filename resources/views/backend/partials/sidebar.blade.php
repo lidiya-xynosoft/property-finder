@@ -42,7 +42,7 @@
                                 <span>Purpose</span>
                             </a>
                         </li>
-                         <li class="{{ Request::is('admin/document-type*') ? 'active' : '' }}">
+                        <li class="{{ Request::is('admin/document-type*') ? 'active' : '' }}">
                             <a href="{{ route('admin.document-type.index') }}">
                                 {{-- <i class="material-icons">grading</i> --}}
                                 <span>Document Type</span>
@@ -114,7 +114,19 @@
                         <span>Transactions</span>
                     </a>
                 </li>
-
+                <li class="header">LANDLOARDS</li>
+                <li class="{{ Request::is('admin/landloards*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.landloards.index') }}">
+                        <i class="material-icons">people</i>
+                        <span>Landloard</span>
+                    </a>
+                </li>
+                <li class="{{ Request::is('admin/tenancy-list') ? 'active' : '' }}">
+                    <a href="{{ url('admin/tenancy-list') }}">
+                        <i class="material-icons">list</i>
+                        <span>Tenant List</span>
+                    </a>
+                </li>
                 <li class="header">TENANTS</li>
                 <li class="{{ Request::is('admin/tenants*') ? 'active' : '' }}">
                     <a href="{{ route('admin.tenants.index') }}">
@@ -128,7 +140,13 @@
                         <span>Tenant List</span>
                     </a>
                 </li>
-
+                <li class="header">REPORTS</li>
+                <li class="{{ Request::is('admin/reports') ? 'active' : '' }}">
+                    <a href="{{ route('admin.reports.index') }}">
+                        <i class="material-icons">people</i>
+                        <span>Reports</span>
+                    </a>
+                </li>
                 <li class="header">BLOG</li>
                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
                     <a href="{{ route('admin.categories.index') }}">

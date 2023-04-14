@@ -190,13 +190,15 @@ class DashboardController extends Controller
     public function complaint()
     {
         $complaints = [];
+        $complaint_lists = [];
         if (count(PropertyComplaint::all()) > 0) {
             $complaints = PropertyComplaint::with('Property', 'ServiceList', 'Customer')->latest()->get()->toArray();
         }
 
         $properties = Property::all();
         $service_lists = ServiceList::all();
-        return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists'));
+        $complaint_lists = PropertyComplaint::all();
+        return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists', 'complaint_lists'));
     }
     public function complaintRead($id)
     {
@@ -277,7 +279,9 @@ class DashboardController extends Controller
     {
         $where_arry = [];
         $complaints = [];
-        if (!$request['status'] || !$request['property_id'] || !$request['service_list_id'] || !$request['complaint_id']) {
+        $complaint_lists = PropertyComplaint::all();
+
+        if (!$request['status'] && !$request['property_id'] && !$request['service_list_id'] && !$request['complaint_id']) {
             $flash = array('type' => 'error', 'msg' => 'Choose any data for search');
             session()->flash('flash', $flash);
             return redirect()->back();
@@ -302,13 +306,12 @@ class DashboardController extends Controller
                 $where_arry['id'] = $request['complaint_id'];
             }
         }
-
         if (count(PropertyComplaint::where($where_arry)->get()) > 0) {
-            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'ComplaintImage')->where($where_arry)->latest()->get()->toArray();
+            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'ComplaintImage', 'Customer')->where($where_arry)->latest()->get()->toArray();
         }
         $properties = Property::all();
         $service_lists = ServiceList::all();
-        return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists'));
+        return view('admin.settings.complaints.index', compact('complaints', 'properties', 'service_lists', 'complaint_lists'));
     }
     public function complaintHistory(Request $request)
     {

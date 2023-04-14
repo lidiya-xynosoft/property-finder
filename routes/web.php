@@ -75,6 +75,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/change-handyman-status', 'HandymanController@changeHandymanStatus')->name('change-handyman');
     Route::get('complaint-history/', 'DashboardController@complaintHistory')->name('complaint-history');
 
+    Route::get('landloard-property/manage/', 'PropertyLandloardController@propertyLandloardManage')->name('landloard-manage');
+    Route::post('/landloard/save-update-contract', 'AgreementManageController@saveUpdateContract')->name('contract-manage');
+
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
     Route::resource('ledger', 'LedgerController');
@@ -82,6 +85,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
     Route::resource('tenants', 'TenantController');
+    Route::resource('landloards', 'LandloardController');
     Route::resource('tenant-service', 'TenantServiceController');
     Route::resource('cancellation-reason', 'CancellationReasonController');
     Route::resource('handyman', 'HandymanController');
