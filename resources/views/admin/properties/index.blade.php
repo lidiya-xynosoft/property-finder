@@ -65,19 +65,19 @@
 
                                         <td class="text-center">
                                             <a href="{{ url('admin/landloard-property/manage/?property_id=' . $property->id) }}"
-                                                class="btn btn-warning btn-sm waves-effect">
-                                                <i class="material-icons">visibility</i>
+                                                class="btn btn-warning btn-sm waves-effect" title="link and manage property to landloard">
+                                                <i class="material-icons">receipt</i>
                                             </a>
                                             <a href="{{ url('admin/property/manage/?property_id=' . $property->id) }}"
-                                                class="btn btn-success btn-sm waves-effect">
+                                                class="btn btn-success btn-sm waves-effect" title="manage property agreement ">
                                                 <i class="material-icons">visibility</i>
                                             </a>
                                             <a href="{{ route('admin.properties.edit', $property->slug) }}"
-                                                class="btn btn-info btn-sm waves-effect">
+                                                class="btn btn-info btn-sm waves-effect" title="edit property">
                                                 <i class="material-icons">edit</i>
                                             </a>
                                             <button type="button" class="btn btn-danger btn-sm waves-effect"
-                                                onclick="deletePost({{ $property->id }})">
+                                                onclick="deletePost({{ $property->id }})" title="delete property">
                                                 <i class="material-icons">delete</i>
                                             </button>
                                             <form action="{{ route('admin.properties.destroy', $property->slug) }}"

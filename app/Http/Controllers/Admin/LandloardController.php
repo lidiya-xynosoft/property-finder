@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Comment;
 use App\Country;
 use App\Landloard;
 use App\Http\Controllers\Controller;
+use App\LandloardExpense;
+use App\LandloardIncome;
+use App\LandloardProperty;
+use App\LandloardRent;
+use App\Post;
+use App\Property;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
@@ -101,5 +108,20 @@ class LandloardController extends Controller
 
         // Toastr::success('message', 'Landloard deleted successfully.');
         return $landloard;
+    }
+    public function landloardDashboard()
+    {
+        $data = [];
+        $data['propertycount'] = LandloardProperty::count();
+        $data['paid_rent']     = LandloardRent::where('payment_status', 1)->sum('rent_amount');
+        $data['income']  = LandloardIncome::sum('amount');
+        $data['expense']     = LandloardExpense::sum('amount');
+
+        $data['properties']    = LandloardProperty::latest()->with('Property')->take(5)->get();
+        $data['posts']         = Post::latest()->withCount('comments')->take(5)->get();
+        $data['users']         = User::with('role')->latest()->take(5)->get();
+        $data['comments']      = Comment::with('users')->take(5)->get();
+
+        return view('admin.reports.landloard-dashboard')->with($data);
     }
 }

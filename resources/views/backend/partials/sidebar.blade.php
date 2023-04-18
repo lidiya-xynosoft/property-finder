@@ -142,7 +142,7 @@
                 </li>
                 <li class="header">REPORTS</li>
                 <li class="{{ Request::is('admin/reports') ? 'active' : '' }}">
-                    <a href="{{ route('admin.reports.index') }}">
+                    <a href="{{ url('admin/reports') }}">
                         <i class="material-icons">people</i>
                         <span>Reports</span>
                     </a>

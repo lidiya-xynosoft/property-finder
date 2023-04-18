@@ -42,8 +42,7 @@ Route::post('/tenant/complaint', 'FrontPageController@tenantComplaints')->name('
 
 
 Auth::routes();
-Route::group(['middleware' => ['auth:sanctum']], function () {
-});
+
 Route::get('publish-previewed-agreement', [AgreementManageController::class, 'publishPreviewedAgreement']);
 Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
 Route::get('agreement/sign-agreement', [AgreementManageController::class, 'signAgreement']);
@@ -54,6 +53,7 @@ Route::delete('expense/delete/{id}', [ExpenseManageController::class, 'destroy']
 Route::delete('document/delete/{id}', [DocumentController::class, 'destroy']);
 Route::get('rent/pay/{id}', [ExpenseManageController::class, 'rentPayment']);
 Route::get('contract/withdrow', [AgreementManageController::class, 'withdrowProperty']);
+Route::post('landloard-rent/save-update-landloard-rent', [ExpenseManageController::class, 'landloardRentPayment']);
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
 
@@ -77,6 +77,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     Route::get('landloard-property/manage/', 'PropertyLandloardController@propertyLandloardManage')->name('landloard-manage');
     Route::post('/landloard/save-update-contract', 'AgreementManageController@saveUpdateContract')->name('contract-manage');
+    Route::get('reports/', 'ReportController@index')->name('reports');
+    Route::get('landloard-dashboard', 'LandloardController@landloardDashboard')->name('landloard-dashboard');
+    Route::get('property-expense-report', 'ReportController@propertyExpenseReport')->name('property-expense-report');
+    Route::post('property-expense-report', 'ReportController@propertyExpenseReport')->name('property-expense-report');
+    Route::post('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');
+    Route::get('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');
+
 
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');

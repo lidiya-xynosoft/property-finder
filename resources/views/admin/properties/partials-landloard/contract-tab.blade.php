@@ -536,7 +536,6 @@
                         <th>{{ __('Lease Expiry') }}</th>
                         <th>{{ __('Monthly rent') }}</th>
                         <th>{{ __('Email') }}</th>
-                        <th>{{ __('Status') }}</th>
                         <th>{{ __('Actions') }}</th>
                     </tr>
                 </thead>

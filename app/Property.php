@@ -54,4 +54,8 @@ class Property extends Model
     {
         return $this->hasMany(PropertyComplaint::class);
     }
+    public function propertyCustomer()
+    {
+        return $this->hasMany(PropertyCustomer::class);
+    }
 }

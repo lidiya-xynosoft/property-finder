@@ -20,4 +20,8 @@ class PropertyExpense extends Model
     {
         return $this->belongsTo(PropertyAgreement::class);
     }
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
+    }
 }

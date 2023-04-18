@@ -16,7 +16,7 @@
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog" role="document">
-                  <form method="POST" id="rentForm">
+                  <form method="POST" id="landloardRentForm">
                       @csrf
                       <div class="modal-content">
                           <div class="modal-header">
@@ -29,7 +29,7 @@
 
                               <input name="property_id" value="{{ $property->id }}" hidden>
                               @if (isset($rows['id']))
-                                  <input name="property_agreement_id" value="{{ $rows['id'] }}" hidden>
+                                  <input name="landloard_contract_id" value="{{ $rows['id'] }}" hidden>
                               @endif
                               <input name="rent_id" id="rent_id" value="0" type="text" hidden>
                               <div class="form-line">

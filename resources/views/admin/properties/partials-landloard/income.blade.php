@@ -63,7 +63,7 @@
         <div class="modal fade" id="incomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form method="POST" id="incomeForm">
+                <form method="POST" id="landloardIncomeForm">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">

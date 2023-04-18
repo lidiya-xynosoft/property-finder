@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\daybook;
 use App\Http\Controllers\Controller;
+use App\LandloardIncome;
+use App\LandloardPropertyContract;
+use App\LandloardRent;
 use App\Ledger;
 use App\Property;
 use App\PropertyAgreement;
@@ -139,6 +142,52 @@ class ExpenseManageController extends Controller
                 'title' => Property::find($expense_rent->property_id)->product_code,
                 'head' => 'Monthly Rent',
                 'credit' => $request['amount'],
+            ]);
+        } else {
+            return response()->json([
+                'success' => '0'
+            ]);
+        }
+        return response()->json([
+            'success' => '1'
+        ]);
+    }
+    public function landloardRentPayment(Request $request)
+    {
+        $id = $request['rent_id'];
+        $expense_rent = LandloardRent::findOrFail($id);
+        if ($expense_rent) {
+            LandloardRent::whereId($id)->update([
+                'payment_date' => Carbon::now()->toDateString(),
+                'landloard_property_contract_id' => $request['landloard_contract_id'],
+                'payment_time' => Carbon::now()->format('H:i:s'),
+                'payment_status' => 1
+            ]);
+            $data = LandloardIncome::create(
+                [
+                    'property_id' => $request['property_id'],
+                    'landloard_property_contract_id' => $request['landloard_contract_id'],
+                    'landloard_id' => LandloardPropertyContract::find($request['landloard_contract_id'])->landloard_id,
+                    'ledger_id' => $request['ledger_id'],
+                    'income_date' => $request['date'],
+                    'date' => Carbon::now()->toDateString(),
+                    'name' => $request['name'],
+                    'amount' => $request['amount'],
+                    'reference' => $request['reference'],
+                    'payment_type_id' => $request['payment_type_id'],
+                    'description' => $request['description'],
+                    'status' => 1,
+                ],
+            );
+            daybook::create([
+                'property_id' => $expense_rent->property_id,
+                'landloard_property_contract_id' => $request['landloard_contract_id'],
+                'user_id' => Auth::user()->id,
+                'date' => Carbon::now()->toDateString(),
+                'time' => Carbon::now()->format('H:i:s'),
+                'title' => Property::find($expense_rent->property_id)->product_code,
+                'head' => 'Landloard Rent Payment',
+                'debit' => $request['amount'],
             ]);
         } else {
             return response()->json([

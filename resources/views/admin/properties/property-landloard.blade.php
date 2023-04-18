@@ -188,143 +188,18 @@
                     }
                 })
             });
-            $("#deleteDocument").click(function() {
-                var id = $(this).data("id");
-                var token = $(this).data("token");
-                swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url: "/document/delete/" + id,
-                            type: 'DELETE',
-                            dataType: "JSON",
-                            data: {
-                                "id": id,
-                                "_method": 'DELETE',
-                                "_token": token,
-                            },
-                            success: function(res) {
-                                if (res['success'] == 1) {
-                                    swal(
-                                        'Deleted!',
-                                        'Document has been deleted.',
-                                        'success'
-                                    )
-                                    location.reload(); // show response from the php script.
-                                } else {
-                                    swal(
-                                        'Something wrong!',
-                                        'document has not deleted.',
-                                        'warning'
-                                    )
-                                }
-                            },
-                            error: function() {
-                                swal(
-                                    'Something wrong!',
-                                    'document has not deleted.',
-                                    'warning'
-                                )
-                            }
-                        });
-
-                    }
-                })
-            });
+         
             $(".payRent").click(function() {
                 var id = $(this).data("id");
                 var token = $(this).data("token");
 
                 $('#rent_id').val(id);
             });
-            $("#sign_agreement").click(function() {
-                var agree_box = $("input[name='agrement_type']:checked").val();
-                if (!agree_box) {
-                    alert("please agree the checkbox");
-                    return;
-                }
-                swal({
-                    title: 'Property Agreement confirmation?',
-                    text: "this will assign to customer!",
-                    type: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Agree it!'
-                }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url: "/agreement/sign-agreement",
-                            type: 'get',
-                            data: {
-                                property_id: $("#property_id").val(),
-                                agreement_id: $('#agreement_row_id').val(),
-                            },
-                            success: function(res) {
-
-                                if (res['success'] == 1) {
-                                    swal(
-                                        'Assigned!',
-                                        'Agreement has been confirmed.',
-                                        'success'
-                                    )
-                                    // $("#customer_details").show();
-                                    location.reload(); // show response from the php script.
-
-                                    // $("#sign_area").hide();
-                                    // $('#customer_name').text(res['customer']);
-                                    // $('#lease_duration').text(res['duration']);
-                                    // $('#expiry_date').text(res['expiry']);
-                                    // $('#rent_date').text(res['rent_date']);
-
-                                } else {
-                                    swal(
-                                        'Something wrong!',
-                                        'Agreement has not assigned.',
-                                        'warning'
-                                    )
-                                }
-                            },
-                            error: function() {
-                                swal(
-                                    'Something wrong!',
-                                    'Agreement has not assigned.',
-                                    'warning'
-                                )
-                            }
-                        });
-
-                    }
-                })
-
-            });
-
-            $("#documentForm").submit(function(e) {
-
+           
+            $("#landloardRentForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
-                var actionUrl = '/document/save-update-document'
-                $.ajax({
-                    type: "POST",
-                    url: actionUrl,
-                    data: form.serialize(), // serializes the form's elements.
-                    success: function(data) {
-                        // location.reload(); // show response from the php script.
-                    }
-                });
-
-            });
-            $("#rentForm").submit(function(e) {
-                e.preventDefault(); // avoid to execute the actual submit of the form.
-                var form = $(this);
-                var actionUrl = '/rent/save-update-rent'
+                var actionUrl = '/landloard-rent/save-update-landloard-rent'
 
                 $.ajax({
                     type: "POST",
@@ -355,7 +230,7 @@
                     }
                 });
             });
-            $("#expenseForm").submit(function(e) {
+            $("#landloardExpenseForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
                 var actionUrl = '/expense/save-update-expense'
@@ -370,7 +245,7 @@
                 });
 
             });
-            $("#incomeForm").submit(function(e) {
+            $("#landloardIncomeForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
                 var actionUrl = '/expense/save-update-expense'
@@ -460,69 +335,6 @@
                 var input_id3 = '#lease_commencement_arabic';
                 var lease_commencement_arabic = translateText(commencement, input_id3);
                 $('#lease_commencement_arabic').val(lease_commencement_arabic);
-            });
-
-       
-
-            $("#monthly_rent").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#monthly_rent_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#payment_commencement").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#payment_commencement_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#security_deposit").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#security_deposit_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#tenant_name").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#tenant_name_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#utilities").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#utilities_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-
-            $("#building_name_english").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#building_name_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#unit_no").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#unit_no_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#unit_type_english").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#unit_type_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-            $("#location_english").change(function() {
-                var sourceText = $(this).val();
-                var input_id = '#location_arabic';
-                var arabicText = translateText(sourceText, input_id);
-            });
-
-            $(".mode_of_bill_payment").change(function() {
-                var mode_of_bill_payment = $("input[name='mode_of_bill_payment']:checked").val();
-                if (mode_of_bill_payment == 'expense_type') {
-                    $('#expense_category_id').show();
-                    $('#income_category_id').hide();
-                } else if (mode_of_bill_payment == 'income_type') {
-                    $('#expense_category_id').hide();
-                    $('#income_category_id').show();
-
-                }
-
-
             });
 
             function translateText(sourceText, input_id) {

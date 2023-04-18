@@ -20,4 +20,8 @@ class PropertyIncome extends Model
     {
         return $this->belongsTo(Ledger::class);
     }
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
+    }
 }
