@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\daybook;
 use App\Http\Controllers\Controller;
+use App\LandloardExpense;
 use App\LandloardIncome;
 use App\LandloardPropertyContract;
 use App\LandloardRent;
@@ -79,6 +80,75 @@ class ExpenseManageController extends Controller
             daybook::create([
                 'property_id' => $request['property_id'],
                 'property_agreement_id' => $request['property_agreement_id'],
+                'user_id' => Auth::user()->id,
+                'date' => Carbon::now()->toDateString(),
+                'time' => Carbon::now()->format('H:i:s'),
+                'title' => Property::find($request['property_id'])->product_code,
+                'head' =>   $request['name'],
+                'credit' => $request['amount'],
+            ]);
+        }
+        $flash = array('type' => 'success', 'msg' => 'added successfully.');
+        session()->flash('flash', $flash);
+        return $data;
+    }
+    public function saveUpdatelandloardExpense(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'date' => 'required',
+            'amount' => 'required',
+            'landloard_contract_id' => 'required',
+            'ledger_id' => 'required',
+            'payment_type_id' => 'required',
+        ]);
+        if ($request['mode_of_bill_payment'] == 'expense_type') {
+            $data = LandloardExpense::create(
+                [
+                    'property_id' => $request['property_id'],
+                    'ledger_id' => $request['ledger_id'],
+                    'landloard_id' => LandloardPropertyContract::find($request['landloard_contract_id'])->landloard_id,
+                    'landloard_property_contract_id' => $request['landloard_contract_id'],
+                    'expense_date' => $request['date'],
+                    'date' => Carbon::now()->toDateString(),
+                    'name' => $request['name'],
+                    'amount' => $request['amount'],
+                    'reference' => $request['reference'],
+                    'payment_type_id' => $request['payment_type_id'],
+                    'description' => $request['description'],
+                    'status' => 1,
+                ],
+            );
+            daybook::create([
+                'property_id' => $request['property_id'],
+                'landloard_property_contract_id' => $request['landloard_property_contract_id'],
+                'user_id' => Auth::user()->id,
+                'date' => Carbon::now()->toDateString(),
+                'time' => Carbon::now()->format('H:i:s'),
+                'title' => Property::find($request['property_id'])->product_code,
+                'head' =>  Ledger::find($request['ledger_id'])->title,
+                'debit' => $request['amount'],
+            ]);
+        } else if ($request['mode_of_bill_payment'] == 'income_type') {
+            $data = LandloardIncome::create(
+                [
+                    'property_id' => $request['property_id'],
+                    'landloard_property_contract_id' => $request['landloard_contract_id'],
+                    'landloard_id' => LandloardPropertyContract::find($request['landloard_contract_id'])->landloard_id,
+                    'ledger_id' => $request['ledger_id'],
+                    'income_date' => $request['date'],
+                    'date' => Carbon::now()->toDateString(),
+                    'name' => $request['name'],
+                    'amount' => $request['amount'],
+                    'reference' => $request['reference'],
+                    'payment_type_id' => $request['payment_type_id'],
+                    'description' => $request['description'],
+                    'status' => 1,
+                ],
+            );
+            daybook::create([
+                'property_id' => $request['property_id'],
+                'landloard_property_contract_id' => $request['landloard_contract_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),

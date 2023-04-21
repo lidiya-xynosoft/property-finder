@@ -233,7 +233,7 @@
             $("#landloardExpenseForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
-                var actionUrl = '/expense/save-update-expense'
+                var actionUrl = '/landloard-expense/save-update-expense'
 
                 $.ajax({
                     type: "POST",
@@ -248,7 +248,7 @@
             $("#landloardIncomeForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
-                var actionUrl = '/expense/save-update-expense'
+                var actionUrl = '/landloard-expense/save-update-expense'
 
                 $.ajax({
                     type: "POST",

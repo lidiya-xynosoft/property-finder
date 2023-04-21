@@ -8,7 +8,12 @@
             integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
     @endpush
 
-    <div class="block-header"></div>
+    <div class="block-header">
+        <a href="{{ route('admin.reports') }}" class="waves-effect waves-light btn btn-danger right m-b-15">
+            <i class="material-icons left">arrow_back</i>
+            <span>BACK</span>
+        </a>
+    </div>
 
     <div class="row clearfix">
 
@@ -51,9 +56,9 @@
                                 <div class="form-group">
                                     <label>&nbsp;</label>
                                     <select name="date" class="form-control">
-                                            <option value="0">Current Date </option>
-                                            <option value="1">Date Period</option>
-                                            <option value="2">Specify Date </option>
+                                        <option value="0">Current Date </option>
+                                        <option value="1">Date Period</option>
+                                        <option value="2">Specify Date </option>
                                     </select>
                                 </div>
                             </div>
@@ -75,11 +80,14 @@
                                 <tr>
                                     <th>SL.</th>
                                     <th>Property</th>
-                                    <th>Tenant</th>
-                                    <th>Income Amount</th>
+                                    @if (!empty($value['property']['property_customer']))
+                                        <th>Tenant</th>
+                                    @endif
+                                    <th>date</th>
                                     <th>Ledger Type</th>
                                     <th>name</th>
-                                    <th>date</th>
+                                    <th>Income Amount</th>
+
                                 </tr>
                             </thead>
 
@@ -89,25 +97,33 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $income['property']['product_code'] }}<br />{{ str_limit($income['property']['title'], 30) }}
                                         </td>
-                                        <td>{{ $income['property']['property_customer'][0]['customer']['first_name'] . ' ' . $income['property']['property_customer'][0]['customer']['last_name'] }}<br />
-                                            {{ $income['property']['property_customer'][0]['customer']['phone'] }}<br />
-                                            {{ $income['property']['property_customer'][0]['customer']['email'] }}
-                                        </td>
-                                        <td>{{ $income['amount'] }}</td>
-                                        <td>{{ $income['ledger']['title'] }}</td>
-                                        <td>{{ $income['name'] }}</td>
-
+                                        @if (!empty($value['property']['property_customer']))
+                                            <td>{{ $income['property']['property_customer'][0]['customer']['first_name'] . ' ' . $income['property']['property_customer'][0]['customer']['last_name'] }}<br />
+                                                {{ $income['property']['property_customer'][0]['customer']['phone'] }}<br />
+                                                {{ $income['property']['property_customer'][0]['customer']['email'] }}
+                                            </td>
+                                        @endif
                                         <td>
                                             {{ $income['date'] }}
                                         </td>
+                                        <td>{{ $income['ledger']['title'] }}</td>
+                                        <td>{{ $income['name'] }}</td>
+
+                                        <td>{{ $income['amount'] }}</td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-
+               
+                    <div class="row text-right">
+                        <b>Total Property Income - {{ $total_income }}</b>
+                    </div>
                 </div>
             </div>
+
+
         </div>
 
     </div>

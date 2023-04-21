@@ -8,8 +8,12 @@
             integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
     @endpush
 
-    <div class="block-header"></div>
-
+   <div class="block-header">
+        <a href="{{ route('admin.reports') }}" class="waves-effect waves-light btn btn-danger right m-b-15">
+            <i class="material-icons left">arrow_back</i>
+            <span>BACK</span>
+        </a>
+    </div>
     <div class="row clearfix">
 
         <div class="col-xs-12">
@@ -73,13 +77,16 @@
                         <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                             <thead>
                                 <tr>
-                                    <th>SL.</th>
+                                  <th>SL.</th>
                                     <th>Property</th>
-                                    <th>Tenant</th>
-                                    <th>Expense Amount</th>
+                                    @if (!empty($value['property']['property_customer']))
+                                        <th>Tenant</th>
+                                    @endif
+                                    <th>date</th>
                                     <th>Ledger Type</th>
                                     <th>name</th>
-                                    <th>date</th>
+                                    <th>Income Amount</th>
+
                                 </tr>
                             </thead>
 
@@ -89,21 +96,26 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $value['property']['product_code'] }}<br />{{ str_limit($value['property']['title'], 30) }}
                                         </td>
-                                        <td>{{ $value['property']['property_customer'][0]['customer']['first_name'] . ' ' . $value['property']['property_customer'][0]['customer']['last_name'] }}<br />
+                                        @if(!empty($value['property']['property_customer']))
+                                             <td>{{ $value['property']['property_customer'][0]['customer']['first_name'] . ' ' . $value['property']['property_customer'][0]['customer']['last_name'] }}<br />
                                             {{ $value['property']['property_customer'][0]['customer']['phone'] }}<br />
                                             {{ $value['property']['property_customer'][0]['customer']['email'] }}
                                         </td>
-                                        <td>{{ $value['amount'] }}</td>
-                                        <td>{{ $value['ledger']['title'] }}</td>
-                                        <td>{{ $value['name'] }}</td>
-
-                                        <td>
+                                        @endif
+                                         <td>
                                             {{ $value['date'] }}
                                         </td>
+                                        <td>{{ $value['ledger']['title'] }}</td>
+                                        <td>{{ $value['name'] }}</td>
+                                        <td>{{ $value['amount'] }}</td>
+
+                                      
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                                            <div class="text-right"> <b>Total Property Expenses - {{ $total_expense }} </b></div>
+
                     </div>
 
                 </div>

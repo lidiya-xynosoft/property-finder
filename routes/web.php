@@ -47,6 +47,8 @@ Route::get('publish-previewed-agreement', [AgreementManageController::class, 'pu
 Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
 Route::get('agreement/sign-agreement', [AgreementManageController::class, 'signAgreement']);
 Route::post('expense/save-update-expense', [ExpenseManageController::class, 'saveUpdateExpense']);
+Route::post('landloard-expense/save-update-expense', [ExpenseManageController::class, 'saveUpdatelandloardExpense']);
+
 Route::post('rent/save-update-rent', [ExpenseManageController::class, 'rentPayment']);
 // Route::post('document/save-update-document', [DocumentController::class, 'saveUpdateDocument']);
 Route::delete('expense/delete/{id}', [ExpenseManageController::class, 'destroy']);
@@ -84,7 +86,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');
     Route::get('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');
 
-
+    Route::post('agreement-income-report', 'ReportController@agreementIncomeReport')->name('agreement-income-report');
+    Route::get('agreement-income-report', 'ReportController@agreementIncomeReport')->name('agreement-income-report');
+    
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
     Route::resource('ledger', 'LedgerController');

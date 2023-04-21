@@ -23,6 +23,7 @@ class CreatePropertyAgreementsTable extends Migration
             $table->string('tenant_no');
             $table->string('po_box');
             $table->string('phone');
+            $table->integer('people_share')->default('0');
             $table->string('email');
             $table->string('unit_no');
             $table->string('unit_no_arabic')->nullable();

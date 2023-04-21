@@ -25,6 +25,11 @@ class CreatePropertiesTable extends Migration
             $table->double('price', 8, 2);
             $table->boolean('featured')->default(false);
             $table->string('image')->nullable();
+            $table->string('electricity_no')->nullable();
+            $table->string('water_no')->nullable();
+            $table->string('street_no')->nullable();
+            $table->string('zone_no')->nullable();
+            $table->string('building_no')->nullable();
             $table->integer('bedroom');
             $table->integer('bathroom');
             $table->string('city');

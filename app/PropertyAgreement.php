@@ -47,7 +47,8 @@ class PropertyAgreement extends Model
         'is_signed',
         'is_withdraw',
         'date',
-        'time'
+        'time',
+        'people_share'
     ];
     public function propertyCustomer()
     {

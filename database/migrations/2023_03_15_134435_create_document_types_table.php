@@ -18,6 +18,7 @@ class CreateDocumentTypesTable extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->tinyInteger('is_active')->default('1');
+            $table->tinyInteger('type')->default('0')->comment('0-for agreement,1-for property');
             $table->timestamps();
         });
     }

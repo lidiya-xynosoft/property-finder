@@ -129,6 +129,7 @@ class AgreementManageController extends Controller
         $property->property_id = $request->input('property_id');
         $property->customer_id = $customer_id;
         $property->tenant_name = trim($request->input('tenant_name'));
+        $property->people_share = $request->input('people_share');
         $property->tenant_name_arabic = trim($request->input('tenant_name_arabic'));
         $property->tenant_no = trim($request->input('tenant_no'));
         $property->po_box = trim($request->input('po_box'));

@@ -58,4 +58,12 @@ class Property extends Model
     {
         return $this->hasMany(PropertyCustomer::class);
     }
+    public function landloardExpense()
+    {
+        return $this->belongsTo(LandloardExpense::class);
+    }
+    public function landloardIncome()
+    {
+        return $this->belongsTo(LandloardIncome::class);
+    }
 }

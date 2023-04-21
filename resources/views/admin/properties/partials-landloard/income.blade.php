@@ -78,7 +78,7 @@
                             <input type="text" id="income_type" name="mode_of_bill_payment" value="income_type"
                                 hidden />
                             @if (isset($rows['id']))
-                                <input name="property_agreement_id" value="{{ $rows['id'] }}" hidden>
+                                <input name="landloard_contract_id" value="{{ $rows['id'] }}" hidden>
                             @endif
                             <div class="form-line">
                                 <label for="name">Date<span class="text-red">*</span></label>

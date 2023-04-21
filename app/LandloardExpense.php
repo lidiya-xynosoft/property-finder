@@ -9,7 +9,7 @@ class LandloardExpense extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'property_id', 'ledger_id', 'amount', 'status', 'user_id',
+        'property_id', 'ledger_id', 'amount', 'status', 
         'payment_type_id', 'name', 'description', 'reference', 'date', 'expense_date', 'landloard_property_contract_id', 'landloard_id'
     ];
     public function ledger()
@@ -19,5 +19,9 @@ class LandloardExpense extends Model
     public function landloardPropertyContract()
     {
         return $this->belongsTo(LandloardPropertyContract::class);
+    }
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
     }
 }

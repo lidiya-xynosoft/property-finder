@@ -73,7 +73,7 @@
                                      <input name="property_id" value="{{ $property->id }}" hidden>
 
                                      @if (isset($rows['id']))
-                                         <input name="property_agreement_id" value="{{ $rows['id'] }}" hidden>
+                                         <input name="landloard_contract_id" value="{{ $rows['id'] }}" hidden>
                                      @endif
                                      <input type="text" name="mode_of_bill_payment" value="expense_type" hidden />
                                      <div class="form-line">

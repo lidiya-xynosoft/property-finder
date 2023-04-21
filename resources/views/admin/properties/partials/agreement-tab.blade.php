@@ -553,6 +553,16 @@
 
                             </div>
                         </div>
+                           <div class="col-sm-4">
+                            <div class="form-line">
+                                <label for="people_share">Peoples share:</label>
+                                <input id="people_share" type="text" class="form-control " name="people_share"
+                                    value="{{ isset($update_data) ? $update_data->people_share : '' }}"
+                                    placeholder="Enter how many peoples share">
+                                <div class="help-block with-errors"></div>
+
+                            </div>
+                        </div>
                     </div>
             </div>
 

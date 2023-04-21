@@ -9,10 +9,12 @@
 
 @section('content')
 
-    <div class="block-header">
-        <h2>LANDLOARD DASHBOARD</h2>
+     <div class="block-header">
+        <a href="{{ route('admin.reports') }}" class="waves-effect waves-light btn btn-danger right m-b-15">
+            <i class="material-icons left">arrow_back</i>
+            <span>BACK</span>
+        </a>
     </div>
-
     <!-- Widgets -->
     <div class="row clearfix">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
