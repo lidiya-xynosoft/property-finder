@@ -517,19 +517,17 @@
                                 id="utilities_arabic"
                                 value="{{ isset($update_data) ? $update_data->utilities_arabic : '' }}">
                         </div>
-
                         <div class="col-sm-4">
                             <div class="form-line">
-                                <label for="name">Security Deposit<span class="text-red">*</span></label>
-                                <input id="security_deposit" type="text" class="form-control "
-                                    name="security_deposit"
-                                    value="{{ isset($update_data) ? $update_data->security_deposit : '' }}"
-                                    placeholder="Enter Security Deposit" required="">
+                                <label for="people_share">Peoples share:</label>
+                                <input id="people_share" type="text" class="form-control " name="people_share"
+                                    value="{{ isset($update_data) ? $update_data->people_share : '' }}"
+                                    placeholder="Enter how many peoples share">
                                 <div class="help-block with-errors"></div>
-                                <input type="hidden" id="security_deposit_arabic" name="security_deposit_arabic"
-                                    value="{{ isset($update_data) ? $update_data->security_deposit_arabic : '' }}">
+
                             </div>
                         </div>
+
                         <div class="col-sm-4">
                             <div class="form-line">
                                 <label for="name">Rent payment commencement<span class="text-red">*</span></label>
@@ -553,14 +551,23 @@
 
                             </div>
                         </div>
-                           <div class="col-sm-4">
+                        <div class="col-sm-4">
                             <div class="form-line">
-                                <label for="people_share">Peoples share:</label>
-                                <input id="people_share" type="text" class="form-control " name="people_share"
-                                    value="{{ isset($update_data) ? $update_data->people_share : '' }}"
-                                    placeholder="Enter how many peoples share">
+                                <label for="name">Security Deposit<span class="text-red">*</span></label>
+                                <input id="security_deposit" type="text" class="form-control "
+                                    name="security_deposit"
+                                    value="{{ isset($update_data) ? $update_data->security_deposit : '' }}"
+                                    placeholder="Enter Security Deposit" required="">
                                 <div class="help-block with-errors"></div>
-
+                                <input type="hidden" id="security_deposit_arabic" name="security_deposit_arabic"
+                                    value="{{ isset($update_data) ? $update_data->security_deposit_arabic : '' }}">
+                            </div>
+                            <div class="form-line">
+                                <input type="checkbox" id="include_deposit" name="include_deposit" class="filled-in"
+                                    value="1" />
+                                <label
+                                    for="include_deposit">{{ __('Security deposit
+                                                                inclue in income category') }}</label>
                             </div>
                         </div>
                     </div>

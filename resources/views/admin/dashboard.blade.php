@@ -3,7 +3,6 @@
 @section('title', 'Dashboard')
 
 @push('styles')
-
 @endpush
 
 
@@ -22,7 +21,8 @@
                 </div>
                 <div class="content">
                     <div class="text">TOTAL PROPERTY</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $propertycount }}" data-speed="15" data-fresh-interval="20">{{ $propertycount }}</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $property_count }}" data-speed="15"
+                        data-fresh-interval="20">{{ $property_count }}</div>
                 </div>
             </div>
         </div>
@@ -32,8 +32,9 @@
                     <i class="material-icons">help</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL POST</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $postcount }}" data-speed="1000" data-fresh-interval="20">{{ $postcount }}</div>
+                    <div class="text">TOTAL COMPLAINTS</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $new_complaints }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $new_complaints }}</div>
                 </div>
             </div>
         </div>
@@ -43,8 +44,9 @@
                     <i class="material-icons">forum</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL COMMENT</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $commentcount }}" data-speed="1000" data-fresh-interval="20">{{ $commentcount }}</div>
+                    <div class="text">TOTAL RENT</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $total_rent }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $currency }} {{ $total_rent }}</div>
                 </div>
             </div>
         </div>
@@ -54,8 +56,9 @@
                     <i class="material-icons">person_add</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL USER</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $usercount }}" data-speed="1000" data-fresh-interval="20">{{ $usercount }}</div>
+                    <div class="text">TOTAL TENANTS</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $customer_count }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $customer_count }}</div>
                 </div>
             </div>
         </div>
@@ -83,23 +86,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($properties as $key => $property)
-                                <tr>
-                                    <td>{{ ++$key }}.</td>
-                                    <td>
-                                        <span title="{{ $property->title }}">
-                                            {{ str_limit($property->title, 10) }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $currency }}{{ $property->price }}</td>
-                                    <td>{{ $property->city }}</td>
-                                    <td>
-                                        @if($property->featured == 1)
-                                            <span class="label bg-green">F</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ strtok($property->user->name, " ")}}</td>
-                                </tr>
+                                @foreach ($properties as $key => $property)
+                                    <tr>
+                                        <td>{{ ++$key }}.</td>
+                                        <td>
+                                            <span title="{{ $property->title }}">
+                                                {{ str_limit($property->title, 20) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $currency }}{{ $property->price }}</td>
+                                        <td>{{ $property->city }}</td>
+                                        <td>
+                                            @if ($property->featured == 1)
+                                                <span class="label bg-green">F</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ strtok($property->user->name, ' ') }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -113,7 +116,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="header">
-                    <h2>RECENT POSTS</h2>
+                    <h2>NEW COMPLAINTS</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -122,24 +125,25 @@
                                 <tr>
                                     <th>SL.</th>
                                     <th>Title</th>
-                                    <th><i class="material-icons small">comment</i></th>
-                                    <th>Author</th>
+                                    <th>Tenant</th>
+                                    <th>Service Request</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($posts as $key => $post)
-                                <tr>
-                                    <td>{{ ++$key }}.</td>
-                                    <td>
-                                        <span title="{{ $post->title }}">
-                                            {{ str_limit($post->title, 30) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="label bg-green">{{ $post->comments_count }}</span>
-                                    </td>
-                                    <td>{{ strtok($post->user->name, " ")}}</td>
-                                </tr>
+                                @foreach ($complaints as $key => $post)
+                                    <tr>
+                                        <td>{{ ++$key }}.</td>
+                                        <td>
+                                            <span title="{{ $post['property']['title'] }}">
+                                                {{ str_limit($post['property']['title'], 30) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $post['customer']['first_name'] }}</td>
+
+                                        <td>
+                                            {{ str_limit($post['service_list']['name'], 20) }}
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -155,7 +159,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="header">
-                    <h2>USER LIST</h2>
+                    <h2>PENDING RENT</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -163,19 +167,30 @@
                             <thead>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
+                                    <th>Title</th>
+                                    <th>Rent Month</th>
+                                    <th>Rental Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($users as $key => $user)
-                                <tr>
-                                    <td>{{ ++$key }}.</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role->name }}</td>
-                                </tr>
+                                @foreach ($pending_rent as $key => $rent)
+                                    <tr>
+                                        <td>{{ ++$key }}.</td>
+                                        <td> <span title="{{ $rent->property->title }}">
+                                               {{ $rent->property->product_code }} - {{ str_limit($rent->property->title, 30) }} 
+                                            </span>
+                                        </td>
+                                        <td>{{ $rent->month }}</td>
+                                        <td>{{ $rent->rental_date }}</td>
+                                        <td>
+                                            @if (date("Y-m-d") > $rent->month)
+                                                 <span class="badge bg-red"> Rent Due </span>
+                                            @else
+                                                <span class="badge bg-blue"> Near Rent date </span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -204,24 +219,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($comments as $key => $comment)
-                                <tr>
-                                    <td>{{ ++$key }}.</td>
-                                    <td>
-                                        <span title="{{ $comment->body }}">
-                                            {{ str_limit($comment->body, 10) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if($comment->approved == 1)
-                                            <span class="label bg-green">A</span>
-                                        @else
-                                            <span class="label bg-red">N</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ strtok($comment->users->name, " ")}}</td>
-                                    <td>{{ $comment->created_at->diffForHumans() }}</td>
-                                </tr>
+                                @foreach ($comments as $key => $comment)
+                                    <tr>
+                                        <td>{{ ++$key }}.</td>
+                                        <td>
+                                            <span title="{{ $comment->body }}">
+                                                {{ str_limit($comment->body, 10) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if ($comment->approved == 1)
+                                                <span class="label bg-green">A</span>
+                                            @else
+                                                <span class="label bg-red">N</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ strtok($comment->users->name, ' ') }}</td>
+                                        <td>{{ $comment->created_at->diffForHumans() }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -236,11 +251,9 @@
 @endsection
 
 @push('script')
-
     <!-- Jquery CountTo Plugin Js -->
     <script src="{{ asset('backend/plugins/jquery-countto/jquery.countTo.js') }}"></script>
 
     <!-- Sparkline Chart Plugin Js -->
     <script src="{{ asset('backend/js/pages/index.js') }}"></script>
-
 @endpush

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Country;
 use App\Customer;
+use App\daybook;
 use App\DocumentType;
 use App\Http\Controllers\Controller;
 use App\LandloardProperty;
@@ -20,6 +21,7 @@ use App\Setting;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\Input;
@@ -176,6 +178,34 @@ class AgreementManageController extends Controller
             ->where('is_draft', true)
             ->where('is_published', false)
             ->first();
+
+        if ($request['include_deposit'] == 1) {
+            PropertyIncome::create(
+                [
+                    'property_id' => $property->property_id,
+                    'income_date' => Carbon::now()->toDateString(),
+                    'ledger_id' => 4,
+                    'property_agreement_id' => $property->id,
+                    'date' => Carbon::now()->toDateString(),
+                    'name' => 'Security deposit',
+                    'user_id' => Auth::User()->id,
+                    'amount' =>  $property->security_deposit,
+                    'payment_type_id' => 1,
+                    'status' => 1,
+                ],
+            );
+            daybook::create([
+                'property_id' => $property->property_id,
+                'property_agreement_id' => $property->id,
+                'user_id' => Auth::user()->id,
+                'date' => Carbon::now()->toDateString(),
+                'time' => Carbon::now()->format('H:i:s'),
+                'title' => Property::find($property->property_id)->product_code,
+                'head' => 'Security deposit',
+                'credit' => $property->security_deposit,
+            ]);
+        }
+
         $property = Property::find($request->input('property_id'));
         if (isset($request['update_id'])) {
             $flash = array('type' => 'success', 'msg' => 'agreement Updated successfully.');

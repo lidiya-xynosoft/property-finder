@@ -9,53 +9,42 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
-
 use App\Mail\Contact;
-
 use App\Property;
-use App\Post;
 use App\Comment;
 use App\ComplaintCancellationReason;
 use App\ComplaintHistory;
 use App\ComplaintImage;
+use App\Customer;
 use App\Handyman;
 use App\HandymanComplaintStatus;
 use App\Setting;
 use App\Message;
 use App\PropertyAgreement;
 use App\PropertyComplaint;
-use App\PropertyCustomer;
+use App\PropertyRent;
 use App\ServiceList;
 use App\User;
 use Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Node\Stmt\While_;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $propertycount = Property::count();
-        $postcount     = Post::count();
-        $commentcount  = Comment::count();
-        $usercount     = User::count();
+        $data = [];
+        $data['property_count'] = Property::count();
+        $data['customer_count']     = Customer::count();
+        $data['new_complaints']  = PropertyComplaint::where('status', 0)->count();
+        $data['total_rent']     = PropertyRent::whereMonth('payment_date', Carbon::now()->month)->where(['payment_status' => true, 'status' => 1])->sum('rent_amount');
+        $data['properties']    = Property::latest()->with('user')->take(5)->get();
+        $data['complaints']         = PropertyComplaint::latest()->with(['Customer', 'Property', 'ServiceList'])->take(5)->get()->toArray();
 
-        $properties    = Property::latest()->with('user')->take(5)->get();
-        $posts         = Post::latest()->withCount('comments')->take(5)->get();
-        $users         = User::with('role')->latest()->take(5)->get();
-        $comments      = Comment::with('users')->take(5)->get();
+        $data['pending_rent']         = PropertyRent::with('Property')->whereMonth('month', Carbon::now()->month)->where(['payment_status' => 0, 'status' => 1])->latest()->get();
+        $data['comments']      = Comment::with('users')->take(5)->get();
 
-        return view('admin.dashboard', compact(
-            'propertycount',
-            'postcount',
-            'commentcount',
-            'usercount',
-            'properties',
-            'posts',
-            'users',
-            'comments'
-        ));
+        return view('admin.dashboard')->with($data);
     }
 
 

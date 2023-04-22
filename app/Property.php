@@ -66,4 +66,8 @@ class Property extends Model
     {
         return $this->belongsTo(LandloardIncome::class);
     }
+    public function propertyRent()
+    {
+        return $this->hasMany(PropertyRent::class);
+    }
 }

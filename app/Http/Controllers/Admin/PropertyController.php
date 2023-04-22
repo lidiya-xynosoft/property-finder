@@ -540,7 +540,7 @@ class PropertyController extends Controller
                         'property_id' => $property_id,
                         'payment_type_id' => '1', // cash payment
                         'property_agreement_id' => $data['rows']['id'],
-                        'month' => $dt->format("Y-M"),
+                        'month' => $dt->format("Y-m-d"),
                         'rental_date' => $data['rows']['rent_payment_commencement'],
                         'rent_amount' => $data['rows']['monthly_rent'],
                     ]);
