@@ -92,7 +92,7 @@
                                                     {{ $customer->first_name }} {{ $customer->last_name }}
                                                 </option>
                                             @else
-                                                                                        <option>--select--</option>
+                                                <option>--select--</option>
 
                                                 <option value="{{ $customer->id }}">
                                                     {{ $customer->first_name }} {{ $customer->last_name }}
@@ -108,18 +108,18 @@
                                             class="text-red">*</span></label>
                                     <input id="landloard_name" type="text" class="form-control" readonly
                                         name="landloard_name"
-                                        value="{{ isset($update_data) ? $update_data->tenant_name : '' }}"
+                                        value="{{ isset($update_data) ? $update_data->landloard->first_name : '' }}"
                                         required="">
-                                   
+
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
-                       
+
                             <div class="col-sm-4">
                                 <div class="form-line">
                                     <label for="name">Telephone<span class="text-red">*</span></label>
                                     <input id="phone" type="text" readonly class="form-control " name="phone"
-                                        value="{{ isset($update_data) ? $update_data->phone : '' }}"
+                                        value="{{ isset($update_data) ? $update_data->landloard->phone : '' }}"
                                         placeholder="Enter Telephone" required="">
                                     <div class="help-block with-errors"></div>
 
@@ -129,7 +129,7 @@
                                 <div class="form-line">
                                     <label for="name">Email address<span class="text-red">*</span></label>
                                     <input id="email" type="text" readonly class="form-control " name="email"
-                                        value="{{ isset($update_data) ? $update_data->email : '' }}"
+                                        value="{{ isset($update_data) ? $update_data->landloard->email : '' }}"
                                         placeholder="Enter Email" required="">
                                     <div class="help-block with-errors"></div>
 
@@ -138,9 +138,8 @@
                             <div class="col-sm-4">
                                 <div class="form-line">
                                     <label for="name">address<span class="text-red">*</span></label>
-                                    <input required id="address" type="text" class="form-control "
-                                        name="address"
-                                       value="{{ isset($update_data) ? $update_data->address : '' }}"
+                                    <input required id="address" type="text" class="form-control " name="address"
+                                        value="{!! isset($update_data) ? $update_data->landloard->address : '' !!}"
                                         placeholder="Enter Location">
                                     <div class="help-block with-errors"></div>
 
@@ -301,8 +300,8 @@
                                     <div class="radio radio-inline">
                                         <br />
                                         <div class="form-line">
-                                            <input type="radio" id="lease_mode_day" name="lease_mode"
-                                                value="day" class="filled-in" />
+                                            <input type="radio" id="lease_mode_day" name="lease_mode" value="day"
+                                                class="filled-in" />
                                             <label for="lease_mode_day">{{ __('Day') }}</label>
                                         </div>
                                     </div>
@@ -321,13 +320,13 @@
                                 <div class="form-line">
                                     <label for="name">No of days/months<span class="text-red">*</span></label>
                                     <input id="no_of_days" type="text" class="form-control" name="no_of_days"
-                                        placeholder="Enter no of days/months">
+                                       placeholder="Enter no of days/months">
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-line">
                                     <label for="name">start date<span class="text-red">*</span></label>
-                                    <input id="lease_date" type="date" class="form-control" name="lease_date">
+                                    <input id="lease_date"  value="{{ isset($update_data) ? $update_data->lease_commencement : '' }}" type="date" class="form-control" name="lease_date">
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -467,7 +466,7 @@
                             </div>
 
                         </div>
-                     
+
 
                         <div class="col-sm-4">
                             <div class="form-line">
@@ -487,14 +486,14 @@
                                 <input id="payment_commencement" type="text" class="form-control "
                                     name="payment_commencement"
                                     value="{{ isset($update_data) ? $update_data->rent_payment_commencement : '' }}"
-                                    placeholder="Enter Rent payment commencement" required="">
+                                    placeholder="Enter Rent payment date" required="">
                                 <div class="help-block with-errors"></div>
                                 <input type="hidden" id="payment_commencement_arabic"
                                     name="payment_commencement_arabic"
                                     value="{{ isset($update_data) ? $update_data->rent_payment_commencement_arabic : '' }}">
                             </div>
                         </div>
-                   
+
                     </div>
             </div>
 
@@ -551,9 +550,9 @@
                         <td>{{ $rows['lease_expiry'] }}</td>
                         <td>{{ $currency }} {{ $rows['monthly_rent'] }}</td>
                         <td>{{ $rows['landloard']['email'] }}</td>
-                     
 
-                      
+
+
                         <td>
                             <div class="table-actions">
 
@@ -563,10 +562,9 @@
                                         <button data-repeater-create type="button"
                                             class="btn btn-success btn-icon ml-2 mb-2">Publish</button>
                                     </a>
-                                  
                                 @endif
-                               
-                                <a href="{{ url('admin/property/manage/?update_id=') . $rows['id'] }}">
+
+                                <a href="{{ url('admin/landloard-property/manage/?update_id=') . $rows['id'] }}">
                                     <button data-repeater-create type="button"
                                         class="btn btn-success btn-icon ml-2 mb-2"> <i
                                             class="material-icons">edit</i></button>

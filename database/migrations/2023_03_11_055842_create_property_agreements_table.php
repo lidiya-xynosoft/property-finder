@@ -27,6 +27,7 @@ class CreatePropertyAgreementsTable extends Migration
             $table->string('email');
             $table->string('unit_no');
             $table->string('unit_no_arabic')->nullable();
+            $table->string('lease_mode')->default('month');
             $table->string('building_name_english');
             $table->string('building_name_arabic');
             $table->longText('utilities');

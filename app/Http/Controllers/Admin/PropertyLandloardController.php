@@ -54,7 +54,7 @@ class PropertyLandloardController extends Controller
 
 
         if (isset($request['update_id'])) {
-            $data['update_data'] = LandloardPropertyContract::where(['is_withdraw' => 0, 'id' => $agreement_row_id])->first();
+            $data['update_data'] = LandloardPropertyContract::with('Landloard')->where(['is_withdraw' => 0, 'id' => $agreement_row_id])->first();
         }
         $data['rows'] = [];
         $data['income'] = [];

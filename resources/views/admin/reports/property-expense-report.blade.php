@@ -3,12 +3,25 @@
 @section('title', 'Values')
 @section('content')
     @push('head')
+        <link rel="stylesheet" href="{{ asset('backend/plugins/font-awesome/css/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
             integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+        <style>
+            .select2-container .select2-selection--single {
+                height: 34px !important;
+            }
+
+            .select2-container--default .select2-selection--single {
+                border: 1px solid #ccc !important;
+                border-radius: 0px !important;
+            }
+        </style>
     @endpush
 
-   <div class="block-header">
+    <div class="block-header">
         <a href="{{ route('admin.reports') }}" class="waves-effect waves-light btn btn-danger right m-b-15">
             <i class="material-icons left">arrow_back</i>
             <span>BACK</span>
@@ -23,45 +36,46 @@
                 </div>
                 <div class="body">
                     <div class="row">
-                        <form action="{{ route('admin.property-expense-report') }}" method="POST">
+                        <form action="{{ route('admin.property-expense-report') }}" method="POST" id="propertyExpenseForm"
+                            name="propertyExpenseForm">
                             @csrf
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
 
-                                    <select name="property_id" class="form-control">
+                                    <select name="property_id" class="form-control select2">
                                         <option value="">-- select property --</option>
                                         @foreach ($properties as $key => $value)
-                                            <option value="{{ $value->id }}">{{ $value->product_code }}</option>
+                                            <option value="{{ $value->id }}">{{ $value->product_code }} (
+                                                {{ str_limit($value->title, 30) }}) </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
-
-                                    <select name="ledger_id" class="form-control">
+                                    <select name="ledger_id" class="form-control select2">
                                         <option value="">-- select Ledger --</option>
                                         @foreach ($ledger as $key => $value)
                                             <option value="{{ $value->id }}">{{ $value->title }}
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>&nbsp;</label>
-                                    <select name="date" class="form-control">
-                                            <option value="0">Current Date </option>
-                                            <option value="1">Date Period</option>
-                                            <option value="2">Specify Date </option>
-                                    </select>
+
                                 </div>
                             </div>
                             <div class="col-sm-2">
+                                <input id="startDate" type="text" class="form-control" name="start_date"
+                                    placeholder="select start date">
+                            </div>
+                            <div class="col-sm-2">
+                                <input id="endDate" type="text" class="form-control" name="end_date"
+                                    placeholder="select End date">
+                            </div>
+                            <div class="col-sm-2">
+
                                 <div class="form-group">
                                     <label>&nbsp;</label>
                                     <button type="submit" class="btn btn-indigo btn-s m-t-15 waves-effect">
@@ -77,7 +91,7 @@
                         <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                             <thead>
                                 <tr>
-                                  <th>SL.</th>
+                                    <th>SL.</th>
                                     <th>Property</th>
                                     @if (!empty($value['property']['property_customer']))
                                         <th>Tenant</th>
@@ -85,36 +99,38 @@
                                     <th>date</th>
                                     <th>Ledger Type</th>
                                     <th>name</th>
-                                    <th>Income Amount</th>
+                                    <th>Expense Amount</th>
 
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @foreach ($expenses as $key => $value)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $value['property']['product_code'] }}<br />{{ str_limit($value['property']['title'], 30) }}
-                                        </td>
-                                        @if(!empty($value['property']['property_customer']))
-                                             <td>{{ $value['property']['property_customer'][0]['customer']['first_name'] . ' ' . $value['property']['property_customer'][0]['customer']['last_name'] }}<br />
-                                            {{ $value['property']['property_customer'][0]['customer']['phone'] }}<br />
-                                            {{ $value['property']['property_customer'][0]['customer']['email'] }}
-                                        </td>
-                                        @endif
-                                         <td>
-                                            {{ $value['date'] }}
-                                        </td>
-                                        <td>{{ $value['ledger']['title'] }}</td>
-                                        <td>{{ $value['name'] }}</td>
-                                        <td>{{ $value['amount'] }}</td>
+                                @if (count($expenses) > 0)
+                                    @foreach ($expenses as $key => $value)
+                                        <tr>
+                                            <td>{{ $key + 1 }}</td>
+                                            <td>{{ $value['property']['product_code'] }}<br />{{ str_limit($value['property']['title'], 30) }}
+                                            </td>
+                                            @if (!empty($value['property']['property_customer']))
+                                                <td>{{ $value['property']['property_customer'][0]['customer']['first_name'] . ' ' . $value['property']['property_customer'][0]['customer']['last_name'] }}<br />
+                                                    {{ $value['property']['property_customer'][0]['customer']['phone'] }}<br />
+                                                    {{ $value['property']['property_customer'][0]['customer']['email'] }}
+                                                </td>
+                                            @endif
+                                            <td>
+                                                {{ $value['date'] }}
+                                            </td>
+                                            <td>{{ $value['ledger']['title'] }}</td>
+                                            <td>{{ $value['name'] }}</td>
+                                            <td>{{ $value['amount'] }}</td>
 
-                                      
-                                    </tr>
-                                @endforeach
+
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
-                                            <div class="text-right"> <b>Total Property Expenses - {{ $total_expense }} </b></div>
+                        <div class="text-right"> <b>Total Property Expenses - {{ $total_expense }} </b></div>
 
                     </div>
 
@@ -126,6 +142,9 @@
 
 @endsection
 @push('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="{{ asset('frontend/findhouse/js/jquery.validate.min.js') }}"></script>
+
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -139,6 +158,7 @@
         integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <script>
         function deleteValue(id) {
 
@@ -161,10 +181,53 @@
                 }
             })
         }
-        $(document).ready(function() {
-            $('select').selectize({
-                sortField: 'text'
+        $('.select2').select2();
+
+        // $(document).ready(function() {
+        $(function() {
+            $("form[name='propertyExpenseForm']").validate({
+                // Define validation rules
+                rules: {
+
+                    start_date: {
+                        required: true
+                    },
+                    end_date: {
+                        required: true
+                    },
+
+                },
+                // Specify validation error messages
+                messages: {
+                    start_date: "Please select start date",
+                    end_date: "Please select end date",
+                },
+
+                submitHandler: function(form) {
+                    console.log(form);
+                    form.submit();
+                }
             });
+        });
+        // });
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        $('#startDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            endDate: "today",
+            format: 'yyyy-mm-dd',
+            maxDate: today
+        });
+        $('#endDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            endDate: "today",
+            maxDate: today,
+            format: 'yyyy-mm-dd',
+
+            minDate: function() {
+                return $('#startDate').val();
+            }
         });
     </script>
 @endpush

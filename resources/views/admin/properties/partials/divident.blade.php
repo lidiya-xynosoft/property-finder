@@ -5,7 +5,7 @@
                 <div class="block-header">
                     <div class="row">
                            <div class="col-sm-8">
-                            @if ($rows['people_share'] > 0)
+                            @if (isset($rows['people_share']) && $rows['people_share'] > 0)
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <strong>Monthly rent amount: </strong>
@@ -15,6 +15,12 @@
                                         <strong>No of peoples share : </strong>
                                         <span class="right" id="lease_duration">{{ $rows['people_share'] }}</span>
                                     </li>
+                                 
+                                     <li class="list-group-item">
+                                        <strong>mode of lease : </strong>
+                                        <span class="right" id="lease_duration">{{ $rows['lease_mode'] }}</span>
+                                    </li>
+
                                    <li class="list-group-item">
                                         <strong>Per head share : </strong>
                                         <span class="right" id="lease_duration">{{ $currency }} {{ $rows['monthly_rent'] / $rows['people_share']  }}</span>

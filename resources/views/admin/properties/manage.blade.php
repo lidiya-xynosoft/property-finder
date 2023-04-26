@@ -459,7 +459,6 @@
                 }
                 var currentDate = moment(lease_date);
                 var commencement = currentDate.format('LL');
-
                 var lease_mode = $("input[name='lease_mode']:checked").val();
                 if (lease_mode == 'month') {
 

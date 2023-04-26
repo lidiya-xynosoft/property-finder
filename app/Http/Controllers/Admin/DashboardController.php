@@ -42,6 +42,7 @@ class DashboardController extends Controller
         $data['complaints']         = PropertyComplaint::latest()->with(['Customer', 'Property', 'ServiceList'])->take(5)->get()->toArray();
 
         $data['pending_rent']         = PropertyRent::with('Property')->whereMonth('month', Carbon::now()->month)->where(['payment_status' => 0, 'status' => 1])->latest()->get();
+        $data['paid_rent']         = PropertyRent::with('Property')->whereMonth('month', Carbon::now()->month)->where(['payment_status' => 1, 'status' => 1])->latest()->get();
         $data['comments']      = Comment::with('users')->take(5)->get();
 
         return view('admin.dashboard')->with($data);
@@ -270,13 +271,14 @@ class DashboardController extends Controller
         $complaints = [];
         $complaint_lists = PropertyComplaint::all();
 
-        if (!$request['status'] && !$request['property_id'] && !$request['service_list_id'] && !$request['complaint_id']) {
+        if ($request['status'] < 0 && !$request['property_id'] && !$request['service_list_id'] && !$request['complaint_id']) {
             $flash = array('type' => 'error', 'msg' => 'Choose any data for search');
             session()->flash('flash', $flash);
             return redirect()->back();
         }
         if (isset($request['status'])) {
-            if ($request['status']) {
+
+            if ($request['status'] != null) {
                 $where_arry['status'] = $request['status'];
             }
         }

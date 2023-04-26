@@ -25,6 +25,7 @@ class PropertyAgreement extends Model
         'street',
         'location_english',
         'location_arabic',
+        'lease_mode',
         'lease_period',
         'lease_commencement',
         'lease_expiry',
@@ -73,6 +74,10 @@ class PropertyAgreement extends Model
     public function propertyRent()
     {
         return $this->hasMany(PropertyRent::class);
+    }
+    public function property()
+    {
+        return $this->belongsTo(Property::class);
     }
    
 }

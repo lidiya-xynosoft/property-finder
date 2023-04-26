@@ -77,10 +77,25 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="checkbox" id="featured" name="featured" class="filled-in" value="1"
-                                {{ $property->featured ? 'checked' : '' }} />
-                            <label for="featured">Featured</label>
+                            <input type="checkbox" id="parent_property" name="parent_property" class="filled-in"
+                                value="1" {{ $property->is_parent_property ? 'checked' : '' }} />
+                            <label for="parent_property">Is Parent Property</label>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label for="parent_property_id text-right">Choose parent Property</label>
+
+                            <select name="parent_property_id" class="form-select form-select-lg text-right" required>
+                                <option value="-1">--This is Parent Property--</option>
+                                @foreach ($parent_property as $key => $row)
+                                    <option value="{{ $row->id }}"
+                                        {{ $property->is_parent_property == $row->id ? 'selected' : '' }}>
+                                        {{ $row->title }}</option>
+                                @endforeach
+                            </select>
                         </div>
+
+
+
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" class="form-control" name="electricity_no"
@@ -213,7 +228,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                {{-- <div class="card">
                     <div class="header">
                         <h2>PROPERTY NEARBY</h2>
                     </div>
@@ -260,7 +275,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card">
                     <div class="header">
                         <h2>DOCUMENT FILES</h2>
@@ -274,7 +289,7 @@
                                             <i class=""></i><b class="title">Add multiple Documents</b>
                                         </span>
                                     </div>
-                                    @if (count($documents)>0)
+                                    @if (count($documents) > 0)
                                         @foreach ($documents as $document)
                                             <div class="col-md-2">
                                                 <span data-repeater-create class="btn badge bg-green"> + </span>
@@ -665,7 +680,7 @@
                         title: {
                             required: true
                         },
-                        description: {
+                        parent_property_id: {
                             required: true
                         },
                         price: {

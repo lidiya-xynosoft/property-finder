@@ -204,38 +204,37 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="header">
-                    <h2>RECENT COMMENTS</h2>
+                    <h2>RECENTLY PAID RENT</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
                         <table class="table table-hover dashboard-task-infos">
-                            <thead>
+                             <thead>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Comment</th>
-                                    <th><i class="material-icons small">check</i></th>
-                                    <th>Author</th>
-                                    <th>Time</th>
+                                    <th>Title</th>
+                                    <th>Rent Month</th>
+                                    <th>Rental Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($comments as $key => $comment)
+                         <tbody>
+                                @foreach ($paid_rent as $key => $rent)
                                     <tr>
                                         <td>{{ ++$key }}.</td>
-                                        <td>
-                                            <span title="{{ $comment->body }}">
-                                                {{ str_limit($comment->body, 10) }}
+                                        <td> <span title="{{ $rent->property->title }}">
+                                               {{ $rent->property->product_code }} - {{ str_limit($rent->property->title, 30) }} 
                                             </span>
                                         </td>
+                                        <td>{{ $rent->month }}</td>
+                                        <td>{{ $rent->rental_date }}</td>
                                         <td>
-                                            @if ($comment->approved == 1)
-                                                <span class="label bg-green">A</span>
+                                            @if ($rent->payment_status == 1)
+                                                 <span class="badge bg-success"> Rent Paid </span>
                                             @else
-                                                <span class="label bg-red">N</span>
+                                                <span class="badge bg-blue"> Near Rent date </span>
                                             @endif
                                         </td>
-                                        <td>{{ strtok($comment->users->name, ' ') }}</td>
-                                        <td>{{ $comment->created_at->diffForHumans() }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

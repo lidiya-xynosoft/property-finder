@@ -376,7 +376,7 @@
                             <div class="col-sm-4">
                                 <div class="form-line">
                                     <label for="name">Lease Commencement<span class="text-red">*</span></label>
-                                    <input id="lease_commencement" type="text" class="form-control "
+                                    <input id="lease_commencement" type="text" class="form-control"
                                         name="lease_commencement"
                                         value="{{ isset($update_data) ? $update_data->lease_commencement : '' }}"
                                         placeholder="lease commencement" readonly>
@@ -510,7 +510,7 @@
                                 <label for="name">Utilities<span class="text-red">*</span></label>
                                 <input id="utilities" type="text" class="form-control" name="utilities"
                                     value="{{ isset($update_data) ? $update_data->utilities : '' }}"
-                                    placeholder="Enter Utilities" required="">
+                                    placeholder="Enter Utilities">
                                 <div class="help-block with-errors"></div>
                             </div>
                             <input type="text" name="utilities_arabic" class="form-control text-right d-none"
@@ -534,7 +534,7 @@
                                 <input id="payment_commencement" type="text" class="form-control "
                                     name="payment_commencement"
                                     value="{{ isset($update_data) ? $update_data->rent_payment_commencement : '' }}"
-                                    placeholder="Enter Rent payment commencement" required="">
+                                    placeholder="Enter which date will rent collect" required="">
                                 <div class="help-block with-errors"></div>
                                 <input type="hidden" id="payment_commencement_arabic"
                                     name="payment_commencement_arabic"
@@ -562,13 +562,13 @@
                                 <input type="hidden" id="security_deposit_arabic" name="security_deposit_arabic"
                                     value="{{ isset($update_data) ? $update_data->security_deposit_arabic : '' }}">
                             </div>
-                            <div class="form-line">
+                            {{-- <div class="form-line">
                                 <input type="checkbox" id="include_deposit" name="include_deposit" class="filled-in"
                                     value="1" />
                                 <label
                                     for="include_deposit">{{ __('Security deposit
                                                                 inclue in income category') }}</label>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
             </div>

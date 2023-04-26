@@ -40,7 +40,11 @@ class PropertyController extends Controller
 
     public function index()
     {
+        // if ($type ==  -1) {
         $properties = Property::latest()->withCount('comments')->get();
+        // } else {
+            // $properties = Property::where('is_parent_property', '!=', -1)->latest()->withCount('comments')->get();
+        // }
 
         return view('admin.properties.index', compact('properties'));
     }
@@ -54,6 +58,7 @@ class PropertyController extends Controller
         $data['purposes'] = Purpose::all();
         $data['types'] = Type::all();
         $data['nearby_categories'] = NearbyCategory::all();
+        $data['parent_property'] = Property::where('is_parent_property', -1)->get();
         $data['cities'] = City::all();
         $data['document_types'] = DocumentType::where('type', 1)->get();
 
@@ -65,7 +70,6 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-        // return $request;
         $request->validate([
             'title'     => 'required|unique:properties|max:255',
             'price'     => 'required',
@@ -77,8 +81,7 @@ class PropertyController extends Controller
             'address'   => 'required',
             'area'      => 'required',
             'image'     => 'required|image|mimes:jpeg,jpg,png',
-            'floor_plan' => 'image|mimes:jpeg,jpg,png',
-            'description'        => 'required',
+            // 'floor_plan' => 'image|mimes:jpeg,jpg,png',
             'latitude'  => 'required',
             'longitude' => 'required',
         ]);
@@ -127,6 +130,7 @@ class PropertyController extends Controller
         $property->built_year     = $request->built_year;
         $property->image    = $imagename;
         $property->bedroom  = $request->bedroom;
+        $property->is_parent_property  = $request->parent_property_id;
         $property->bathroom = $request->bathroom;
         $property->city     = City::find($city_id)->name;
         $property->city_slug = City::find($city_id)->slug;
@@ -166,7 +170,8 @@ class PropertyController extends Controller
                     $fileName = time() . '.' . $extension;
                     $uploadSuccess = $file->storeAs($destinationPath, $fileName, 'public');
                     $file_name = $destinationPath . '/' . $fileName;
-                    $data =   PropertyDocument::create(['property_id' => $property->id,
+                    $data =   PropertyDocument::create([
+                        'property_id' => $property->id,
                         'document_type_id' => $each_items['document_type_id'],
                         'file' => $file_name,
                     ]);
@@ -224,7 +229,9 @@ class PropertyController extends Controller
         $flash = array('type' => 'success', 'msg' => 'Property created successfully.');
         $request->session()->flash('flash', $flash);
 
+        // return redirect()->route('admin.properties.index');
         return redirect()->route('admin.properties.index');
+
     }
 
 
@@ -248,6 +255,7 @@ class PropertyController extends Controller
         $property_nearby = NearbyProperty::where('property_id', $property->id)->get();
         $documents = PropertyDocument::where('property_id', $property->id)->get();
         $document_types = DocumentType::where('type', 1)->get();
+        $parent_property = Property::where('is_parent_property', -1)->get();
 
         $cities = City::all();
         $tags = Tag::where('type', 'property')->get();
@@ -255,7 +263,7 @@ class PropertyController extends Controller
         $currency = $user_data->country->currency;
         $videoembed = $this->convertYoutube($property->video);
 
-        return view('admin.properties.edit', compact('property', 'features', 'documents', 'document_types', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency', 'videoembed'));
+        return view('admin.properties.edit', compact('property', 'parent_property', 'features', 'documents', 'document_types', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency', 'videoembed'));
     }
 
 
@@ -274,7 +282,7 @@ class PropertyController extends Controller
             'area'      => 'required',
             // 'image'     => 'required|image|mimes:jpeg,jpg,png',
             'floor_plan' => 'image|mimes:jpeg,jpg,png',
-            'description'        => 'required',
+            // 'description'        => 'required',
             'latitude'  => 'required',
             'longitude' => 'required',
         ]);
@@ -349,6 +357,9 @@ class PropertyController extends Controller
         } else {
             $property->featured = false;
         }
+
+        $property->is_parent_property  = $request->parent_property_id;
+
         $property->type_id           =  $request->type_id;
         $property->purpose_id           = $request->purpose_id;
         $property->city_id           =  $city_id;
@@ -434,6 +445,8 @@ class PropertyController extends Controller
         $flash = array('type' => 'success', 'msg' => 'Property updated successfully.');
         $request->session()->flash('flash', $flash);
         return redirect()->route('admin.properties.index');
+
+        // return redirect()->url('admin/properties/index/0');
     }
 
 

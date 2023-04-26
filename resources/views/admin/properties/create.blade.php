@@ -37,40 +37,51 @@
 
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="number" class="form-control" name="bedroom" required>
+                                <input type="number" class="form-control" name="bedroom" required value="0">
                                 <label class="form-label">No of bedroom</label>
                             </div>
                         </div>
 
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="number" class="form-control" name="bathroom" required>
+                                <input type="number" class="form-control" name="bathroom" required value="0">
                                 <label class="form-label">No of bathroom</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="number" class="form-control" name="garage" required>
+                                <input type="number" class="form-control" name="garage" required value="0">
                                 <label class="form-label">No of garage</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="number" class="form-control" name="built_year" required>
+                                <input type="number" class="form-control" name="built_year" required value="0">
                                 <label class="form-label">Built Year</label>
                             </div>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
-                                <input type="number" class="form-control" name="area" required>
+                                <input type="number" class="form-control" name="area" required value="0">
                                 <label class="form-label">Floor Area</label>
                             </div>
                             <div class="help-info">Square Feet</div>
                         </div>
 
                         <div class="form-group">
-                            <input type="checkbox" id="featured" name="featured" class="filled-in" value="1" />
-                            <label for="featured">Featured</label>
+                            <input type="checkbox" id="parent_property" name="parent_property" class="filled-in" value="-1" />
+                            <label for="parent_property">Is Parent Property</label>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <label for="parent_property_id">Choose parent Property</label>
+
+                            <select name="parent_property_id" class="form-select form-select-lg" required>
+                                        <option value="-1">--This is Parent Property--</option>
+                                        @foreach ($parent_property as $key => $row)
+                                            <option value="{{ $row->id }}">
+                                                {{ $row->title }}</option>
+                                        @endforeach
+                                    </select>
                         </div>
                         <div class="form-group form-float">
                             <div class="form-line">
@@ -203,7 +214,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                {{-- <div class="card">
                     <div class="header">
                         <h2>PROPERTY NEARBY</h2>
                     </div>
@@ -240,17 +251,9 @@
                                                     <div class="col-md-2">
                                                         <span data-repeater-delete class="btn badge bg-red"> x </span>
 
-                                                        {{-- <button data-repeater-delete type="submit"
-                                                            class="btn btn-danger btn-sm m-t-15 waves-effect text-right">
-                                                            <i class="material-icons">cancel</i>
-                                                        </button> --}}
                                                     </div>
 
-                                                    {{-- <button data-repeater-delete type="submit"
-                                                        class="btn btn-danger btn-sm m-t-15 waves-effect text-right">
-                                                        <i class="material-icons">cancel</i>
-                                                    </button>
-                                                    <br /> --}}
+                                                 
                                                 </div>
                                             </div>
                                         </div>
@@ -261,7 +264,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card">
                     <div class="header">
                         <h2>Documents</h2>
@@ -542,13 +545,12 @@
                         title: {
                             required: true
                         },
-                        description: {
+                        parent_property_id: {
                             required: true
                         },
                         price: {
                             required: true,
                             number: true
-
                         },
                         area: {
                             required: true,

@@ -76,11 +76,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('/document/save-update-document', 'DocumentController@saveUpdateDocument')->name('document-save');
     Route::get('/change-handyman-status', 'HandymanController@changeHandymanStatus')->name('change-handyman');
     Route::get('complaint-history/', 'DashboardController@complaintHistory')->name('complaint-history');
+    // Route::get('properties/index/{type}', 'PropertyController@index');
 
     Route::get('landloard-property/manage/', 'PropertyLandloardController@propertyLandloardManage')->name('landloard-manage');
     Route::post('/landloard/save-update-contract', 'AgreementManageController@saveUpdateContract')->name('contract-manage');
     Route::get('reports/', 'ReportController@index')->name('reports');
-    Route::get('landloard-dashboard', 'LandloardController@landloardDashboard')->name('landloard-dashboard');
+    Route::get('tenant-service-report', 'ReportController@tenantServiceReport')->name('tenant-service-report');
+    Route::post('tenant-service-report', 'ReportController@tenantServiceReport')->name('tenant-service-report');
     Route::get('property-expense-report', 'ReportController@propertyExpenseReport')->name('property-expense-report');
     Route::post('property-expense-report', 'ReportController@propertyExpenseReport')->name('property-expense-report');
     Route::post('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');

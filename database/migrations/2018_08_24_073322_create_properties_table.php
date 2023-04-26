@@ -16,7 +16,7 @@ class CreatePropertiesTable extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('country_id')->constrained('countries');
+            $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->foreignId('purpose_id')->constrained('purposes');
             $table->foreignId('type_id')->constrained('types');
             $table->foreignId('city_id')->constrained('cities');
@@ -24,6 +24,7 @@ class CreatePropertiesTable extends Migration
             $table->string('slug')->unique();
             $table->double('price', 8, 2);
             $table->boolean('featured')->default(false);
+            $table->integer('is_parent_property')->default(0);
             $table->string('image')->nullable();
             $table->string('electricity_no')->nullable();
             $table->string('water_no')->nullable();
@@ -41,7 +42,7 @@ class CreatePropertiesTable extends Migration
             $table->string('address');
             $table->integer('area');
             $table->integer('agent_id');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('video')->nullable();
             $table->string('floor_plan')->nullable();
             $table->string('location_latitude');

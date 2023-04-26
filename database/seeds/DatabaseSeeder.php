@@ -191,5 +191,25 @@ class DatabaseSeeder extends Seeder
                 'created_at'    => date("Y-m-d H:i:s")
             ],
         ]);
+        DB::table('ledgers')->insert([
+            [
+                'title'          => 'Rent',
+                'description'          => 'rent',
+                'type' => '0',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'title'          => 'Electricity bill',
+                'description'          => 'electricity',
+                'type' => '1',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+            [
+                'title'          => 'Water bill',
+                'description'          => 'water bill',
+                'type' => '1',
+                'created_at'    => date("Y-m-d H:i:s")
+            ],
+        ]);
     }
 }

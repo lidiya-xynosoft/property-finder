@@ -64,7 +64,6 @@ class AgreementManageController extends Controller
             'property_id' => 'required',
             'tenant_name' => 'required',
             'tenant_no' => 'required',
-            'po_box' => 'required',
             'phone' => 'required',
             'email' => 'required',
             'unit_no' => 'required',
@@ -151,6 +150,7 @@ class AgreementManageController extends Controller
         $property->street = trim($request->input('street'));
         $property->building_no = trim($request->input('building_no'));
         $property->lease_period = trim($request->input('lease_period'));
+        $property->lease_mode = trim($request->input('lease_mode'));
         $property->lease_commencement = trim($request->input('lease_commencement'));
         $property->lease_expiry = trim($request->input('lease_expiry'));
         $property->lease_period_arabic = trim($request->input('lease_period_arabic'));
@@ -179,32 +179,32 @@ class AgreementManageController extends Controller
             ->where('is_published', false)
             ->first();
 
-        if ($request['include_deposit'] == 1) {
-            PropertyIncome::create(
-                [
-                    'property_id' => $property->property_id,
-                    'income_date' => Carbon::now()->toDateString(),
-                    'ledger_id' => 4,
-                    'property_agreement_id' => $property->id,
-                    'date' => Carbon::now()->toDateString(),
-                    'name' => 'Security deposit',
-                    'user_id' => Auth::User()->id,
-                    'amount' =>  $property->security_deposit,
-                    'payment_type_id' => 1,
-                    'status' => 1,
-                ],
-            );
-            daybook::create([
-                'property_id' => $property->property_id,
-                'property_agreement_id' => $property->id,
-                'user_id' => Auth::user()->id,
-                'date' => Carbon::now()->toDateString(),
-                'time' => Carbon::now()->format('H:i:s'),
-                'title' => Property::find($property->property_id)->product_code,
-                'head' => 'Security deposit',
-                'credit' => $property->security_deposit,
-            ]);
-        }
+        // if ($request['include_deposit'] == 1) {
+        //     PropertyIncome::create(
+        //         [
+        //             'property_id' => $property->property_id,
+        //             'income_date' => Carbon::now()->toDateString(),
+        //             'ledger_id' => 4,
+        //             'property_agreement_id' => $property->id,
+        //             'date' => Carbon::now()->toDateString(),
+        //             'name' => 'Security deposit',
+        //             'user_id' => Auth::User()->id,
+        //             'amount' =>  $property->security_deposit,
+        //             'payment_type_id' => 1,
+        //             'status' => 1,
+        //         ],
+        //     );
+        //     daybook::create([
+        //         'property_id' => $property->property_id,
+        //         'property_agreement_id' => $property->id,
+        //         'user_id' => Auth::user()->id,
+        //         'date' => Carbon::now()->toDateString(),
+        //         'time' => Carbon::now()->format('H:i:s'),
+        //         'title' => Property::find($property->property_id)->product_code,
+        //         'head' => 'Security deposit',
+        //         'credit' => $property->security_deposit,
+        //     ]);
+        // }
 
         $property = Property::find($request->input('property_id'));
         if (isset($request['update_id'])) {
@@ -659,8 +659,7 @@ class AgreementManageController extends Controller
 
         $data['property'] = Property::find($property_id);
 
-        $data['agreement_data'] = PropertyAgreement::with([
-            'PropertyCustomer', 'Customer', 'PropertyExpense', 'PropertyIncome', 'PropertyRent', 'PropertyDocument'
+        $data['agreement_data'] = PropertyAgreement::with(['PropertyCustomer', 'Customer', 'PropertyExpense', 'PropertyIncome', 'PropertyRent', 
         ])->find($agreement_row_id)->toArray();
 
         $data['income'] =  PropertyIncome::where([
@@ -694,22 +693,20 @@ class AgreementManageController extends Controller
             'security_deposit' => 'required',
             'payment_commencement' => 'required',
         ]);
-
         if (isset($request['update_id'])) {
-            $property = LandloardPropertyContract::findOrFail($request['update_id']);
+            $landloard_property = LandloardPropertyContract::findOrFail($request['update_id']);
             $property_agreement_data = LandloardPropertyContract::find($request['update_id']);
             $landloard_id = $property_agreement_data->landloard_id;
         } else {
             $landloard_property = new LandloardPropertyContract();
             $landloard_id = $request['landloard_id'];
+            $agreement_count = LandloardPropertyContract::count() + 1;
+            $landloard_property->contract_no = 'contract-' . $agreement_count;
+            $landloard_property->property_id = $request->input('property_id');
+            $landloard_property->landloard_id = $landloard_id;
         }
         $currentDate = Carbon::now()->toDateString();
-        $agreement_count = LandloardPropertyContract::count() + 1;
-
-        $landloard_property->contract_no = 'contract-' . $agreement_count;
-        $landloard_property->property_id = $request->input('property_id');
-        $landloard_property->landloard_id = $landloard_id;
-        $landloard_property->lease_period = trim($request->input('lease_period'));
+        $landloard_property->lease_period = $request->input('lease_period');
         $landloard_property->lease_commencement = trim($request->input('lease_commencement'));
         $landloard_property->lease_expiry = trim($request->input('lease_expiry'));
         $landloard_property->lease_period_arabic = trim($request->input('lease_period_arabic'));

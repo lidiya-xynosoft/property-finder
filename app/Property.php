@@ -15,7 +15,7 @@ class Property extends Model
         'slug',     'bedroom',      'bathroom',     'city',     'city_slug',    'address',
         'area',     'agent_id',     'description',  'video',    'floor_plan', 'country_id',
         'location_latitude',        'location_longitude', 'city_id', 'garage', 'built_year', 'country_id',
-        'purpose_id', 'type_id', 'product_code', 'electricity_no', 'water_no', 'zone_no', 'street_no', 'building_no'
+        'purpose_id', 'type_id', 'product_code', 'electricity_no', 'water_no', 'zone_no', 'street_no', 'building_no', 'is_parent_property'
     ];
 
     public function features()
@@ -69,5 +69,9 @@ class Property extends Model
     public function propertyRent()
     {
         return $this->hasMany(PropertyRent::class);
+    }
+    public function propertyAgreement()
+    {
+        return $this->hasMany(PropertyAgreement::class);
     }
 }

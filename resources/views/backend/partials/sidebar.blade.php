@@ -30,6 +30,16 @@
                                 <span>All Property</span>
                             </a>
                         </li>
+                         {{-- <li class="{{ Request::is('admin/properties*') ? 'active' : '' }}">
+                            <a href="{{ url('admin/properties/index/-1') }}">
+                                <span>Property</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('admin/properties*') ? 'active' : '' }}">
+                            <a href="{{ url('admin/properties/index/0') }}">
+                                <span>Units</span>
+                            </a>
+                        </li> --}}
                         <li class="{{ Request::is('admin/types*') ? 'active' : '' }}">
                             <a href="{{ route('admin.types.index') }}">
                                 {{-- <i class="material-icons">abc</i> --}}

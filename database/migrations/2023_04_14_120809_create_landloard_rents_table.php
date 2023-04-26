@@ -19,7 +19,7 @@ class CreateLandloardRentsTable extends Migration
             $table->foreignId('landloard_id')->constrained('landloards');
             $table->foreignId('landloard_property_contract_id')->constrained('landloard_property_contracts');
             $table->foreignId('payment_type_id')->constrained('payment_types');
-            $table->foreignId('ledger_id')->constrained('ledgers');
+            $table->foreignId('ledger_id')->nullable()->constrained('ledgers');
             $table->string('month')->nullable();
             $table->string('rental_date')->nullable();
             $table->date('payment_date')->nullable();

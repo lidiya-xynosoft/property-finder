@@ -28,7 +28,7 @@
                         @elseif($data->status == 2)
                             <span class="btn-danger btn-sm"> Rejected </span>
                         @elseif($data->status == 3)
-                            <span class="btn-warning btn-sm"> Assigned to {{ $assigned_handyman->handyman->first_name }}
+                            <span class="btn-warning btn-sm"> Assigned to @if(isset($assigned_handyman->handyman->first_name)){{ $assigned_handyman->handyman->first_name }}@endif
                             </span>
                         @elseif($data->status == 4)
                             <span class="btn-warning btn-sm"> Ressolved </span>
@@ -87,16 +87,16 @@
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <strong>handyman Name : </strong>
-                                        <span class="right"> {{ $assigned_handyman->handyman->first_name }}
-                                            {{ $assigned_handyman->handyman->last_name }} </span>
+                                        <span class="right"> @if(isset( $assigned_handyman->handyman->first_name)){{ $assigned_handyman->handyman->first_name }}
+                                            {{ $assigned_handyman->handyman->last_name }}@endif </span>
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Email : </strong>
-                                        <span class="right">{{ $assigned_handyman->handyman->email }}</span>
+                                        <span class="right">@if(isset( $assigned_handyman->handyman->first_name)){{ $assigned_handyman->handyman->email }}@endif</span>
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Contact number : </strong>
-                                        <span class="right">{{ $assigned_handyman->handyman->phone }}</span>
+                                        <span class="right">@if(isset( $assigned_handyman->handyman->first_name)){{ $assigned_handyman->handyman->phone }}@endif</span>
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Complaint Assigned date : </strong>

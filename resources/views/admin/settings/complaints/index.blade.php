@@ -6,6 +6,17 @@
         <link rel="stylesheet" href="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
             integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+             <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <style>
+            .select2-container .select2-selection--single {
+                height: 34px !important;
+            }
+
+            .select2-container--default .select2-selection--single {
+                border: 1px solid #ccc !important;
+                border-radius: 0px !important;
+            }
+        </style>
     @endpush
 
     <div class="block-header"></div>
@@ -25,7 +36,7 @@
                                 <div class="form-group">
                                     <label>&nbsp;</label>
 
-                                    <select name="property_id" class="form-control">
+                                    <select name="property_id" class="form-control select2">
                                         <option value="">-- select property --</option>
                                         @foreach ($properties as $key => $value)
                                             <option value="{{ $value->id }}">{{ $value->product_code }}</option>
@@ -37,13 +48,13 @@
                                 <div class="form-group">
                                     <label>&nbsp;</label>
 
-                                    <select name="status" class="form-control">
+                                    <select name="status" class="form-control select2">
                                         <option value="">-- select status--</option>
                                         <option value="0">New</option>
                                         <option value="1">Approved</option>
                                         <option value="2">Rejected</option>
                                         <option value="3">Assigned</option>
-                                        <option value="3">Ressolved</option>
+                                        <option value="4">Ressolved</option>
                                     </select>
                                 </div>
                             </div>
@@ -51,7 +62,7 @@
                                 <div class="form-group">
                                     <label>&nbsp;</label>
 
-                                    <select name="service_list_id" class="form-control">
+                                    <select name="service_list_id" class="form-control select2">
                                         <option value="">-- select Service --</option>
                                         @foreach ($service_lists as $key => $value)
                                             <option value="{{ $value->id }}">{{ $value->name }}
@@ -64,7 +75,7 @@
                                 <div class="form-group">
                                     <label>&nbsp;</label>
 
-                                    <select name="complaint_id" class="form-control">
+                                    <select name="complaint_id" class="form-control select2">
                                         <option value="">-- select complaint --</option>
                                         @foreach ($complaint_lists as $key => $value)
                                             <option value="{{ $value->id }}">{{ $value->complaint_number }}
@@ -157,6 +168,8 @@
 
 @endsection
 @push('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -193,9 +206,11 @@
             })
         }
         $(document).ready(function() {
-            $('select').selectize({
-                sortField: 'text'
-            });
+            // $('select').selectize({
+            //     sortField: 'text'
+            // });
+                    $('.select2').select2();
+
         });
     </script>
 @endpush

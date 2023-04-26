@@ -16,7 +16,7 @@ class CreateHandymanComplaintStatusesTable extends Migration
         Schema::create('handyman_complaint_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->foreignId('handyman_id')->nullable()->constrained('handymens');
+            $table->foreignId('handyman_id')->nullable()->constrained('handymen');
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('property_complaint_id')->nullable()->constrained('property_complaints');
             $table->foreignId('service_list_id')->nullable()->constrained('service_lists');

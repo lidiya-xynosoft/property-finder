@@ -32,6 +32,7 @@
                                     <th>Purpose</th>
                                     {{-- <th>Beds</th>
                                     <th>Baths</th> --}}
+                                    <th>Parent</th>
                                     <th><i class="material-icons small">comment</i></th>
                                     <th>Action</th>
                                 </tr>
@@ -56,22 +57,28 @@
                                         <td>{{ $property->user->name }}</td>
                                         <td>{{ $property->type }}</td>
                                         <td>{{ $property->purpose }}</td>
-                                        {{-- <td>{{ $property->bedroom }}</td>
-                                        <td>{{ $property->bathroom }}</td> --}}
+                                        {{-- <td>{{ $property->bedroom }}</td>--}}
+                                        <td>@if( $property->is_parent_property == -1) <i class="material-icons small">star</i> @endif</td> 
 
                                         <td>
                                             <span class="badge bg-indigo">{{ $property->comments_count }}</span>
                                         </td>
 
                                         <td class="text-center">
-                                            <a href="{{ url('admin/landloard-property/manage/?property_id=' . $property->id) }}"
-                                                class="btn btn-warning btn-sm waves-effect" title="link and manage property to landloard">
-                                                <i class="material-icons">receipt</i>
-                                            </a>
-                                            <a href="{{ url('admin/property/manage/?property_id=' . $property->id) }}"
-                                                class="btn btn-success btn-sm waves-effect" title="manage property agreement ">
-                                                <i class="material-icons">visibility</i>
-                                            </a>
+                                            @if ($property->is_parent_property == -1)
+                                                <a href="{{ url('admin/landloard-property/manage/?property_id=' . $property->id) }}"
+                                                    class="btn btn-warning btn-sm waves-effect"
+                                                    title="link and manage property to landloard">
+                                                    <i class="material-icons">receipt</i>
+                                                </a>
+                                            @else
+                                                <a href="{{ url('admin/property/manage/?property_id=' . $property->id) }}"
+                                                    class="btn btn-success btn-sm waves-effect"
+                                                    title="manage property agreement ">
+                                                    <i class="material-icons">visibility</i>
+                                                </a>
+                                            @endif
+
                                             <a href="{{ route('admin.properties.edit', $property->slug) }}"
                                                 class="btn btn-info btn-sm waves-effect" title="edit property">
                                                 <i class="material-icons">edit</i>
