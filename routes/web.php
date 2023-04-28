@@ -7,7 +7,11 @@ use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\ExpenseManageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'FrontPageController@index')->name('home');
+// Route::get('/', 'FrontPageController@index')->name('home');
+Route::get('/', function () {
+    return view('auth.login');
+})->name('home');
+
 Route::get('/slider', 'FrontPageController@slider')->name('slider.index');
 
 Route::post('/search', 'FrontPageController@search')->name('search');
@@ -90,7 +94,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
     Route::post('agreement-income-report', 'ReportController@agreementIncomeReport')->name('agreement-income-report');
     Route::get('agreement-income-report', 'ReportController@agreementIncomeReport')->name('agreement-income-report');
-    
+
     Route::resource('sliders', 'SliderController');
     Route::resource('services', 'ServiceController');
     Route::resource('ledger', 'LedgerController');

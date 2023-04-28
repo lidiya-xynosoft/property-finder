@@ -35,7 +35,7 @@
             <div class="loading" id="loading"><span></span><span></span><span></span><span></span></div>
         </div> --}}
         {{-- MAIN NAVIGATION BAR --}}
-        @include('frontend.partials.navbar')
+        {{-- @include('frontend.partials.navbar') --}}
 
         {{-- MAIN CONTENT --}}
         <div class="main">
@@ -43,7 +43,7 @@
         </div>
 
         {{-- FOOTER --}}
-        @include('frontend.partials.footer')
+        {{-- @include('frontend.partials.footer') --}}
     </div>
 
     @include('frontend.partials.auth-script')

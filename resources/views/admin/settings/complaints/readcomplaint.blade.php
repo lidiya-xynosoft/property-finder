@@ -132,7 +132,7 @@
 
                     <h5>Complaint</h5>
                     <p>{!! $data->complaint !!}</p>
-                    @if (is_array($complaint_image))
+                    @if (count($complaint_image)>0)
                         <div class="card">
                             <div class="header bg-indigo">
                                 <h2>Attachments</h2>

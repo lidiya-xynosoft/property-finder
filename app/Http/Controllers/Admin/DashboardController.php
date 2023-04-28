@@ -192,6 +192,7 @@ class DashboardController extends Controller
     }
     public function complaintRead($id)
     {
+        $complaint_image = [];
         $data = PropertyComplaint::with('Property', 'ServiceList', 'Customer', 'ComplaintImage')->findOrFail($id);
         $agreement_data = PropertyAgreement::find($data->property_agreement_id);
         $complaint_image = ComplaintImage::where('property_complaint_id', $data->id)->get();
