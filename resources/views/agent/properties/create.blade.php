@@ -215,6 +215,23 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="col-lg-4 col-md-12">
+                                        <input type="checkbox" id="parent_property" name="parent_property"
+                                            class="filled-in" value="-1" />
+                                        <label for="parent_property">Is Parent Property</label>
+
+                                        <label for="parent_property_id">Choose parent Property</label>
+
+                                        <select name="parent_property_id" class="form-select form-select-lg" required>
+
+                                            <option value="-1">--This is Parent Property--</option>
+                                            @foreach ($parent_property as $key => $row)
+                                                <option value="{{ $row->id }}">
+                                                    {{ $row->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                            
                                 </div>
                             </div>
                         </div> <!-- /.col -->

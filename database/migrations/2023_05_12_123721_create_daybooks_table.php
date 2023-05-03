@@ -17,7 +17,7 @@ class CreateDaybooksTable extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
             $table->foreignId('property_agreement_id')->nullable()->constrained('property_agreements');
-            $table->foreignId('landloard_property_contract_id')->nullable()->constrained('landloard_property_contracts');
+            $table->foreignId('landlord_property_contract_id')->nullable()->constrained('landlord_property_contracts');
             $table->foreignId('user_id')->constrained('users');
             $table->date('date')->nullable();
             $table->time('time')->nullable();

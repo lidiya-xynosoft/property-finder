@@ -7,8 +7,8 @@ use App\Customer;
 use App\daybook;
 use App\DocumentType;
 use App\Http\Controllers\Controller;
-use App\LandloardProperty;
-use App\LandloardPropertyContract;
+use App\landlordProperty;
+use App\landlordPropertyContract;
 use App\Property;
 use App\PropertyAgreement;
 use App\PropertyComplaint;
@@ -694,42 +694,42 @@ class AgreementManageController extends Controller
             'payment_commencement' => 'required',
         ]);
         if (isset($request['update_id'])) {
-            $landloard_property = LandloardPropertyContract::findOrFail($request['update_id']);
-            $property_agreement_data = LandloardPropertyContract::find($request['update_id']);
-            $landloard_id = $property_agreement_data->landloard_id;
+            $landlord_property = landlordPropertyContract::findOrFail($request['update_id']);
+            $property_agreement_data = landlordPropertyContract::find($request['update_id']);
+            $landlord_id = $property_agreement_data->landlord_id;
         } else {
-            $landloard_property = new LandloardPropertyContract();
-            $landloard_id = $request['landloard_id'];
-            $agreement_count = LandloardPropertyContract::count() + 1;
-            $landloard_property->contract_no = 'contract-' . $agreement_count;
-            $landloard_property->property_id = $request->input('property_id');
-            $landloard_property->landloard_id = $landloard_id;
+            $landlord_property = new landlordPropertyContract();
+            $landlord_id = $request['landlord_id'];
+            $agreement_count = landlordPropertyContract::count() + 1;
+            $landlord_property->contract_no = 'contract-' . $agreement_count;
+            $landlord_property->property_id = $request->input('property_id');
+            $landlord_property->landlord_id = $landlord_id;
         }
         $currentDate = Carbon::now()->toDateString();
-        $landloard_property->lease_period = $request->input('lease_period');
-        $landloard_property->lease_commencement = trim($request->input('lease_commencement'));
-        $landloard_property->lease_expiry = trim($request->input('lease_expiry'));
-        $landloard_property->lease_period_arabic = trim($request->input('lease_period_arabic'));
-        $landloard_property->monthly_rent = trim($request->input('monthly_rent'));
-        $landloard_property->security_deposit = trim($request->input('security_deposit'));
-        $landloard_property->rent_payment_commencement = trim($request->input('payment_commencement'));
-        $landloard_property->is_draft = '1';
-        $landloard_property->is_published = true;
-        $landloard_property->save();
+        $landlord_property->lease_period = $request->input('lease_period');
+        $landlord_property->lease_commencement = trim($request->input('lease_commencement'));
+        $landlord_property->lease_expiry = trim($request->input('lease_expiry'));
+        $landlord_property->lease_period_arabic = trim($request->input('lease_period_arabic'));
+        $landlord_property->monthly_rent = trim($request->input('monthly_rent'));
+        $landlord_property->security_deposit = trim($request->input('security_deposit'));
+        $landlord_property->rent_payment_commencement = trim($request->input('payment_commencement'));
+        $landlord_property->is_draft = '1';
+        $landlord_property->is_published = true;
+        $landlord_property->save();
 
-        LandloardProperty::create([
-            'property_id' => $landloard_property->property_id,
-            'landloard_property_contract_id' => $landloard_property->id,
-            'landloard_id' => $landloard_property->landloard_id,
-            'start_date' => Carbon::parse($landloard_property->lease_commencement)->format('Y-m-d'),
-            'end_date' => Carbon::parse($landloard_property->lease_expiry)->format('Y-m-d'),
+        landlordProperty::create([
+            'property_id' => $landlord_property->property_id,
+            'landlord_property_contract_id' => $landlord_property->id,
+            'landlord_id' => $landlord_property->landlord_id,
+            'start_date' => Carbon::parse($landlord_property->lease_commencement)->format('Y-m-d'),
+            'end_date' => Carbon::parse($landlord_property->lease_expiry)->format('Y-m-d'),
             'date' => Carbon::now()->toDateString(),
             'time' => Carbon::now()->format('H:i:s'),
             'status' => '1'
         ]);
         $flash = array('type' => 'success', 'msg' => 'Contract created successfully.');
         $request->session()->flash('flash', $flash);
-        $agreement = LandloardPropertyContract::where('id', $landloard_property->id)
+        $agreement = landlordPropertyContract::where('id', $landlord_property->id)
             ->where('is_draft', true)
             ->where('is_published', false)
             ->first();
@@ -743,6 +743,6 @@ class AgreementManageController extends Controller
         $settings = Setting::first();
         return back();
 
-        // return view('admin.landloard.properties.property-landloard', compact('agreement', 'property', 'settings'));
+        // return view('admin.landlord.properties.property-landlord', compact('agreement', 'property', 'settings'));
     }
 }

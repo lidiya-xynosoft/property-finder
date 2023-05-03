@@ -29,19 +29,19 @@
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="text" name="first_name" class="form-control">
-                                        <label class="form-label">First name</label>
+                                        <label class="form-label">First name <span class="text-red">*</span></label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="number" name="phone" class="form-control">
-                                        <label class="form-label">Contact number</label>
+                                        <label class="form-label">Contact number <span class="text-red">*</span></label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="password" name="password" class="form-control">
-                                        <label class="form-label">Password</label>
+                                        <label class="form-label">Password <span class="text-red">*</span></label>
                                     </div>
                                 </div>
 
@@ -67,13 +67,13 @@
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="text" name="email" class="form-control">
-                                        <label class="form-label">Email</label>
+                                        <label class="form-label">Email <span class="text-red">*</span></label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="password" name="password_confirmation" class="form-control">
-                                        <label class="form-label">Conform password</label>
+                                        <label class="form-label">Conform password <span class="text-red">*</span></label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
@@ -93,7 +93,7 @@
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="text" name="verification" class="form-control">
-                                        <label class="form-label">Document number</label>
+                                        <label class="form-label">Document number <span class="text-red">*</span></label>
                                     </div>
                                 </div>
 

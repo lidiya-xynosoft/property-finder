@@ -58,13 +58,13 @@ class Property extends Model
     {
         return $this->hasMany(PropertyCustomer::class);
     }
-    public function landloardExpense()
+    public function landlordExpense()
     {
-        return $this->belongsTo(LandloardExpense::class);
+        return $this->belongsTo(landlordExpense::class);
     }
-    public function landloardIncome()
+    public function landlordIncome()
     {
-        return $this->belongsTo(LandloardIncome::class);
+        return $this->belongsTo(landlordIncome::class);
     }
     public function propertyRent()
     {

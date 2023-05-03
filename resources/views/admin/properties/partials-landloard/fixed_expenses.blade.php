@@ -20,7 +20,7 @@
                          </div>
                      </div>
                      <span class="nearby-title mb-3 d-block text-success">
-                         <i class="fas fa-car mr-2"></i><b class="title">Landloard Expenses Overview</b>
+                         <i class="fas fa-car mr-2"></i><b class="title">Landlord Expenses Overview</b>
                      </span>
                      <button class="waves-effect waves-light btn right m-b-15 addbtn add_expense_model"
                          data-toggle="modal" data-target="#expenseModal" data-whatever="@mdo"> <i
@@ -59,7 +59,7 @@
                  <div class="modal fade" id="expenseModal" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
-                         <form method="POST" id="landloardExpenseForm">
+                         <form method="POST" id="landlordExpenseForm">
                              @csrf
                              <div class="modal-content">
                                  <div class="modal-header">
@@ -73,7 +73,7 @@
                                      <input name="property_id" value="{{ $property->id }}" hidden>
 
                                      @if (isset($rows['id']))
-                                         <input name="landloard_contract_id" value="{{ $rows['id'] }}" hidden>
+                                         <input name="landlord_contract_id" value="{{ $rows['id'] }}" hidden>
                                      @endif
                                      <input type="text" name="mode_of_bill_payment" value="expense_type" hidden />
                                      <div class="form-line">

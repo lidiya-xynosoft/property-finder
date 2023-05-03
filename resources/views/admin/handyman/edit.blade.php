@@ -33,14 +33,14 @@
                                     <div class="form-line">
                                         <input type="text" name="first_name" class="form-control"
                                             value="{{ $handyman->first_name }}">
-                                        <label class="form-label">First name</label>
+                                        <label class="form-label">First name <span class="text-red">*</span></label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
                                         <input type="number" name="phone" class="form-control"
                                             value="{{ $handyman->phone }}">
-                                        <label class="form-label">Contact number</label>
+                                        <label class="form-label">Contact number <span class="text-red">*</span></label>
                                     </div>
                                 </div>
 
@@ -79,7 +79,7 @@
                                     <div class="form-line">
                                         <input type="text" name="email" class="form-control"
                                             value="{{ $handyman->email }}">
-                                        <label class="form-label">Email</label>
+                                        <label class="form-label">Email <span class="text-red">*</span></label>
                                     </div>
                                 </div>
 
@@ -91,7 +91,7 @@
                                             @foreach ($document_types as $document_type)
                                                 <option value="{{ $document_type->id }}"
                                                     {{ $document_type->id == $handyman->document_type_id ? 'selected' : '' }}>
-                                                     {{ $document_type->title }}</option>
+                                                    {{ $document_type->title }}</option>
                                             @endforeach
                                         </select>
 
@@ -102,7 +102,7 @@
                                     <div class="form-line">
                                         <input type="text" name="verification" class="form-control"
                                             value="{{ $handyman->verification }}">
-                                        <label class="form-label">Document number</label>
+                                        <label class="form-label">Document number <span class="text-red">*</span></label>
                                     </div>
                                 </div>
 

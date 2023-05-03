@@ -17,7 +17,7 @@
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-pink hover-expand-effect">
                 <div class="icon">
-                    <i class="material-icons">playlist_add_check</i>
+                    <i class="material-icons">home_work</i>
                 </div>
                 <div class="content">
                     <div class="text">TOTAL PROPERTY</div>
@@ -26,22 +26,24 @@
                 </div>
             </div>
         </div>
+
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-cyan hover-expand-effect">
                 <div class="icon">
-                    <i class="material-icons">help</i>
+                    <i class="material-icons">sensor_occupied</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL COMPLAINTS</div>
-                    <div class="number count-to" data-from="0" data-to="{{ $new_complaints }}" data-speed="1000"
-                        data-fresh-interval="20">{{ $new_complaints }}</div>
+                    <div class="text">OCCUPIED UNITS</div>
+
+                    <div class="number count-to" data-from="0" data-to="{{ $occupaid_unit }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $occupaid_unit }}</div>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-light-green hover-expand-effect">
                 <div class="icon">
-                    <i class="material-icons">forum</i>
+                    <i class="material-icons">payments</i>
                 </div>
                 <div class="content">
                     <div class="text">TOTAL RENT</div>
@@ -53,12 +55,64 @@
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-orange hover-expand-effect">
                 <div class="icon">
-                    <i class="material-icons">person_add</i>
+                    <i class="material-icons">groups</i>
                 </div>
                 <div class="content">
                     <div class="text">TOTAL TENANTS</div>
                     <div class="number count-to" data-from="0" data-to="{{ $customer_count }}" data-speed="1000"
                         data-fresh-interval="20">{{ $customer_count }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-pink hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">apartment</i>
+                </div>
+                <div class="content">
+                    <div class="text">TOTAL UNITS</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $unit_count }}" data-speed="15"
+                        data-fresh-interval="20">{{ $unit_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-cyan hover-expand-effect">
+
+                <div class="icon">
+                    <i class="material-icons">ad_units</i>
+                </div>
+                <div class="content">
+                    <div class="text">VACANT UNITS</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $vacant_count }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $vacant_count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-light-green hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">report</i>
+                </div>
+                <div class="content">
+                    <div class="text">TOTAL COMPLAINTS</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $total_complaints }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $total_complaints }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-orange hover-expand-effect">
+                <div class="icon">
+                    <i class="material-icons">request_quote</i>
+                </div>
+                <div class="content">
+                    <div class="text">NEW COMPLAINTS</div>
+                    <div class="number count-to" data-from="0" data-to="{{ $new_complaints }}" data-speed="1000"
+                        data-fresh-interval="20">{{ $new_complaints }}</div>
                 </div>
             </div>
         </div>
@@ -178,14 +232,15 @@
                                     <tr>
                                         <td>{{ ++$key }}.</td>
                                         <td> <span title="{{ $rent->property->title }}">
-                                               {{ $rent->property->product_code }} - {{ str_limit($rent->property->title, 30) }} 
+                                                {{ $rent->property->product_code }} -
+                                                {{ str_limit($rent->property->title, 30) }}
                                             </span>
                                         </td>
                                         <td>{{ $rent->month }}</td>
                                         <td>{{ $rent->rental_date }}</td>
                                         <td>
-                                            @if (date("Y-m-d") > $rent->month)
-                                                 <span class="badge bg-red"> Rent Due </span>
+                                            @if (date('Y-m-d') > $rent->month)
+                                                <span class="badge bg-red"> Rent Due </span>
                                             @else
                                                 <span class="badge bg-blue"> Near Rent date </span>
                                             @endif
@@ -209,7 +264,7 @@
                 <div class="body">
                     <div class="table-responsive">
                         <table class="table table-hover dashboard-task-infos">
-                             <thead>
+                            <thead>
                                 <tr>
                                     <th>SL.</th>
                                     <th>Title</th>
@@ -218,19 +273,20 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                         <tbody>
+                            <tbody>
                                 @foreach ($paid_rent as $key => $rent)
                                     <tr>
                                         <td>{{ ++$key }}.</td>
                                         <td> <span title="{{ $rent->property->title }}">
-                                               {{ $rent->property->product_code }} - {{ str_limit($rent->property->title, 30) }} 
+                                                {{ $rent->property->product_code }} -
+                                                {{ str_limit($rent->property->title, 30) }}
                                             </span>
                                         </td>
                                         <td>{{ $rent->month }}</td>
                                         <td>{{ $rent->rental_date }}</td>
                                         <td>
                                             @if ($rent->payment_status == 1)
-                                                 <span class="badge bg-success"> Rent Paid </span>
+                                                <span class="badge bg-success"> Rent Paid </span>
                                             @else
                                                 <span class="badge bg-blue"> Near Rent date </span>
                                             @endif

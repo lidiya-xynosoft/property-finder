@@ -28,7 +28,7 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" name="title" class="form-control">
-                                <label class="form-label">Title</label>
+                                <label class="form-label">Title <span class="text-red">*</span></label>
                             </div>
                         </div>
 
@@ -41,9 +41,10 @@
 
 
                         <div class="form-group form-float">
-                            <div class="form-line">
+                            <div class="form-line"> <label class="form-label">Type<span
+                                        class="text-red">*</span></label>
                                 <select name="type" class="form-control show-tick">
-                                    <option value="">-- Please select --</option>
+                                    {{-- <option value="">-- Please select --</option> --}}
                                     <option value="0">Receipt</option>
                                     <option value="1">Payment</option>
                                 </select>

@@ -133,7 +133,7 @@ class PagesController extends Controller
                 return $query->whereYear('created_at', $year);
             })
             ->where('status', 1)
-            ->paginate(2);
+            ->paginate(4);
 
         return view('pages.blog.index', compact('posts'));
     }

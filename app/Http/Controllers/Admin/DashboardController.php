@@ -34,13 +34,17 @@ class DashboardController extends Controller
     public function index()
     {
         $data = [];
-        $data['property_count'] = Property::count();
-        $data['customer_count']     = Customer::count();
+        $data['property_count'] = Property::where('is_parent_property', -1)->count();
+        $data['unit_count'] = Property::where('is_parent_property', '!=', -1)->count();
+        $data['customer_count']     = Customer::whereMonth('created_at', Carbon::now()->month)->count();
         $data['new_complaints']  = PropertyComplaint::where('status', 0)->count();
-        $data['total_rent']     = PropertyRent::whereMonth('payment_date', Carbon::now()->month)->where(['payment_status' => true, 'status' => 1])->sum('rent_amount');
+        $data['occupaid_unit']  = PropertyAgreement::where(['is_published' => 1, 'is_withdraw' => 0])->count();
+        $data['total_complaints']  = PropertyComplaint::count();
+        $data['total_rent']     = PropertyRent::where(['payment_status' => true, 'status' => 1])->sum('rent_amount');
         $data['properties']    = Property::latest()->with('user')->take(5)->get();
         $data['complaints']         = PropertyComplaint::latest()->with(['Customer', 'Property', 'ServiceList'])->take(5)->get()->toArray();
-
+        $data['vacant_count'] =
+        $data['unit_count'] -    $data['occupaid_unit'];
         $data['pending_rent']         = PropertyRent::with('Property')->whereMonth('month', Carbon::now()->month)->where(['payment_status' => 0, 'status' => 1])->latest()->get();
         $data['paid_rent']         = PropertyRent::with('Property')->whereMonth('month', Carbon::now()->month)->where(['payment_status' => 1, 'status' => 1])->latest()->get();
         $data['comments']      = Comment::with('users')->take(5)->get();

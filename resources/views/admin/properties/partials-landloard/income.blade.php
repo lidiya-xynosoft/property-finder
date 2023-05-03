@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <span class="nearby-title mb-3 d-block text-success">
-                        <i class="fas fa-car mr-2"></i><b class="title">Landloard Income Overview</b>
+                        <i class="fas fa-car mr-2"></i><b class="title">Landlord Income Overview</b>
                     </span>
                     <button class="waves-effect waves-light btn right m-b-15 addbtn add_income_model"
                         data-toggle="modal" data-target="#incomeModal" data-whatever="@mdo"> <i
@@ -63,7 +63,7 @@
         <div class="modal fade" id="incomeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form method="POST" id="landloardIncomeForm">
+                <form method="POST" id="landlordIncomeForm">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -78,7 +78,7 @@
                             <input type="text" id="income_type" name="mode_of_bill_payment" value="income_type"
                                 hidden />
                             @if (isset($rows['id']))
-                                <input name="landloard_contract_id" value="{{ $rows['id'] }}" hidden>
+                                <input name="landlord_contract_id" value="{{ $rows['id'] }}" hidden>
                             @endif
                             <div class="form-line">
                                 <label for="name">Date<span class="text-red">*</span></label>

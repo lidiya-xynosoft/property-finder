@@ -50,10 +50,11 @@ class PropertyController extends Controller
         $types = Type::all();
         $nearby_categories = NearbyCategory::all();
         $cities = City::all();
+        $parent_property = Property::where('is_parent_property', -1)->get();
 
         $user_data = User::with('country')->where('id', Auth::id())->first();
         $currency = $user_data->country->currency;
-        return view('agent.properties.create', compact('features', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency'));
+        return view('agent.properties.create', compact('features', 'types', 'parent_property', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency'));
     }
 
 
@@ -201,12 +202,13 @@ class PropertyController extends Controller
         $types = Type::all();
         $nearby_categories = NearbyCategory::all();
         $property_nearby = NearbyProperty::where('property_id', $property->id)->get();
+        $parent_property = Property::where('is_parent_property', -1)->get();
 
         $cities = City::all();
         $tags = Tag::where('type', 'property')->get();
         $user_data = User::with('country')->where('id', Auth::id())->first();
         $currency = $user_data->country->currency;
-        return view('agent.properties.edit', compact('property', 'features', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency'));
+        return view('agent.properties.edit', compact('property', 'features', 'parent_property', 'types', 'cities', 'tags', 'purposes', 'nearby_categories', 'currency'));
     }
 
 

@@ -228,7 +228,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="card">
+              <div class="card">
                     <div class="header">
                         <h2>PROPERTY NEARBY</h2>
                     </div>
@@ -275,7 +275,7 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div> 
                 <div class="card">
                     <div class="header">
                         <h2>DOCUMENT FILES</h2>

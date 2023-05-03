@@ -33,7 +33,6 @@ class CityController extends Controller
             'title' => 'required',
             'country_id' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png',
-            'city_order' => 'required',
         ]);
         $image = $request->file('image');
         $slug = str_slug($request->title);
@@ -57,7 +56,7 @@ class CityController extends Controller
         $city->slug = $slug;
         $city->country_id = $request->country_id;
         $city->image = $imagename;
-        $city->city_order = $request->city_order;
+        $city->city_order = $request->city_order ? $request->city_order : 0;
         $city->latitude = $request->latitude;
         $city->longitude = $request->longitude;
         $city->save();
@@ -81,7 +80,6 @@ class CityController extends Controller
             'title' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png',
             'country_id' => 'required',
-            'city_order' => 'required',
             'latitude' => 'required',
             'longitude' => 'required'
         ]);
@@ -112,7 +110,7 @@ class CityController extends Controller
         $city->latitude = $request->latitude;
         $city->longitude = $request->longitude;
         $city->image = $imagename;
-        $city->city_order = $request->city_order;
+        $city->city_order = $request->city_order ? $request->city_order : 0;
         $city->save();
 
         $flash = array('type' => 'success', 'msg' => 'City updated successfully.');

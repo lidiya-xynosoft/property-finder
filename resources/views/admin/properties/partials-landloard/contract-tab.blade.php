@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h4> {{ __('Generate Contract') }}</h4>
                 </div>
-                <form action="{{ url('admin/landloard/save-update-contract') }}" enctype="multipart/form-data"
+                <form action="{{ url('admin/landlord/save-update-contract') }}" enctype="multipart/form-data"
                     method="POST" id="contractForm">
                     @csrf
                     <div class="card-body">
@@ -73,7 +73,7 @@
                             </table>
                         </div> --}}
                         <div class="card-header">
-                            <h4>{{ __('2. Landloard Details') }}</h4>
+                            <h4>{{ __('2. Landlord Details') }}</h4>
                         </div>
                         <br />
                         <input id="property_id" type="hidden" name="property_id"
@@ -81,14 +81,14 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-line">
-                                    <label for="name">Choose Landloard<span class="text-red">*</span></label>
+                                    <label for="name">Choose Landlord<span class="text-red">*</span></label>
 
-                                    <select class="form-control" name="landloard_id" id="landloard_id" required>
+                                    <select class="form-control" name="landlord_id" id="landlord_id" required>
 
-                                        @foreach ($landloards as $customer)
+                                        @foreach ($landlords as $customer)
                                             @if (isset($update_data))
                                                 <option value="{{ $customer->id }}"
-                                                    {{ $customer->id == $update_data->landloard_id ? 'selected' : '' }}>
+                                                    {{ $customer->id == $update_data->landlord_id ? 'selected' : '' }}>
                                                     {{ $customer->first_name }} {{ $customer->last_name }}
                                                 </option>
                                             @else
@@ -104,11 +104,11 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-line">
-                                    <label for="name" class="form-label">Landloard Name:<span
+                                    <label for="name" class="form-label">Landlord Name:<span
                                             class="text-red">*</span></label>
-                                    <input id="landloard_name" type="text" class="form-control" readonly
-                                        name="landloard_name"
-                                        value="{{ isset($update_data) ? $update_data->landloard->first_name : '' }}"
+                                    <input id="landlord_name" type="text" class="form-control" readonly
+                                        name="landlord_name"
+                                        value="{{ isset($update_data) ? $update_data->landlord->first_name : '' }}"
                                         required="">
 
                                     <div class="help-block with-errors"></div>
@@ -119,7 +119,7 @@
                                 <div class="form-line">
                                     <label for="name">Telephone<span class="text-red">*</span></label>
                                     <input id="phone" type="text" readonly class="form-control " name="phone"
-                                        value="{{ isset($update_data) ? $update_data->landloard->phone : '' }}"
+                                        value="{{ isset($update_data) ? $update_data->landlord->phone : '' }}"
                                         placeholder="Enter Telephone" required="">
                                     <div class="help-block with-errors"></div>
 
@@ -129,7 +129,7 @@
                                 <div class="form-line">
                                     <label for="name">Email address<span class="text-red">*</span></label>
                                     <input id="email" type="text" readonly class="form-control " name="email"
-                                        value="{{ isset($update_data) ? $update_data->landloard->email : '' }}"
+                                        value="{{ isset($update_data) ? $update_data->landlord->email : '' }}"
                                         placeholder="Enter Email" required="">
                                     <div class="help-block with-errors"></div>
 
@@ -139,7 +139,7 @@
                                 <div class="form-line">
                                     <label for="name">address<span class="text-red">*</span></label>
                                     <input required id="address" type="text" class="form-control " name="address"
-                                        value="{!! isset($update_data) ? $update_data->landloard->address : '' !!}"
+                                        value="{!! isset($update_data) ? $update_data->landlord->address : '' !!}"
                                         placeholder="Enter Location">
                                     <div class="help-block with-errors"></div>
 
@@ -543,13 +543,13 @@
                     <tr>
                         <input value="{{ $rows['id'] }}" id="agreement_row_id" hidden>
                         <td>{{ $rows['contract_no'] }}</td>
-                        <td>{{ $rows['landloard']['first_name'] }}</td>
+                        <td>{{ $rows['landlord']['first_name'] }}</td>
 
-                        <td>{{ $rows['landloard']['phone'] }}</td>
+                        <td>{{ $rows['landlord']['phone'] }}</td>
                         <td>{{ $rows['lease_period'] }} </td>
                         <td>{{ $rows['lease_expiry'] }}</td>
                         <td>{{ $currency }} {{ $rows['monthly_rent'] }}</td>
-                        <td>{{ $rows['landloard']['email'] }}</td>
+                        <td>{{ $rows['landlord']['email'] }}</td>
 
 
 
@@ -564,7 +564,7 @@
                                     </a>
                                 @endif
 
-                                <a href="{{ url('admin/landloard-property/manage/?update_id=') . $rows['id'] }}">
+                                <a href="{{ url('admin/landlord-property/manage/?update_id=') . $rows['id'] }}">
                                     <button data-repeater-create type="button"
                                         class="btn btn-success btn-icon ml-2 mb-2"> <i
                                             class="material-icons">edit</i></button>

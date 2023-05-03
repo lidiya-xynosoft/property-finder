@@ -2,9 +2,11 @@
  
 @endpush
 <!-- STAR HEADER SEARCH -->
-<section id="hero-area" class="parallax-searchs home15 overlay thome-6" @if($homeImage)style="
+{{-- <section id="hero-area" class="parallax-searchs home15 overlay thome-6" @if($homeImage)style="
  background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.5))), url({{Storage::url('slider/'.$homeImage->image)}}) no-repeat center top;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{Storage::url('slider/'.$homeImage->image)}}) no-repeat center top;" data-stellar-background-ratio="0.5" @endif>
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{Storage::url('slider/'.$homeImage->image)}}) no-repeat center top;" data-stellar-background-ratio="0.5" @endif> --}}
+            <section id="hero-area" class="parallax-searchs home15 overlay thome-6 thome-1" data-stellar-background-ratio="0.5">
+
     <div class="hero-main">
         <div class="container" data-aos="zoom-in">
             <div class="row">

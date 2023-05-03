@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title', 'Landloard Management')
+@section('title', 'Landlord Management')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
     @push('head')
@@ -34,10 +34,10 @@
                 <div class="header">
                     <div class="row">
                         <div class="col-sm-12">
-                            @if (!empty($rows['property_landloard']))
+                            @if (!empty($rows['property_landlord']))
                                 <ul class="list-group">
                                     <li class="list-group-item">
-                                        <strong>Landloard Name : </strong>
+                                        <strong>Landlord Name : </strong>
                                         <span class="right" id="customer_name"> {{ $rows['tenant_name'] }}</span>
                                     </li>
                                     <li class="list-group-item">
@@ -69,23 +69,23 @@
 
                 <div class="header">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#manage_property">Landloard Contract</a></li>
+                        <li class="active"><a data-toggle="tab" href="#manage_property">Landlord Contract</a></li>
                         <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
-                        <li><a data-toggle="tab" href="#fixed_expenses">Landloard Expenses</a></li>
-                        <li><a data-toggle="tab" href="#income">Landloard Income</a></li>
+                        <li><a data-toggle="tab" href="#fixed_expenses">Landlord Expenses</a></li>
+                        <li><a data-toggle="tab" href="#income">Landlord Income</a></li>
                     </ul>
 
                     <div class="tab-content">
 
                         <div id="manage_property" class="tab-pane fade in active">
-                            @include('admin.properties.partials-landloard.contract-tab')
+                            @include('admin.properties.partials-landlord.contract-tab')
                         </div>
 
-                        @include('admin.properties.partials-landloard.fixed_expenses')
+                        @include('admin.properties.partials-landlord.fixed_expenses')
 
-                        @include('admin.properties.partials-landloard.income')
+                        @include('admin.properties.partials-landlord.income')
 
-                        @include('admin.properties.partials-landloard.rentals')
+                        @include('admin.properties.partials-landlord.rentals')
                     </div>
                 </div>
             </div>
@@ -196,10 +196,10 @@
                 $('#rent_id').val(id);
             });
            
-            $("#landloardRentForm").submit(function(e) {
+            $("#landlordRentForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
-                var actionUrl = '/landloard-rent/save-update-landloard-rent'
+                var actionUrl = '/landlord-rent/save-update-landlord-rent'
 
                 $.ajax({
                     type: "POST",
@@ -211,16 +211,16 @@
                 });
 
             });
-            $("#landloard_id").change(function() {
-                var id = $('#landloard_id').val()
+            $("#landlord_id").change(function() {
+                var id = $('#landlord_id').val()
                 $.ajax({
-                    url: "/admin/landloards/" + id,
+                    url: "/admin/landlords/" + id,
                     type: 'get',
                     data: {
                         //    id:$('#customer_id').val(),
                     },
                     success: function(res) {
-                        $('#landloard_name').val(res['first_name'] +' ' + res['last_name']);
+                        $('#landlord_name').val(res['first_name'] +' ' + res['last_name']);
                         $('#email').val(res['email']);
                         $('#address').val(res['address']);
                         $('#phone').val(res['phone']);
@@ -230,10 +230,10 @@
                     }
                 });
             });
-            $("#landloardExpenseForm").submit(function(e) {
+            $("#landlordExpenseForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
-                var actionUrl = '/landloard-expense/save-update-expense'
+                var actionUrl = '/landlord-expense/save-update-expense'
 
                 $.ajax({
                     type: "POST",
@@ -245,10 +245,10 @@
                 });
 
             });
-            $("#landloardIncomeForm").submit(function(e) {
+            $("#landlordIncomeForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
-                var actionUrl = '/landloard-expense/save-update-expense'
+                var actionUrl = '/landlord-expense/save-update-expense'
 
                 $.ajax({
                     type: "POST",

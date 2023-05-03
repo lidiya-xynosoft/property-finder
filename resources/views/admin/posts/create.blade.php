@@ -21,14 +21,14 @@
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" name="title" class="form-control" value="{{ old('title') }}">
-                                <label class="form-label">Post Title</label>
+                                <label class="form-label">Post Title <span class="text-red">*</span></label>
                             </div>
                         </div>
 
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" name="excerpt" class="form-control" value="{{ old('excerpt') }}">
-                                <label class="form-label">Excerpt</label>
+                                <label class="form-label">Excerpt <span class="text-red">*</span></label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -37,7 +37,7 @@
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label for="">Body</label>
+                            <label for="">Body <span class="text-red">*</span></label>
                             <textarea name="body" id="tinymce">{{ old('body') }}</textarea>
                         </div>
 
@@ -48,7 +48,7 @@
 
                 <div class="card">
                     <div class="header">
-                        <h2>SELECT CATEGORY</h2>
+                        <h2>SELECT CATEGORY <span class="text-red">*</span></h2>
                     </div>
                     <div class="body">
 
@@ -65,7 +65,7 @@
                         <br /><br />
                         <div class="form-group form-float">
                             <div class="form-line {{ $errors->has('tags') ? 'focused error' : '' }}">
-                                <label>Select Tag</label>
+                                <label>Select Tag <span class="text-red">*</span></label>
                                 <select name="tags[]" class="form-control show-tick" multiple data-live-search="true">
                                     @foreach ($tags as $tag)
                                         <option value="{{ $tag->id }}">{{ $tag->name }}</option>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="card">
                     <div class="header bg-indigo">
-                        <h2>FEATURED IMAGE</h2>
+                        <h2>FEATURED IMAGE <span class="text-red">*</span></h2>
                     </div>
                     <div class="body">
                         <div class="form-group">

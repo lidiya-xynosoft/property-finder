@@ -17,13 +17,13 @@ class AminityController extends Controller
     {
         $features = Feature::latest()->get();
 
-        return view('admin.aminities.index', compact('features'));
+        return view('admin.amenities.index', compact('features'));
     }
 
 
     public function create()
     {
-        return view('admin.aminities.create');
+        return view('admin.amenities.create');
     }
 
 
@@ -41,25 +41,25 @@ class AminityController extends Controller
             $currentDate = Carbon::now()->toDateString();
             $imagename = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
 
-            if (!Storage::disk('public')->exists('aminity')) {
-                Storage::disk('public')->makeDirectory('aminity');
+            if (!Storage::disk('public')->exists('amenity')) {
+                Storage::disk('public')->makeDirectory('amenity');
             }
             $city = Image::make($image)->resize(160, 160)->stream();
 
-            Storage::disk('public')->put('aminity/' . $imagename, $city);
+            Storage::disk('public')->put('amenity/' . $imagename, $city);
         } else {
             $imagename = 'default.png';
         }
-        $aminity = new Feature();
-        $aminity->name = $request->name;
-        $aminity->icon = $imagename;
+        $amenity = new Feature();
+        $amenity->name = $request->name;
+        $amenity->icon = $imagename;
 
-        $aminity->slug = str_slug($request->name);
-        $aminity->save();
+        $amenity->slug = str_slug($request->name);
+        $amenity->save();
 
-        $flash = array('type' => 'success', 'msg' => 'Aminity created successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Amenity created successfully.');
         session()->flash('flash', $flash);
-        return redirect()->route('admin.aminities.index');
+        return redirect()->route('admin.amenities.index');
     }
 
 
@@ -67,7 +67,7 @@ class AminityController extends Controller
     {
         $feature = Feature::find($id);
 
-        return view('admin.aminities.edit', compact('feature'));
+        return view('admin.amenities.edit', compact('feature'));
     }
 
 
@@ -79,32 +79,32 @@ class AminityController extends Controller
         ]);
         $image = $request->file('icon');
         $slug  = str_slug($request->name);
-        $aminity = Feature::find($id);
+        $amenity = Feature::find($id);
         if (isset($image)) {
             $currentDate = Carbon::now()->toDateString();
             $imagename = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-            if (!Storage::disk('public')->exists('aminity')) {
-                Storage::disk('public')->makeDirectory('aminity');
+            if (!Storage::disk('public')->exists('amenity')) {
+                Storage::disk('public')->makeDirectory('amenity');
             }
-            if (Storage::disk('public')->exists('aminity/' . $aminity->icon)) {
-                Storage::disk('public')->delete('aminity/' . $aminity->icon);
+            if (Storage::disk('public')->exists('amenity/' . $amenity->icon)) {
+                Storage::disk('public')->delete('amenity/' . $amenity->icon);
             }
             $testimonialimg = Image::make($image)->resize(160, 160)->stream();
-            Storage::disk('public')->put('aminity/' . $imagename, $testimonialimg);
+            Storage::disk('public')->put('amenity/' . $imagename, $testimonialimg);
         } else {
-            $imagename = $aminity->icon;
+            $imagename = $amenity->icon;
         }
 
-        $aminity = Feature::find($id);
-        $aminity->name = $request->name;
-        $aminity->icon = $imagename;
+        $amenity = Feature::find($id);
+        $amenity->name = $request->name;
+        $amenity->icon = $imagename;
 
-        $aminity->slug = str_slug($request->name);
-        $aminity->save();
+        $amenity->slug = str_slug($request->name);
+        $amenity->save();
 
-        $flash = array('type' => 'success', 'msg' => 'Aminity updated successfully.');
+        $flash = array('type' => 'success', 'msg' => 'Amenity updated successfully.');
         session()->flash('flash', $flash);
-        return redirect()->route('admin.aminities.index');
+        return redirect()->route('admin.amenities.index');
     }
 
 

@@ -66,9 +66,9 @@
 
                                         <td class="text-center">
                                             @if ($property->is_parent_property == -1)
-                                                <a href="{{ url('admin/landloard-property/manage/?property_id=' . $property->id) }}"
+                                                <a href="{{ url('admin/landlord-property/manage/?property_id=' . $property->id) }}"
                                                     class="btn btn-warning btn-sm waves-effect"
-                                                    title="link and manage property to landloard">
+                                                    title="link and manage property to landlord">
                                                     <i class="material-icons">receipt</i>
                                                 </a>
                                             @else

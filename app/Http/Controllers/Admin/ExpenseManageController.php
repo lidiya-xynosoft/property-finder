@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\daybook;
 use App\Http\Controllers\Controller;
-use App\LandloardExpense;
-use App\LandloardIncome;
-use App\LandloardPropertyContract;
-use App\LandloardRent;
+use App\landlordExpense;
+use App\landlordIncome;
+use App\landlordPropertyContract;
+use App\landlordRent;
 use App\Ledger;
 use App\Property;
 use App\PropertyAgreement;
@@ -92,23 +92,23 @@ class ExpenseManageController extends Controller
         session()->flash('flash', $flash);
         return $data;
     }
-    public function saveUpdatelandloardExpense(Request $request)
+    public function saveUpdatelandlordExpense(Request $request)
     {
         $request->validate([
             'name' => 'required',
             'date' => 'required',
             'amount' => 'required',
-            'landloard_contract_id' => 'required',
+            'landlord_contract_id' => 'required',
             'ledger_id' => 'required',
             'payment_type_id' => 'required',
         ]);
         if ($request['mode_of_bill_payment'] == 'expense_type') {
-            $data = LandloardExpense::create(
+            $data = landlordExpense::create(
                 [
                     'property_id' => $request['property_id'],
                     'ledger_id' => $request['ledger_id'],
-                    'landloard_id' => LandloardPropertyContract::find($request['landloard_contract_id'])->landloard_id,
-                    'landloard_property_contract_id' => $request['landloard_contract_id'],
+                    'landlord_id' => landlordPropertyContract::find($request['landlord_contract_id'])->landlord_id,
+                    'landlord_property_contract_id' => $request['landlord_contract_id'],
                     'expense_date' => $request['date'],
                     'date' => Carbon::now()->toDateString(),
                     'name' => $request['name'],
@@ -121,7 +121,7 @@ class ExpenseManageController extends Controller
             );
             daybook::create([
                 'property_id' => $request['property_id'],
-                'landloard_property_contract_id' => $request['landloard_property_contract_id'],
+                'landlord_property_contract_id' => $request['landlord_property_contract_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),
@@ -130,11 +130,11 @@ class ExpenseManageController extends Controller
                 'debit' => $request['amount'],
             ]);
         } else if ($request['mode_of_bill_payment'] == 'income_type') {
-            $data = LandloardIncome::create(
+            $data = landlordIncome::create(
                 [
                     'property_id' => $request['property_id'],
-                    'landloard_property_contract_id' => $request['landloard_contract_id'],
-                    'landloard_id' => LandloardPropertyContract::find($request['landloard_contract_id'])->landloard_id,
+                    'landlord_property_contract_id' => $request['landlord_contract_id'],
+                    'landlord_id' => landlordPropertyContract::find($request['landlord_contract_id'])->landlord_id,
                     'ledger_id' => $request['ledger_id'],
                     'income_date' => $request['date'],
                     'date' => Carbon::now()->toDateString(),
@@ -148,7 +148,7 @@ class ExpenseManageController extends Controller
             );
             daybook::create([
                 'property_id' => $request['property_id'],
-                'landloard_property_contract_id' => $request['landloard_contract_id'],
+                'landlord_property_contract_id' => $request['landlord_contract_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),
@@ -222,22 +222,22 @@ class ExpenseManageController extends Controller
             'success' => '1'
         ]);
     }
-    public function landloardRentPayment(Request $request)
+    public function landlordRentPayment(Request $request)
     {
         $id = $request['rent_id'];
-        $expense_rent = LandloardRent::findOrFail($id);
+        $expense_rent = landlordRent::findOrFail($id);
         if ($expense_rent) {
-            LandloardRent::whereId($id)->update([
+            landlordRent::whereId($id)->update([
                 'payment_date' => Carbon::now()->toDateString(),
-                'landloard_property_contract_id' => $request['landloard_contract_id'],
+                'landlord_property_contract_id' => $request['landlord_contract_id'],
                 'payment_time' => Carbon::now()->format('H:i:s'),
                 'payment_status' => 1
             ]);
-            $data = LandloardIncome::create(
+            $data = landlordIncome::create(
                 [
                     'property_id' => $request['property_id'],
-                    'landloard_property_contract_id' => $request['landloard_contract_id'],
-                    'landloard_id' => LandloardPropertyContract::find($request['landloard_contract_id'])->landloard_id,
+                    'landlord_property_contract_id' => $request['landlord_contract_id'],
+                    'landlord_id' => landlordPropertyContract::find($request['landlord_contract_id'])->landlord_id,
                     'ledger_id' => $request['ledger_id'],
                     'income_date' => $request['date'],
                     'date' => Carbon::now()->toDateString(),
@@ -251,12 +251,12 @@ class ExpenseManageController extends Controller
             );
             daybook::create([
                 'property_id' => $expense_rent->property_id,
-                'landloard_property_contract_id' => $request['landloard_contract_id'],
+                'landlord_property_contract_id' => $request['landlord_contract_id'],
                 'user_id' => Auth::user()->id,
                 'date' => Carbon::now()->toDateString(),
                 'time' => Carbon::now()->format('H:i:s'),
                 'title' => Property::find($expense_rent->property_id)->product_code,
-                'head' => 'Landloard Rent Payment',
+                'head' => 'Landlord Rent Payment',
                 'debit' => $request['amount'],
             ]);
         } else {

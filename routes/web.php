@@ -7,10 +7,10 @@ use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\ExpenseManageController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', 'FrontPageController@index')->name('home');
-Route::get('/', function () {
-    return view('auth.login');
-})->name('home');
+Route::get('/', 'FrontPageController@index')->name('home');
+// Route::get('/', function () {
+//     return view('auth.login');
+// })->name('home');
 
 Route::get('/slider', 'FrontPageController@slider')->name('slider.index');
 
@@ -51,7 +51,7 @@ Route::get('publish-previewed-agreement', [AgreementManageController::class, 'pu
 Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
 Route::get('agreement/sign-agreement', [AgreementManageController::class, 'signAgreement']);
 Route::post('expense/save-update-expense', [ExpenseManageController::class, 'saveUpdateExpense']);
-Route::post('landloard-expense/save-update-expense', [ExpenseManageController::class, 'saveUpdatelandloardExpense']);
+Route::post('landlord-expense/save-update-expense', [ExpenseManageController::class, 'saveUpdatelandlordExpense']);
 
 Route::post('rent/save-update-rent', [ExpenseManageController::class, 'rentPayment']);
 // Route::post('document/save-update-document', [DocumentController::class, 'saveUpdateDocument']);
@@ -59,7 +59,7 @@ Route::delete('expense/delete/{id}', [ExpenseManageController::class, 'destroy']
 Route::delete('document/delete/{id}', [DocumentController::class, 'destroy']);
 Route::get('rent/pay/{id}', [ExpenseManageController::class, 'rentPayment']);
 Route::get('contract/withdrow', [AgreementManageController::class, 'withdrowProperty']);
-Route::post('landloard-rent/save-update-landloard-rent', [ExpenseManageController::class, 'landloardRentPayment']);
+Route::post('landlord-rent/save-update-landlord-rent', [ExpenseManageController::class, 'landlordRentPayment']);
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin'], 'as' => 'admin.'], function () {
 
@@ -68,7 +68,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('document-type', 'DocumentTypeController');
     Route::resource('categories', 'CategoryController');
     Route::resource('posts', 'PostController');
-    Route::resource('aminities', 'AminityController');
+    Route::resource('amenities', 'AminityController');
     Route::resource('purposes', 'PurposeController');
     Route::resource('types', 'TypeController');
     Route::resource('properties', 'PropertyController');
@@ -82,8 +82,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('complaint-history/', 'DashboardController@complaintHistory')->name('complaint-history');
     // Route::get('properties/index/{type}', 'PropertyController@index');
 
-    Route::get('landloard-property/manage/', 'PropertyLandloardController@propertyLandloardManage')->name('landloard-manage');
-    Route::post('/landloard/save-update-contract', 'AgreementManageController@saveUpdateContract')->name('contract-manage');
+    Route::get('landlord-property/manage/', 'PropertylandlordController@propertylandlordManage')->name('landlord-manage');
+    Route::post('/landlord/save-update-contract', 'AgreementManageController@saveUpdateContract')->name('contract-manage');
     Route::get('reports/', 'ReportController@index')->name('reports');
     Route::get('tenant-service-report', 'ReportController@tenantServiceReport')->name('tenant-service-report');
     Route::post('tenant-service-report', 'ReportController@tenantServiceReport')->name('tenant-service-report');
@@ -102,7 +102,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
     Route::resource('tenants', 'TenantController');
-    Route::resource('landloards', 'LandloardController');
+    Route::resource('landlords', 'landlordController');
     Route::resource('tenant-service', 'TenantServiceController');
     Route::resource('cancellation-reason', 'CancellationReasonController');
     Route::resource('handyman', 'HandymanController');

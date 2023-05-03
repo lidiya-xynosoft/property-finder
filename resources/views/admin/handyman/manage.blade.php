@@ -236,10 +236,16 @@
 
                                                     @if ($message['handyman_status'] == 4)
                                                         <td>
-                                                            <button type="button"
+                                                            <button
+                                                                class="waves-effect btn-success btn right m-b-15 addbtn add_invoice_model"
+                                                                data-toggle="modal" data-target="#invoiceModal"
+                                                                data-whatever="@mdo"> <i
+                                                                    class="material-icons">local_library</i> Completed
+                                                            </button>
+                                                            {{-- <button type="button"
                                                                 class="btn btn-success btn-sm waves-effect">
                                                                 <i class="material-icons">local_library</i> Completed
-                                                            </button>
+                                                            </button> --}}
 
                                                         </td>
                                                     @endif

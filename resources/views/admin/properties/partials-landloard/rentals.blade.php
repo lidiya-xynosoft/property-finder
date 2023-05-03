@@ -16,11 +16,11 @@
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
               aria-hidden="true">
               <div class="modal-dialog" role="document">
-                  <form method="POST" id="landloardRentForm">
+                  <form method="POST" id="landlordRentForm">
                       @csrf
                       <div class="modal-content">
                           <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Pay to landloard</h5>
+                              <h5 class="modal-title" id="exampleModalLabel">Pay to landlord</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                               </button>
@@ -29,7 +29,7 @@
 
                               <input name="property_id" value="{{ $property->id }}" hidden>
                               @if (isset($rows['id']))
-                                  <input name="landloard_contract_id" value="{{ $rows['id'] }}" hidden>
+                                  <input name="landlord_contract_id" value="{{ $rows['id'] }}" hidden>
                               @endif
                               <input name="rent_id" id="rent_id" value="0" type="text" hidden>
                               <div class="form-line">
@@ -118,7 +118,7 @@
                                           <button class="btn btn-info btn-icon ml-2 mb-2 payRent"
                                               data-id="{{ $data->id }}" data-token="{{ csrf_token() }}"
                                               data-toggle="modal" data-target="#exampleModal"
-                                              data-whatever="@mdo">Pay to landloard
+                                              data-whatever="@mdo">Pay to landlord
                                               </button>
                                       @else
                                           <button class="btn btn-success btn-icon ml-2 mb-2" data-id=""

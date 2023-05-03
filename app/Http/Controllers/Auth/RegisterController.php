@@ -69,7 +69,7 @@ class RegisterController extends Controller
 
         $flash = array('type' => 'error', 'msg' => 'Category updated successfully.');
         session()->flash('flash', $flash);
-        return back();
+        // return back();
 
         return User::create([
             'name'      => $data['name'],

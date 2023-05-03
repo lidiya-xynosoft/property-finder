@@ -22,14 +22,15 @@
                     <h2>Edit ledger</h2>
                 </div>
                 <div class="body">
-                    <form action="{{ route('admin.ledger.update', $ledger->id) }}" method="POST"  enctype="multipart/form-data">
+                    <form action="{{ route('admin.ledger.update', $ledger->id) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group form-float">
                             <div class="form-line">
                                 <input type="text" name="title" class="form-control" value="{{ $ledger->title }}">
-                                <label class="form-label">ledger Title</label>
+                                <label class="form-label">ledger Title <span class="text-red">*</span></label>
                             </div>
                         </div>
 
@@ -39,14 +40,15 @@
                                 <label class="form-label">Description</label>
                             </div>
                         </div>
-             
+
                         <div class="form-group form-float">
+                            <label class="form-label">Type<span class="text-red">*</span></label>
                             <div class="form-line">
-                               <select name="type" class="form-control show-tick">
-                                <option value="">-- Please select --</option>
-                                <option value="0" {{ $ledger->type=='0' ? 'selected' : '' }}>Receipt</option>
-                                <option value="1" {{ $ledger->type=='1' ? 'selected' : '' }}>Payment</option>
-                            </select>
+                                <select name="type" class="form-control show-tick">
+                                    <option value="">-- Please select --</option>
+                                    <option value="0" {{ $ledger->type == '0' ? 'selected' : '' }}>Receipt</option>
+                                    <option value="1" {{ $ledger->type == '1' ? 'selected' : '' }}>Payment</option>
+                                </select>
                             </div>
                         </div>
 

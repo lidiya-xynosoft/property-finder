@@ -11,7 +11,7 @@ class daybook extends Model
     protected $fillable = [
         'property_id',
         'property_agreement_id',
-        'landloard_property_contract_id',
+        'landlord_property_contract_id',
         'user_id',
         'date',
         'time',
