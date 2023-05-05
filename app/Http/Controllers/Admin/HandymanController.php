@@ -8,6 +8,8 @@ use App\DocumentType;
 use App\Handyman;
 use App\HandymanComplaintStatus;
 use App\Http\Controllers\Controller;
+use App\Invoice;
+use App\InvoiceList;
 use App\PropertyComplaint;
 use App\User;
 use Carbon\Carbon;
@@ -139,7 +141,8 @@ class HandymanController extends Controller
         $data['new_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 1])->latest()->get()->toArray();
         $data['accepted_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 2])->latest()->get()->toArray();
         $data['process_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 3])->latest()->get()->toArray();
-        $data['completed_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 4])->latest()->get()->toArray();
+        $data['completed_complaints'] = HandymanComplaintStatus::with('PropertyComplaint.Property', 'PropertyComplaint.Invoice.InvoiceList', 'PropertyComplaint.ServiceList', 'PropertyComplaint.Customer')->where(['handyman_id' => $request['id'], 'handyman_status' => 4])->latest()->get()->toArray();
+        // return  $data['completed_complaints'];
         return view('admin.handyman.manage')->with($data);
     }
 
@@ -230,5 +233,19 @@ class HandymanController extends Controller
         ]);
 
         // return redirect()->route('admin.complaint');
+    }
+    public function complaintInvoice($id)
+    {
+        $property_complaint_id = $id;
+        $data = [];
+        $data['assigned_handyman'] = HandymanComplaintStatus::with('Handyman')->where('property_complaint_id', $property_complaint_id)->first();
+        $invoice_id = Invoice::where(['property_complaint_id' => $property_complaint_id])->first()->id;
+        $data['invoice_no'] = Invoice::where(['property_complaint_id' => $property_complaint_id])->first()->invoice_no;
+        $data['total'] = InvoiceList::where('invoice_id', $invoice_id)->sum('item_price');
+
+        $data['invoice_list'] = InvoiceList::where(['invoice_id' => $invoice_id])->get()->toArray();
+
+        $data['data'] = PropertyComplaint::with('Property', 'Customer')->findOrFail($property_complaint_id);
+        return view('admin.handyman.invoice')->with($data);
     }
 }

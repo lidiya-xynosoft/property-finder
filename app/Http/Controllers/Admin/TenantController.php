@@ -41,7 +41,6 @@ class TenantController extends Controller
         $request->validate([
             'first_name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'last_name' => 'required',
             'phone' => 'required',
         ]);
         $user = User::create([
@@ -78,7 +77,6 @@ class TenantController extends Controller
         $request->validate([
             'first_name' => 'required',
             'email' => 'required|email|unique:users,email,' . $tenant->user_id,
-            'last_name' => 'required',
             'phone' => 'required',
         ]);
 

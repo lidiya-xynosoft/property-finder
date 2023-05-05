@@ -44,4 +44,8 @@ class PropertyComplaint extends Model
     {
         return $this->hasMany(HandymanComplaintStatus::class);
     }
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

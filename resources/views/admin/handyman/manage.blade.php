@@ -236,16 +236,21 @@
 
                                                     @if ($message['handyman_status'] == 4)
                                                         <td>
-                                                            <button
-                                                                class="waves-effect btn-success btn right m-b-15 addbtn add_invoice_model"
-                                                                data-toggle="modal" data-target="#invoiceModal"
-                                                                data-whatever="@mdo"> <i
-                                                                    class="material-icons">local_library</i> Completed
-                                                            </button>
-                                                            {{-- <button type="button"
-                                                                class="btn btn-success btn-sm waves-effect">
-                                                                <i class="material-icons">local_library</i> Completed
-                                                            </button> --}}
+                                                            @if (!empty($message['property_complaint']['invoice']))
+                                                                <a href="{{ route('admin.complaint.invoice', $message['property_complaint']['id'] ) }}"
+                                                                    class="btn btn-warning btn-sm waves-effect">
+                                                                    Invoice
+                                                                </a>
+                                                            @else
+                                                                <button
+                                                                    class="waves-effect btn-success btn right m-b-15 addbtn add_invoice_model getComplaintId"
+                                                                    data-toggle="modal" data-target="#invoiceModal"
+                                                                    data-id="{{ $message['property_complaint']['id'] }}"
+                                                                    data-whatever="@mdo"> <i
+                                                                        class="material-icons">local_library</i> Ressolved
+                                                                </button>
+                                                            @endif
+
 
                                                         </td>
                                                     @endif
@@ -259,6 +264,64 @@
                                 {{ __('No records found') }}
                             @endif
                         </div>
+
+                    </div>
+
+                </div>
+                <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form method="POST" id="invoiceForm">
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Invoices</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="handyman_id" value="{{ $handyman->id }}">
+                                    <input type="hidden" name="property_complaint_id" id="property_complaint_id"
+                                        value="">
+                                    <div class="nearby-info mb-4 repeater">
+                                        <div data-repeater-list="lists">
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <p> List down your purchase</p>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <span data-repeater-create class="btn badge bg-green"> + </span>
+                                                </div>
+                                            </div>
+
+                                            <div data-repeater-item class="d-flex mb-2">
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <input type="text" class="form-control" name="item_name"
+                                                            placeholder="Enter item name" required>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <input type="text" class="form-control" name="item_price"
+                                                            placeholder="Enter price" required>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <span data-repeater-delete class="btn badge bg-red"> x </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" id="invoice_submit" value="Submit" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -269,6 +332,7 @@
 @endsection
 @push('script')
     <!-- Jquery DataTable Plugin Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -285,6 +349,13 @@
 
     <script src="{{ asset('backend/plugins/select2/dist/js/select2.min.js') }}"></script>
     <script>
+        $('.repeater').repeater({
+            defaultValues: {
+                'this_id': '1',
+                'this_name': 'foo'
+            }
+        });
+
         function deleteCom(id, status) {
 
             swal({
@@ -332,5 +403,26 @@
                 }
             })
         };
+        $(".getComplaintId").click(function() {
+            var id = $(this).data("id");
+            var token = $(this).data("token");
+
+            $('#property_complaint_id').val(id);
+        });
+        $("#invoiceForm").submit(function(e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            var form = $(this);
+            var actionUrl = '/invoice/save-invoices'
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(), // serializes the form's elements.
+                success: function(data) {
+                    location.reload(); // show response from the php script.
+                }
+            });
+
+        });
     </script>
 @endpush

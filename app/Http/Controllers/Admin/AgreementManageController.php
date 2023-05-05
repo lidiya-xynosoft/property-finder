@@ -673,7 +673,7 @@ class AgreementManageController extends Controller
         $data['total_income'] =  PropertyIncome::where([
             'property_agreement_id' => $agreement_row_id
         ])->sum('amount');
-        $data['documents'] = PropertyDocument::with('DocumentType')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
+        $data['documents'] = count(PropertyDocument::all()) > 0 ? PropertyDocument::with('DocumentType')->get()->toArray() : [];
 
         $data['fixed_expenses'] = PropertyExpense::with('Ledger')->where(['property_agreement_id' => $agreement_row_id])->get()->toArray();
         $data['complaints'] = [];

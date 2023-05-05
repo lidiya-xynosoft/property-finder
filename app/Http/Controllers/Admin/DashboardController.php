@@ -186,9 +186,8 @@ class DashboardController extends Controller
         $complaints = [];
         $complaint_lists = [];
         if (count(PropertyComplaint::all()) > 0) {
-            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'Customer')->latest()->get()->toArray();
+            $complaints = PropertyComplaint::with('Property', 'ServiceList', 'Customer', 'Invoice')->latest()->get()->toArray();
         }
-
         $properties = Property::all();
         $service_lists = ServiceList::all();
         $complaint_lists = PropertyComplaint::all();

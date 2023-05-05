@@ -52,6 +52,12 @@
                                 <span>Purpose</span>
                             </a>
                         </li>
+                        <li class="{{ Request::is('admin/amenities*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.amenities.index') }}">
+                                {{-- <i class="material-icons">hotel</i> --}}
+                                <span>Amenities</span>
+                            </a>
+                        </li>
                         <li class="{{ Request::is('admin/document-type*') ? 'active' : '' }}">
                             <a href="{{ route('admin.document-type.index') }}">
                                 {{-- <i class="material-icons">grading</i> --}}
@@ -67,7 +73,7 @@
                 <li class="header">COMPLAINTS & SERVICES</li>
                 <li class="{{ Request::is('admin/tenant-service*') ? 'active' : '' }}">
                     <a href="{{ route('admin.tenant-service.index') }}">
-                        <i class="material-icons">room_service</i>
+                        <i class="material-icons">home_repair_service</i>
                         <span>Tenant Services</span>
                     </a>
                 </li>
@@ -85,7 +91,7 @@
                 </li>
                 <li class="{{ Request::is('admin/cancellation-reason*') ? 'active' : '' }}">
                     <a href="{{ route('admin.cancellation-reason.index') }}">
-                        <i class="material-icons">event_busy</i>
+                        <i class="material-icons">cancel</i>
                         <span>Cancellation Reason</span>
                     </a>
                 </li>
@@ -100,7 +106,7 @@
                 <li class="{{ Request::is('admin/daybook') ? 'active' : '' }}">
                     <a href="{{ url('admin/daybook') }}">
                         <i class="material-icons">
-                            account_balance
+                            paid
                         </i>
                         <span>Transactions</span>
                     </a>
@@ -118,7 +124,7 @@
                         <span>Landlord</span>
                     </a>
                 </li>
-                  <li class="{{ Request::is('admin/tenants*') ? 'active' : '' }}">
+                <li class="{{ Request::is('admin/tenants*') ? 'active' : '' }}">
                     <a href="{{ route('admin.tenants.index') }}">
                         <i class="material-icons">people</i>
                         <span>Tenants</span>
@@ -130,14 +136,14 @@
                         <span>Tenant List</span>
                     </a>
                 </li>
-              
+
                 {{-- <li class="{{ Request::is('admin/tenancy-list') ? 'active' : '' }}">
                     <a href="{{ url('admin/tenancy-list') }}">
                         <i class="material-icons">list</i>
                         <span>Tenant List</span>
                     </a>
                 </li> --}}
-                
+
                 <li class="header">BLOG & WEB SITE</li>
                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
                     <a href="{{ route('admin.categories.index') }}">
@@ -155,12 +161,6 @@
                     <a href="{{ route('admin.posts.index') }}">
                         <i class="material-icons">post_add</i>
                         <span>Posts</span>
-                    </a>
-                </li>
-                <li class="{{ Request::is('admin/amenities*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.amenities.index') }}">
-                        <i class="material-icons">hotel</i>
-                        <span>Amenities</span>
                     </a>
                 </li>
 

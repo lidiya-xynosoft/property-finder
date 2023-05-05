@@ -112,47 +112,52 @@
                             </thead>
 
                             <tbody>
-                                @foreach ($complaints as $key => $message)
+                                @foreach ($complaints as $key => $complaint)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $message['property']['product_code'] }}<br />{{ str_limit($message['property']['title'], 30) }}
+                                        <td>{{ $complaint['property']['product_code'] }}<br />{{ str_limit($complaint['property']['title'], 30) }}
                                         </td>
-                                        <td>{{ $message['customer']['first_name'] . ' ' . $message['customer']['last_name'] }}<br />
-                                            {{ $message['customer']['phone'] }}<br />
-                                            {{ $message['customer']['email'] }}
+                                        <td>{{ $complaint['customer']['first_name'] . ' ' . $complaint['customer']['last_name'] }}<br />
+                                            {{ $complaint['customer']['phone'] }}<br />
+                                            {{ $complaint['customer']['email'] }}
                                         </td>
-                                        <td>{{ $message['complaint_number'] }}</td>
-                                        <td>{{ $message['service_list']['name'] }}</td>
+                                        <td>{{ $complaint['complaint_number'] }}</td>
+                                        <td>{{ $complaint['service_list']['name'] }}</td>
                                         <td>
-                                            @if ($message['status'] == 0)
+                                            @if ($complaint['status'] == 0)
                                                 <span class="badge bg-green"> New </span>
-                                            @elseif($message['status'] == 1)
+                                            @elseif($complaint['status'] == 1)
                                                 <span class="badge bg-green"> Approved </span>
-                                            @elseif($message['status'] == 2)
+                                            @elseif($complaint['status'] == 2)
                                                 <span class="badge bg-red"> Rejected </span>
-                                            @elseif($message['status'] == 3)
+                                            @elseif($complaint['status'] == 3)
                                                 <span class="badge bg-blue"> Assigned to handyman </span>
-                                            @elseif($message['status'] == 4)
+                                            @elseif($complaint['status'] == 4)
                                                 <span class="badge bg-pink"> Ressolved </span>
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($message['status'] != 4)
-                                                <a href="{{ route('admin.complaint.read', $message['id']) }}"
+                                            @if ($complaint['status'] != 4)
+                                                <a href="{{ route('admin.complaint.read', $complaint['id']) }}"
                                                     class="btn btn-warning btn-sm waves-effect">
                                                     <i class="material-icons">local_library</i>
                                                 </a>
                                             @else
-                                                <a href="{{ route('admin.complaint.read', $message['id']) }}"
+                                                <a href="{{ route('admin.complaint.read', $complaint['id']) }}"
                                                     class="btn btn-success btn-sm waves-effect">
                                                     <i class="material-icons">done</i>
                                                 </a>
                                             @endif
-                                            <a href="{{ url('admin/complaint-history?id=' .$message['id']) }}"
+                                            <a href="{{ url('admin/complaint-history?id=' .$complaint['id']) }}"
                                                 class="btn btn-info btn-sm waves-effect">
                                                 <i class="material-icons">history</i>
                                             </a>
-                                         
+                                          @if (count($complaint['invoice'])>0)
+                                                <a href="{{ route('admin.complaint.invoice', $complaint['id']) }}"
+                                                    class="btn btn-warning btn-sm waves-effect">
+                                               Invoice
+                                                </a>
+                                                @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -196,7 +201,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
-                    document.getElementById('del-message-' + id).submit();
+                    document.getElementById('del-complaint-' + id).submit();
                     swal(
                         'Deleted!',
                         'Message has been deleted.',

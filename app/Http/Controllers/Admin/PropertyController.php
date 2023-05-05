@@ -41,7 +41,7 @@ class PropertyController extends Controller
     public function index()
     {
         // if ($type ==  -1) {
-        $properties = Property::latest()->withCount('comments')->get();
+        $properties = Property::withCount('comments')->orderBy('is_parent_property', 'ASC')->get();
         // } else {
             // $properties = Property::where('is_parent_property', '!=', -1)->latest()->withCount('comments')->get();
         // }

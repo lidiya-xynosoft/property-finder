@@ -5,12 +5,13 @@
 use App\Http\Controllers\Admin\AgreementManageController;
 use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\ExpenseManageController;
+use App\Http\Controllers\Admin\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'FrontPageController@index')->name('home');
-// Route::get('/', function () {
-//     return view('auth.login');
-// })->name('home');
+// Route::get('/', 'FrontPageController@index')->name('home');
+Route::get('/', function () {
+    return view('auth.login');
+})->name('home');
 
 Route::get('/slider', 'FrontPageController@slider')->name('slider.index');
 
@@ -51,6 +52,7 @@ Route::get('publish-previewed-agreement', [AgreementManageController::class, 'pu
 Route::get('/agreement/generate-pdf', [AgreementManageController::class, 'generate_pdf']);
 Route::get('agreement/sign-agreement', [AgreementManageController::class, 'signAgreement']);
 Route::post('expense/save-update-expense', [ExpenseManageController::class, 'saveUpdateExpense']);
+Route::post('invoice/save-invoices', [InvoiceController::class, 'saveUpdateInvoice']);
 Route::post('landlord-expense/save-update-expense', [ExpenseManageController::class, 'saveUpdatelandlordExpense']);
 
 Route::post('rent/save-update-rent', [ExpenseManageController::class, 'rentPayment']);
@@ -126,6 +128,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('complaint/action', 'DashboardController@complaintAction')->name('complaint.action');
     Route::post('complaint/search', 'DashboardController@complaintSearch')->name('complaint.search');
     Route::get('handyman-manage/', 'HandymanController@handymanManage')->name('handyman-manage');
+    Route::get('complaint/invoice/{id}', 'HandymanController@complaintInvoice')->name('complaint.invoice');
 
     Route::get('message', 'DashboardController@message')->name('message');
     Route::get('message/read/{id}', 'DashboardController@messageRead')->name('message.read');

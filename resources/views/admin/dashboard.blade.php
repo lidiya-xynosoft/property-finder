@@ -20,7 +20,7 @@
                     <i class="material-icons">home_work</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL PROPERTY</div>
+                    <div class="text"> PROPERTIES</div>
                     <div class="number count-to" data-from="0" data-to="{{ $property_count }}" data-speed="15"
                         data-fresh-interval="20">{{ $property_count }}</div>
                 </div>
@@ -46,7 +46,7 @@
                     <i class="material-icons">payments</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL RENT</div>
+                    <div class="text"> RENT</div>
                     <div class="number count-to" data-from="0" data-to="{{ $total_rent }}" data-speed="1000"
                         data-fresh-interval="20">{{ $currency }} {{ $total_rent }}</div>
                 </div>
@@ -58,7 +58,7 @@
                     <i class="material-icons">groups</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL TENANTS</div>
+                    <div class="text"> TENANTS</div>
                     <div class="number count-to" data-from="0" data-to="{{ $customer_count }}" data-speed="1000"
                         data-fresh-interval="20">{{ $customer_count }}</div>
                 </div>
@@ -72,7 +72,7 @@
                     <i class="material-icons">apartment</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL UNITS</div>
+                    <div class="text"> UNITS</div>
                     <div class="number count-to" data-from="0" data-to="{{ $unit_count }}" data-speed="15"
                         data-fresh-interval="20">{{ $unit_count }}</div>
                 </div>
@@ -97,7 +97,7 @@
                     <i class="material-icons">report</i>
                 </div>
                 <div class="content">
-                    <div class="text">TOTAL COMPLAINTS</div>
+                    <div class="text"> COMPLAINTS</div>
                     <div class="number count-to" data-from="0" data-to="{{ $total_complaints }}" data-speed="1000"
                         data-fresh-interval="20">{{ $total_complaints }}</div>
                 </div>
@@ -107,7 +107,7 @@
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-orange hover-expand-effect">
                 <div class="icon">
-                    <i class="material-icons">request_quote</i>
+                    <i class="material-icons">warning</i>
                 </div>
                 <div class="content">
                     <div class="text">NEW COMPLAINTS</div>

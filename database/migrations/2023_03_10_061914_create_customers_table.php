@@ -17,7 +17,7 @@ class CreateCustomersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
             $table->string('phone');
             $table->string('email')->unique();
             $table->timestamps();
