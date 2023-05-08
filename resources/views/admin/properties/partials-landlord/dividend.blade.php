@@ -1,5 +1,5 @@
- <div id="fixed_expenses" class="tab-pane fade">
-     <div class="header" id="fixed_expenses">
+ <div id="dividend" class="tab-pane fade">
+     <div class="header" id="dividend">
 
          <div class="body">
              <div class="row">
@@ -20,7 +20,7 @@
                          </div>
                      </div>
                      <span class="nearby-title mb-3 d-block text-success">
-                         <i class="fas fa-car mr-2"></i><b class="title">Expenses Overview</b>
+                         <i class="fas fa-car mr-2"></i><b class="title">Landlord Expenses Overview</b>
                      </span>
                      <button class="waves-effect waves-light btn right m-b-15 addbtn add_expense_model"
                          data-toggle="modal" data-target="#expenseModal" data-whatever="@mdo"> <i
@@ -39,7 +39,6 @@
                                      <th>{{ __('Description') }}</th>
                                      <th>{{ __('Date') }}</th>
                                      <th>{{ __('Amount' . ' (' . $currency . ')') }}</th>
-                                     <th>{{ __('Payment Status') }}</th>
                                  </tr>
                              </thead>
                              <tbody>
@@ -51,15 +50,6 @@
                                          <td>{{ $expense['description'] }}</td>
                                          <td>{{ $expense['expense_date'] }}</td>
                                          <td>{{ $expense['amount'] }}</td>
-                                         <td> {{ $expense['status'] }} </td>
-                                         <td>
-                                             @if ($expense['status'] == 0)
-                                                 <a href="{{ url('admin/expense/update-expense/' . $expense['id']) }}"
-                                                     class="btn btn-success btn-sm waves-effect">
-                                                   Mark as Paid
-                                                 </a>
-                                             @endif
-                                         </td>
                                      </tr>
                                  @endforeach
                              </tbody>
@@ -69,7 +59,7 @@
                  <div class="modal fade" id="expenseModal" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
-                         <form method="POST" id="expenseForm">
+                         <form method="POST" id="landlordExpenseForm">
                              @csrf
                              <div class="modal-content">
                                  <div class="modal-header">
@@ -83,7 +73,7 @@
                                      <input name="property_id" value="{{ $property->id }}" hidden>
 
                                      @if (isset($rows['id']))
-                                         <input name="property_agreement_id" value="{{ $rows['id'] }}" hidden>
+                                         <input name="landlord_contract_id" value="{{ $rows['id'] }}" hidden>
                                      @endif
                                      <input type="text" name="mode_of_bill_payment" value="expense_type" hidden />
                                      <div class="form-line">

@@ -43,7 +43,7 @@ class PropertyController extends Controller
         // if ($type ==  -1) {
         $properties = Property::withCount('comments')->orderBy('is_parent_property', 'ASC')->get();
         // } else {
-            // $properties = Property::where('is_parent_property', '!=', -1)->latest()->withCount('comments')->get();
+        // $properties = Property::where('is_parent_property', '!=', -1)->latest()->withCount('comments')->get();
         // }
 
         return view('admin.properties.index', compact('properties'));
@@ -231,7 +231,6 @@ class PropertyController extends Controller
 
         // return redirect()->route('admin.properties.index');
         return redirect()->route('admin.properties.index');
-
     }
 
 
@@ -518,7 +517,7 @@ class PropertyController extends Controller
                 $request['property_id'];
         }
         $data['property'] = Property::find($property_id);
-
+        $data['main_property'] = Property::find($data['property']->is_parent_property)->title;
         if (isset($request['update_id'])) {
             $data['update_data'] = PropertyAgreement::where(['is_withdraw' => 0, 'id' => $agreement_row_id])->first();
         }
@@ -561,7 +560,7 @@ class PropertyController extends Controller
                 $rent_months = PropertyRent::where(['property_id' => $property_id, 'property_agreement_id' => $data['rows']['id'], 'status' => 1])->get();
                 $data['rent_months'] = $rent_months;
             }
-            $data['fixed_expenses'] = PropertyExpense::with('Ledger')->where(['property_id' => $property_id, 'status' => 1, 'property_agreement_id' => $data['rows']['id']])->get()->toArray();
+            $data['fixed_expenses'] = PropertyExpense::with('Ledger')->where(['property_id' => $property_id,  'property_agreement_id' => $data['rows']['id']])->get()->toArray();
 
             $data['income'] =  PropertyIncome::with('Ledger')->where([
                 'property_id' => $property_id, 'status' => 1,

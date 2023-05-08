@@ -126,6 +126,7 @@ class PropertylandlordController extends Controller
         ])->latest()->get();
         $data['settings'] = Setting::first();
         $data['landlords'] = Landlord::all();
+        $data['units'] = Property::where('is_parent_property', $property_id)->count();
         return view('admin.properties.property-landlord')->with($data);
     }
 }

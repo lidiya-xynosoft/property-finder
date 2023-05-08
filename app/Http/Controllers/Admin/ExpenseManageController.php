@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 
 class ExpenseManageController extends Controller
 {
-    
+
     public function saveUpdateExpense(Request $request)
     {
         $request->validate([
@@ -97,7 +97,7 @@ class ExpenseManageController extends Controller
         $request->validate([
             'name' => 'required',
             'date' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|integer',
             'landlord_contract_id' => 'required',
             'ledger_id' => 'required',
             'payment_type_id' => 'required',
@@ -119,16 +119,43 @@ class ExpenseManageController extends Controller
                     'status' => 1,
                 ],
             );
-            daybook::create([
-                'property_id' => $request['property_id'],
-                'landlord_property_contract_id' => $request['landlord_property_contract_id'],
-                'user_id' => Auth::user()->id,
-                'date' => Carbon::now()->toDateString(),
-                'time' => Carbon::now()->format('H:i:s'),
-                'title' => Property::find($request['property_id'])->product_code,
-                'head' =>  Ledger::find($request['ledger_id'])->title,
-                'debit' => $request['amount'],
-            ]);
+            $no_of_units =  Property::where('is_parent_property', $request['property_id'])->count();
+            $no_of_rent_share = $request['amount'] /   $no_of_units;
+
+            $unit_IDs = Property::where('is_parent_property', $request['property_id'])->pluck('id');
+
+            if (count($unit_IDs) > 0) {
+                foreach ($unit_IDs as $id) {
+                    if (PropertyAgreement::where('property_id', $id)->first()) {
+                        PropertyExpense::create(
+                            [
+                                'property_id' => $id,
+                                'ledger_id' => $request['ledger_id'],
+                                'property_agreement_id' => PropertyAgreement::where('property_id', $id)->first()->id,
+                                'expense_date' => $request['date'],
+                                'date' => Carbon::now()->toDateString(),
+                                'name' => 'Property Rent share',
+                                'user_id' => Auth::User()->id,
+                                'amount' => $no_of_rent_share,
+                                'reference' => 'Split rent amount',
+                                'payment_type_id' => $request['payment_type_id'],
+                                'description' => $request['description'],
+                                'status' => 0,
+                            ],
+                        );
+                    }
+                }
+            }
+            // daybook::create([
+            //     'property_id' => $request['property_id'],
+            //     'landlord_property_contract_id' => $request['landlord_property_contract_id'],
+            //     'user_id' => Auth::user()->id,
+            //     'date' => Carbon::now()->toDateString(),
+            //     'time' => Carbon::now()->format('H:i:s'),
+            //     'title' => Property::find($request['property_id'])->product_code,
+            //     'head' =>  Ledger::find($request['ledger_id'])->title,
+            //     'debit' => $request['amount'],
+            // ]);
         } else if ($request['mode_of_bill_payment'] == 'income_type') {
             $data = landlordIncome::create(
                 [
@@ -146,16 +173,16 @@ class ExpenseManageController extends Controller
                     'status' => 1,
                 ],
             );
-            daybook::create([
-                'property_id' => $request['property_id'],
-                'landlord_property_contract_id' => $request['landlord_contract_id'],
-                'user_id' => Auth::user()->id,
-                'date' => Carbon::now()->toDateString(),
-                'time' => Carbon::now()->format('H:i:s'),
-                'title' => Property::find($request['property_id'])->product_code,
-                'head' =>   $request['name'],
-                'credit' => $request['amount'],
-            ]);
+            // daybook::create([
+            //     'property_id' => $request['property_id'],
+            //     'landlord_property_contract_id' => $request['landlord_contract_id'],
+            //     'user_id' => Auth::user()->id,
+            //     'date' => Carbon::now()->toDateString(),
+            //     'time' => Carbon::now()->format('H:i:s'),
+            //     'title' => Property::find($request['property_id'])->product_code,
+            //     'head' =>   $request['name'],
+            //     'credit' => $request['amount'],
+            // ]);
         }
         $flash = array('type' => 'success', 'msg' => 'added successfully.');
         session()->flash('flash', $flash);
@@ -267,5 +294,26 @@ class ExpenseManageController extends Controller
         return response()->json([
             'success' => '1'
         ]);
+    }
+
+    public function updateExpense($id)
+    {
+        $expense_data = PropertyExpense::whereId($id)->first();
+        $data = PropertyExpense::whereId($id)->update([
+            'status' => 1,
+        ]);
+        daybook::create([
+            'property_id' => $expense_data->property_id,
+            'property_agreement_id' => $expense_data->property_agreement_id,
+            'user_id' => Auth::user()->id,
+            'date' => Carbon::now()->toDateString(),
+            'time' => Carbon::now()->format('H:i:s'),
+            'title' => Property::find($expense_data->property_id)->product_code,
+            'head' =>  Ledger::find($expense_data->ledger_id)->title,
+            'debit' =>  $expense_data->amount,
+        ]);
+        $flash = array('type' => 'success', 'msg' => 'added successfully.');
+        session()->flash('flash', $flash);
+        return back();
     }
 }

@@ -83,6 +83,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::get('/change-handyman-status', 'HandymanController@changeHandymanStatus')->name('change-handyman');
     Route::get('complaint-history/', 'DashboardController@complaintHistory')->name('complaint-history');
     // Route::get('properties/index/{type}', 'PropertyController@index');
+    Route::get('/expense/update-expense/{id}', 'ExpenseManageController@updateExpense')->name('update-expense');
 
     Route::get('landlord-property/manage/', 'PropertylandlordController@propertylandlordManage')->name('landlord-manage');
     Route::post('/landlord/save-update-contract', 'AgreementManageController@saveUpdateContract')->name('contract-manage');

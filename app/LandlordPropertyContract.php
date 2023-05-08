@@ -18,6 +18,7 @@ class landlordPropertyContract extends Model
         'lease_period_arabic',
         'monthly_rent',
         'security_deposit',
+        'cheque_no', 'share_holders',
         'rent_payment_commencement',
         'is_draft',
         'is_published',

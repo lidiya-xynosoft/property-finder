@@ -460,7 +460,7 @@
                                 </label>
                                 <input id="monthly_rent" type="text" class="form-control" name="monthly_rent"
                                     value="{{ isset($update_data) ? $update_data->monthly_rent : '' }}"
-                                    placeholder="enter monthly rent" required="">
+                                    placeholder="Enter monthly rent" required="">
                                 <input type="hidden" id="monthly_rent_arabic" name="monthly_rent_arabic"
                                     value="{{ isset($update_data) ? $update_data->monthly_rent_arabic : '' }}">
                             </div>
@@ -478,6 +478,28 @@
                                 <div class="help-block with-errors"></div>
                                 <input type="hidden" id="security_deposit_arabic" name="security_deposit_arabic"
                                     value="{{ isset($update_data) ? $update_data->security_deposit_arabic : '' }}">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-line">
+                                <label for="name">Cheque Number<span class="text-red">*</span></label>
+                                <input id="cheque_no" type="text" class="form-control"
+                                    name="cheque_no"
+                                    value="{{ isset($update_data) ? $update_data->cheque_no : '' }}"
+                                    placeholder="Enter Cheque number" required="">
+                                <div class="help-block with-errors"></div>
+                             
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-line">
+                                <label for="name">No of share holders<span class="text-red">*</span></label>
+                                <input id="share_holders" type="number" class="form-control" 
+                                    name="share_holders"
+                                    value="{{ isset($update_data) ? $update_data->share_holders : '0' }}"
+                                    placeholder="Number of share holders" required="">
+                                <div class="help-block with-errors"></div>
+                             
                             </div>
                         </div>
                         <div class="col-sm-4">

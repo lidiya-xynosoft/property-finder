@@ -29,16 +29,20 @@
                     <h2> {{ $property->title }}</h2>
                     <small>Posted By <strong>{{ $property->user->name }}</strong> on
                         {{ $property->created_at->toFormattedDateString() }}</small>
+
+                    <h2 class="text-right"> UNITS - {{ $units }}</h2>
+                  
                 </div>
 
                 <div class="header">
                     <div class="row">
                         <div class="col-sm-12">
-                            @if (!empty($rows['property_landlord']))
+                            @if (!empty($rows['landlord']))
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <strong>Landlord Name : </strong>
-                                        <span class="right" id="customer_name"> {{ $rows['tenant_name'] }}</span>
+                                        <span class="right" id="customer_name">
+                                            {{ $rows['landlord']['first_name'] }}</span>
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Lease period : </strong>
@@ -50,11 +54,12 @@
                                     </li>
                                     <li class="list-group-item">
                                         <strong>Monthly rent amount : </strong>
-                                        <span class="right" id="rent_date">{{ $rows['rent_payment_commencement'] }}</span>
+                                        <span class="right" id="rent_date">{{ $currency }}
+                                            {{ $rows['monthly_rent'] }} /-</span>
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Address : </strong>
-                                        <span class="right">{{ $property->type }}</span>
+                                        <strong>Email : </strong>
+                                        <span class="right">{{ $rows['landlord']['email'] }}</span>
                                     </li>
                                 </ul>
                             @endif
@@ -70,9 +75,13 @@
                 <div class="header">
                     <ul class="nav nav-tabs">
                         <li class="active"><a data-toggle="tab" href="#manage_property">Landlord Contract</a></li>
-                        <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
-                        <li><a data-toggle="tab" href="#fixed_expenses">Landlord Expenses</a></li>
-                        <li><a data-toggle="tab" href="#income">Landlord Income</a></li>
+                        @if (!empty($rows['landlord']))
+                            <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
+                            <li><a data-toggle="tab" href="#fixed_expenses">Landlord Expenses</a></li>
+                            <li><a data-toggle="tab" href="#income">Landlord Income</a></li>
+                            <li><a data-toggle="tab" href="#dividend_rule">Dividend Rule</a></li>
+                            <li><a data-toggle="tab" href="#dividend">Dividend</a></li>
+                        @endif
                     </ul>
 
                     <div class="tab-content">
@@ -86,6 +95,8 @@
                         @include('admin.properties.partials-landlord.income')
 
                         @include('admin.properties.partials-landlord.rentals')
+                        @include('admin.properties.partials-landlord.dividend_rule')
+                        @include('admin.properties.partials-landlord.dividend')
                     </div>
                 </div>
             </div>
@@ -188,14 +199,14 @@
                     }
                 })
             });
-         
+
             $(".payRent").click(function() {
                 var id = $(this).data("id");
                 var token = $(this).data("token");
 
                 $('#rent_id').val(id);
             });
-           
+
             $("#landlordRentForm").submit(function(e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
@@ -220,7 +231,7 @@
                         //    id:$('#customer_id').val(),
                     },
                     success: function(res) {
-                        $('#landlord_name').val(res['first_name'] +' ' + res['last_name']);
+                        $('#landlord_name').val(res['first_name'] + ' ' + res['last_name']);
                         $('#email').val(res['email']);
                         $('#address').val(res['address']);
                         $('#phone').val(res['phone']);

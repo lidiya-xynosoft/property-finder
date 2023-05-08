@@ -691,6 +691,7 @@ class AgreementManageController extends Controller
             'lease_expiry' => 'required',
             'monthly_rent' => 'required',
             'security_deposit' => 'required',
+            'cheque_no' => 'required',
             'payment_commencement' => 'required',
         ]);
         if (isset($request['update_id'])) {
@@ -712,6 +713,8 @@ class AgreementManageController extends Controller
         $landlord_property->lease_period_arabic = trim($request->input('lease_period_arabic'));
         $landlord_property->monthly_rent = trim($request->input('monthly_rent'));
         $landlord_property->security_deposit = trim($request->input('security_deposit'));
+        $landlord_property->cheque_no = trim($request->input('cheque_no'));
+        $landlord_property->share_holders = trim($request->input('share_holders'));
         $landlord_property->rent_payment_commencement = trim($request->input('payment_commencement'));
         $landlord_property->is_draft = '1';
         $landlord_property->is_published = true;

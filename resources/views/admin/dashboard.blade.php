@@ -170,7 +170,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <div class="card">
                 <div class="header">
-                    <h2>NEW COMPLAINTS</h2>
+                    <h2>RECENT COMPLAINTS</h2>
                 </div>
                 <div class="body">
                     <div class="table-responsive">

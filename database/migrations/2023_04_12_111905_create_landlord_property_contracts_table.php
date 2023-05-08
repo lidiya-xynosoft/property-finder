@@ -24,6 +24,8 @@ class CreateLandlordPropertyContractsTable extends Migration
             $table->string('lease_period_arabic')->nullable();
             $table->string('monthly_rent');
             $table->string('security_deposit')->nullable();
+            $table->string('cheque_no')->nullable();
+            $table->integer('share_holders')->nullable();
             $table->string('rent_payment_commencement')->nullable();
             $table->tinyInteger('is_draft')->default('0');
             $table->date('date')->nullable();
