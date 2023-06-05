@@ -2,37 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Property;
-use App\Feature;
-use App\PropertyImageGallery;
-use App\Customer;
-use App\DocumentType;
 use App\Landlord;
+use App\DividendRule;
 use App\landlordExpense;
 use App\landlordIncome;
 use App\landlordPropertyContract;
 use App\landlordRent;
 use App\Ledger;
-use App\NearbyCategory;
-use App\NearbyProperty;
 use App\PaymentType;
-use App\PropertyAgreement;
-use App\PropertyAgreementDocument;
-use App\PropertyDocument;
-use App\PropertyExpense;
-use App\PropertyIncome;
-use App\PropertyRent;
-use App\Purpose;
+
 use App\Setting;
-use App\Tag;
-use App\Type;
-use App\User;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-use Carbon\Carbon;
+use App\ShareHolder;
+use App\ShareHolderAccount;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,6 +45,7 @@ class PropertylandlordController extends Controller
         $data['total_expense'] = null;
         $data['fixed_expenses'] = [];
         $data['total_income'] = null;
+        $data['dividend_rule'] = [];
         $data['property_history'] = [];
         if (landlordPropertyContract::where(['property_id' => $property_id, 'is_withdraw' => 0])->first()) {
             $data['rows'] = landlordPropertyContract::with([
@@ -71,8 +56,10 @@ class PropertylandlordController extends Controller
         }
 
         $data['ledger_expense'] = Ledger::where('type', 1)->get();
+        $data['ledgers'] = Ledger::all();
         $data['ledger_income'] = Ledger::where('type', 0)->get();
         $data['payment_types'] = PaymentType::all();
+        $data['share_holders'] = ShareHolder::where('status', 1)->get();
         $data['rent_months'] = [];
         if (isset($data['rows']) && !empty($data['rows'])) {
             $landlord_id = landlordPropertyContract::where('property_id', $property_id)->first()->landlord_id;
@@ -109,10 +96,10 @@ class PropertylandlordController extends Controller
             $data['total_expense'] =  landlordExpense::where([
                 'property_id' => $property_id,
                 'landlord_id' => $landlord_id,
-
                 'status' => 1,
                 'landlord_property_contract_id' => $data['rows']['id']
             ])->sum('amount');
+
             $data['total_income'] =  landlordIncome::where([
                 'property_id' => $property_id,
                 'landlord_id' => $landlord_id,
@@ -120,12 +107,25 @@ class PropertylandlordController extends Controller
                 'status' => 1,
                 'landlord_property_contract_id' => $data['rows']['id']
             ])->sum('amount');
+
+            $data['dividend_rule'] =  DividendRule::where([
+                'property_id' => $property_id,
+                'status' => 1,
+                'landlord_property_contract_id' => $data['rows']['id']
+            ])->get();
+
+            $data['dividends'] =  ShareHolderAccount::with('ShareHolder', 'Ledger', 'Property')->where([
+                'parent_property_id' => $property_id,
+                'status' => 1,
+                'landlord_property_contract_id' => $data['rows']['id']
+            ])->get()->toArray();
         }
         $data['property_history'] =  landlordPropertyContract::where([
             'property_id' => $property_id,
         ])->latest()->get();
         $data['settings'] = Setting::first();
         $data['landlords'] = Landlord::all();
+
         $data['units'] = Property::where('is_parent_property', $property_id)->count();
         return view('admin.properties.property-landlord')->with($data);
     }

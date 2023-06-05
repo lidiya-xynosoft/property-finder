@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Comment;
-use App\Country;
 use App\Landlord;
 use App\Http\Controllers\Controller;
 use App\landlordExpense;
@@ -11,14 +10,9 @@ use App\landlordIncome;
 use App\landlordProperty;
 use App\landlordRent;
 use App\Post;
-use App\Property;
 use App\User;
-use Carbon\Carbon;
-use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+
 
 class landlordController extends Controller
 {

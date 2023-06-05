@@ -524,7 +524,7 @@
                     name="update_id">
             @endif
             <div class="card-footer" align="right">
-                <a href="{{ url('admin/property/manage?property_id=' . $property->id) }}">
+                <a href="{{ url('admin/landlord-property/manage?property_id=' . $property->id) }}">
                     <span class="btn btn-dark">{{ __('Back') }}</span>
                 </a>
                 @if (isset($update_data))

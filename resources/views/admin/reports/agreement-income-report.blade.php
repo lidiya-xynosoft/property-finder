@@ -94,9 +94,9 @@
                                 <th>Property</th>
                                 <th>Tenant</th>
                                 <th>Income Amount</th>
-                                <th>Ledger Type</th>
-                                <th>name</th>
-                                <th>date</th>
+                                <th>Ledger</th>
+                                <th>Name</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
 

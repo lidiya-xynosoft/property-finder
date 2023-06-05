@@ -1,5 +1,8 @@
 @extends('backend.layouts.app')
-
+<?php
+use App\Property;
+use App\ShareHolder;
+?>
 @section('title', 'Values')
 @section('content')
     @push('head')
@@ -32,14 +35,26 @@
         <div class="col-xs-12">
             <div class="card">
                 <div class="header bg-indigo">
-                    <h2>PROPERTY EXPENSE</h2>
+                    <h2>SHARE HOLDER REPORTS</h2>
                 </div>
                 <div class="body">
                     <div class="row">
-                        <form action="{{ route('admin.property-expense-report') }}" method="POST" id="propertyExpenseForm"
+                        <form action="{{ route('admin.share-holder-report') }}" method="POST" id="propertyExpenseForm"
                             name="propertyExpenseForm">
                             @csrf
-                            <div class="col-sm-3">
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+
+                                    <select name="share_holder_id" class="form-control select2">
+                                        <option value="">-- select share holders --</option>
+                                        @foreach ($share_holder_names as $key => $value)
+                                            <option value="{{ $value->id }}">{{ $value->first_name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
 
@@ -53,7 +68,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
                                     <select name="ledger_id" class="form-control select2">
@@ -92,46 +107,59 @@
                             <thead>
                                 <tr>
                                     <th>SL.</th>
-                                    <th>Property</th>
-                                    @if (!empty($value['property']['property_customer']))
-                                        <th>Tenant</th>
-                                    @endif
-                                    <th>Tenant</th>
-                                    <th>Date</th>
-                                    <th>Ledger</th>
                                     <th>Name</th>
-                                    <th>Expense Amount</th>
+                                    <th>Main Unit</th>
+                                    <th>Sub Unit</th>
 
+                                    <th>date</th>
+                                    <th>Reference</th>
+                                    <th>Ledger</th>
+                                    <th>Applied Percentage (%)</th>
+                                    <th>Ledger Amount ( {{ $currency }})</th>
+                                    <th>Applied Amount ( {{ $currency }})</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                @if (count($expenses) > 0)
-                                    @foreach ($expenses as $key => $value)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $value['property']['product_code'] }}<br />{{ str_limit($value['property']['title'], 30) }}
-                                            </td>
-                                            @if (!empty($value['property']['property_customer']))
-                                                <td>{{ $value['property']['property_customer'][0]['customer']['first_name'] . ' ' . $value['property']['property_customer'][0]['customer']['last_name'] }}<br />
-                                                    {{ $value['property']['property_customer'][0]['customer']['phone'] }}<br />
-                                                    {{ $value['property']['property_customer'][0]['customer']['email'] }}
+                                @if (isset($dividends))
+                                    @if (count($dividends) > 0)
+                                        @foreach ($dividends as $key => $income)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $income['share_holder']['first_name'] }}
                                                 </td>
-                                            @endif
-                                            <td>
-                                                {{ $value['date'] }}
-                                            </td>
-                                            <td>{{ $value['ledger']['title'] }}</td>
-                                            <td>{{ $value['name'] }}</td>
-                                            <td>{{ $value['amount'] }}</td>
+                                                <td><?php echo Property::find($income['parent_property_id'])->title;
+                                                echo ' ( ' . Property::find($income['parent_property_id'])->product_code . ' ) '; ?>
+                                                </td>
+                                                <td>{{ $income['property']['title'] }} (
+                                                    {{ $income['property']['product_code'] }} )
+                                                </td>
+                                                <td>
+                                                    {{ $income['date'] }}
+                                                </td>
+                                                <td>
+                                                    @if ($income['reference'] == 1)
+                                                        <span class="badge bg-red"> Expense </span>
+                                                    @else
+                                                        <span class="badge bg-green"> Income </span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $income['ledger']['title'] }}</td>
+                                                <td>{{ $income['applied_percentage'] }} %</td>
+                                                <td>{{ $income['reference_amount'] }}</td>
 
+                                                <td>{{ $income['applied_amount'] }}</td>
 
-                                        </tr>
-                                    @endforeach
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 @endif
                             </tbody>
                         </table>
-                        <div class="text-right"> <b>Total Property Expenses - {{ $total_expense }} </b></div>
+                        @foreach ($share_holders as $key => $total)
+                            <div class="text-right"> <b><?php echo ShareHolder::find($key)->first_name; ?> - {{ $total }} {{ $currency }} </b>
+                            </div>
+                        @endforeach
 
                     </div>
 

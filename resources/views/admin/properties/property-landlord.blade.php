@@ -3,7 +3,24 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
     @push('head')
-        <link rel="stylesheet" href="{{ asset('backend/plugins/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/plugins/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+            integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+
+        {{-- <link rel="stylesheet" href="{{ asset('backend/plugins/select2/dist/css/select2.min.css') }}"> --}}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+        <style>
+      
+            .select2-container .select2-selection--single {
+                height: 34px !important;
+            }
+
+            .select2-container--default .select2-selection--single {
+                border: 1px solid #ccc !important;
+                border-radius: 0px !important;
+            }
+        </style>
         <style>
             .table td,
             .table th {
@@ -31,7 +48,7 @@
                         {{ $property->created_at->toFormattedDateString() }}</small>
 
                     <h2 class="text-right"> UNITS - {{ $units }}</h2>
-                  
+
                 </div>
 
                 <div class="header">
@@ -77,9 +94,10 @@
                         <li class="active"><a data-toggle="tab" href="#manage_property">Landlord Contract</a></li>
                         @if (!empty($rows['landlord']))
                             <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
+                            <li><a data-toggle="tab" href="#dividend_rule">Dividend Rule</a></li>
+
                             <li><a data-toggle="tab" href="#fixed_expenses">Landlord Expenses</a></li>
                             <li><a data-toggle="tab" href="#income">Landlord Income</a></li>
-                            <li><a data-toggle="tab" href="#dividend_rule">Dividend Rule</a></li>
                             <li><a data-toggle="tab" href="#dividend">Dividend</a></li>
                         @endif
                     </ul>
@@ -106,6 +124,10 @@
 @endsection
 @push('script')
     <!-- Jquery DataTable Plugin Js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="{{ asset('frontend/findhouse/js/jquery.validate.min.js') }}"></script>
+
     <script src="{{ asset('backend/plugins/jquery-datatable/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
     <script src="{{ asset('backend/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
@@ -119,9 +141,60 @@
     <!-- Custom Js -->
     <script src="{{ asset('backend/js/pages/tables/jquery-datatable.js') }}"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
 
-    <script src="{{ asset('backend/plugins/select2/dist/js/select2.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.min.js"></script>
+    <script>
+        $('.select2').select2();
+
+        $(function() {
+            $("form[name='shareHolderDataForm']").validate({
+                // Define validation rules
+                rules: {
+
+                    start_date: {
+                        required: true
+                    },
+                    end_date: {
+                        required: true
+                    },
+
+                },
+                // Specify validation error messages
+                messages: {
+                    start_date: "Please select start date",
+                    end_date: "Please select end date",
+                },
+
+                submitHandler: function(form) {
+                    console.log(form);
+                    alert("op");
+                    form.submit();
+                }
+            });
+        });
+        var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        $('#startDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            endDate: "today",
+            format: 'yyyy-mm-dd',
+            maxDate: today
+        });
+        $('#endDate').datepicker({
+            uiLibrary: 'bootstrap4',
+            iconsLibrary: 'fontawesome',
+            endDate: "today",
+            maxDate: today,
+            format: 'yyyy-mm-dd',
+
+            minDate: function() {
+                return $('#startDate').val();
+            }
+        });
+    </script>
     <script>
         $('.repeater').repeater({
             defaultValues: {
@@ -346,6 +419,22 @@
                 var input_id3 = '#lease_commencement_arabic';
                 var lease_commencement_arabic = translateText(commencement, input_id3);
                 $('#lease_commencement_arabic').val(lease_commencement_arabic);
+            });
+
+            // DELETE PROPERTY GALLERY IMAGE
+            $('.dividend-rule-edit span').on('click', function(e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                var token = $(this).data("token");
+
+                $.post("{{ route('admin.dividend-rule-delete') }}", {
+                    id: id,
+                    _token: token,
+                }, function(data) {
+                    if (data.msg == true) {
+                        $('#dividend-' + id).remove();
+                    }
+                });
             });
 
             function translateText(sourceText, input_id) {

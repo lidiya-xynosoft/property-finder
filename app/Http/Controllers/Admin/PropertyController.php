@@ -10,6 +10,7 @@ use App\Feature;
 use App\PropertyImageGallery;
 use App\Comment;
 use App\Customer;
+use App\DividendRule;
 use App\DocumentType;
 use App\Ledger;
 use App\NearbyCategory;
@@ -24,6 +25,7 @@ use App\PropertyIncome;
 use App\PropertyRent;
 use App\Purpose;
 use App\Setting;
+use App\ShareHolder;
 use App\Tag;
 use App\Type;
 use App\User;
@@ -42,6 +44,7 @@ class PropertyController extends Controller
     {
         // if ($type ==  -1) {
         $properties = Property::withCount('comments')->orderBy('is_parent_property', 'ASC')->get();
+        // $properties = Property::with('Property')->orderBy('is_parent_property', 'ASC')->get();
         // } else {
         // $properties = Property::where('is_parent_property', '!=', -1)->latest()->withCount('comments')->get();
         // }
@@ -538,6 +541,7 @@ class PropertyController extends Controller
         $data['ledger_income'] = Ledger::where('type', 0)->get();
         $data['document_types'] = DocumentType::where('type', 0)->get();
         $data['payment_types'] = PaymentType::all();
+        $data['share_holders'] = ShareHolder::where('status', 1)->get();
         $data['documents'] = PropertyAgreementDocument::with('DocumentType')->where(['property_id' => $property_id])->get()->toArray();
         $data['rent_months'] = [];
         if (isset($data['rows']) && !empty($data['rows'])) {
@@ -577,6 +581,11 @@ class PropertyController extends Controller
                 'status' => 1,
                 'property_agreement_id' => $data['rows']['id']
             ])->sum('amount');
+            $data['dividend_rule'] =  DividendRule::where([
+                'property_id' => $property_id,
+                'status' => 1,
+                'property_agreement_id' => $data['rows']['id']
+            ])->get();
         }
         $data['property_history'] =  PropertyAgreement::where([
             'property_id' => $property_id,

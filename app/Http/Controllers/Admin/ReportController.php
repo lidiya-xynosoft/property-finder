@@ -15,6 +15,8 @@ use App\PropertyComplaint;
 use App\PropertyExpense;
 use App\PropertyIncome;
 use App\ServiceList;
+use App\ShareHolder;
+use App\ShareHolderAccount;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -228,5 +230,54 @@ class ReportController extends Controller
         $data['processed_request'] = count(PropertyComplaint::where($where_arry)->where('status', 3)->get());
         $data['ressolved_request'] = count(PropertyComplaint::where($where_arry)->where('status', 4)->get());
         return view('admin.reports.tenant-service-report')->with($data);
+    }
+
+    public function shareHolderAccountsReport(Request $request)
+    {
+        $data = [];
+        $where_arry = ['status' => 1];
+        $data['dividends'] = [];
+        $data['share_holders'] = [];
+        $data['properties'] = Property::where('is_parent_property', '!=', -1)->get();
+        $data['ledger'] = Ledger::all();
+        $data['share_holder_names'] = ShareHolder::where('status', 1)->get();
+        if (isset($request['ledger_id'])) {
+            if ($request['ledger_id']) {
+                $where_arry['ledger_id'] = $request['ledger_id'];
+            }
+            if ($request['share_holder_id']) {
+                $where_arry['share_holder_id'] = $request['share_holder_id'];
+            }
+            if ($request['parent_property_id']) {
+                $where_arry['parent_property_id'] = $request['parent_property_id'];
+            }
+
+            if (isset($request['start_date']) &&  isset($request['end_date'])) {
+                $from = date($request['start_date']);
+                $to = date('Y-m-d', strtotime($request['end_date']));
+            }
+
+            if (count(ShareHolderAccount::where($where_arry)->get()) > 0) {
+                $data['dividends'] = ShareHolderAccount::with([
+                    'ShareHolder', 'Ledger',
+                    'Property' => function ($query) {
+                        $query->select('id', 'title', 'product_code')->get();
+                    },
+
+                ])->where($where_arry)->whereBetween('created_at', [$from, $to])
+                    ->latest()->get()->toArray();
+                if ($data['dividends']) {
+
+                    $result =  ShareHolderAccount::where($where_arry)->whereBetween('created_at', [$from, $to])
+                        ->get()->groupBy('share_holder_id')->toArray();
+
+                    foreach ($result as $key => $share_holders) {
+                        $data['share_holders'][$key] = array_sum(array_column($share_holders, 'applied_amount'));
+                    }
+                }
+            }
+        }
+
+        return view('admin.reports.share-holder-accounts-report')->with($data);
     }
 }

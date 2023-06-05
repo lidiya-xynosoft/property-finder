@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\daybook;
+use App\DividendRule;
 use App\Http\Controllers\Controller;
 use App\landlordExpense;
 use App\landlordIncome;
@@ -15,6 +16,7 @@ use App\PropertyCustomer;
 use App\PropertyExpense;
 use App\PropertyIncome;
 use App\PropertyRent;
+use App\ShareHolderAccount;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +35,14 @@ class ExpenseManageController extends Controller
             'ledger_id' => 'required',
             'payment_type_id' => 'required',
         ]);
+        $parent_property_id = Property::find($request['property_id'])->is_parent_property;
+        $landlord_contract_id = landlordPropertyContract::where(['property_id' => $parent_property_id, 'is_withdraw' => 0, 'is_published' => 1])->first()->id;
+        $share_holders_count = DividendRule::where([
+            'property_id' =>  $parent_property_id,
+            'status' => 1,
+            'landlord_property_contract_id' => $landlord_contract_id
+        ])->count();
+
         if ($request['mode_of_bill_payment'] == 'expense_type') {
             $data = PropertyExpense::create(
                 [
@@ -50,6 +60,51 @@ class ExpenseManageController extends Controller
                     'status' => 1,
                 ],
             );
+            $data = landlordExpense::create(
+                [
+                    'property_id' => $parent_property_id,
+                    'ledger_id' => $request['ledger_id'],
+                    'landlord_id' => landlordPropertyContract::where(['property_id' => $parent_property_id, 'is_withdraw' => 0, 'is_published' => 1])->first()->landlord_id,
+                    'landlord_property_contract_id' => landlordPropertyContract::where(['property_id' => $parent_property_id, 'is_withdraw' => 0, 'is_published' => 1])->first()->id,
+                    'expense_date' => $request['date'],
+                    'date' => Carbon::now()->toDateString(),
+                    'name' => $request['name'],
+                    'amount' => $request['amount'],
+                    'reference' => $request['reference'],
+                    'payment_type_id' => $request['payment_type_id'],
+                    'description' => $request['description'],
+                    'status' => 1,
+                ],
+            );
+
+            if ($share_holders_count > 0) {
+                $share_hoders_details = DividendRule::where([
+                    'property_id' => $parent_property_id,
+                    'status' => 1,
+                    'landlord_property_contract_id' => $landlord_contract_id
+                ])->get();
+
+                foreach ($share_hoders_details as $details) {
+                    ShareHolderAccount::create(
+                        [
+                            'parent_property_id' => $parent_property_id,
+                            'property_id' => $request['property_id'],
+                            'ledger_id' => $request['ledger_id'],
+                            'share_holder_id' => $details->share_holder_id,
+                            'landlord_property_contract_id' =>  $landlord_contract_id,
+                            'reference' => 1,
+                            'applied_percentage' => $details->percentage,
+                            'applied_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'debit' => ($request['amount'] * $details->percentage) / 100,
+                            'date' => Carbon::now()->toDateString(),
+                            'reference_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'ledger_amount' => $request['amount'],
+                            'status' => 1,
+                            'property_agreement_id' => $request['property_agreement_id'],
+                        ],
+                    );
+                }
+            }
             daybook::create([
                 'property_id' => $request['property_id'],
                 'property_agreement_id' => $request['property_agreement_id'],
@@ -61,6 +116,7 @@ class ExpenseManageController extends Controller
                 'debit' => $request['amount'],
             ]);
         } else if ($request['mode_of_bill_payment'] == 'income_type') {
+
             $data = PropertyIncome::create(
                 [
                     'property_id' => $request['property_id'],
@@ -77,6 +133,35 @@ class ExpenseManageController extends Controller
                     'status' => 1,
                 ],
             );
+
+            if ($share_holders_count > 0) {
+                $share_hoders_details = DividendRule::where([
+                    'property_id' => $parent_property_id,
+                    'status' => 1,
+                    'landlord_property_contract_id' =>  $landlord_contract_id
+                ])->get();
+
+                foreach ($share_hoders_details as $details) {
+                    ShareHolderAccount::create(
+                        [
+                            'parent_property_id' => $parent_property_id,
+                            'property_id' => $request['property_id'],
+                            'ledger_id' => $request['ledger_id'],
+                            'share_holder_id' => $details->share_holder_id,
+                            'landlord_property_contract_id' =>  $landlord_contract_id,
+                            'reference' => 0,
+                            'applied_percentage' => $details->percentage,
+                            'applied_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'credit' => ($request['amount'] * $details->percentage) / 100,
+                            'date' => Carbon::now()->toDateString(),
+                            'reference_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'ledger_amount' => $request['amount'],
+                            'status' => 1,
+                            'property_agreement_id' => $request['property_agreement_id'],
+                        ],
+                    );
+                }
+            }
             daybook::create([
                 'property_id' => $request['property_id'],
                 'property_agreement_id' => $request['property_agreement_id'],
@@ -97,11 +182,16 @@ class ExpenseManageController extends Controller
         $request->validate([
             'name' => 'required',
             'date' => 'required',
-            'amount' => 'required|integer',
+            'amount' => 'required|numeric|integer',
             'landlord_contract_id' => 'required',
             'ledger_id' => 'required',
             'payment_type_id' => 'required',
         ]);
+        $share_holders_count = DividendRule::where([
+            'property_id' => $request['property_id'],
+            'status' => 1,
+            'landlord_property_contract_id' => $request['landlord_contract_id']
+        ])->count();
         if ($request['mode_of_bill_payment'] == 'expense_type') {
             $data = landlordExpense::create(
                 [
@@ -123,6 +213,32 @@ class ExpenseManageController extends Controller
             $no_of_rent_share = $request['amount'] /   $no_of_units;
 
             $unit_IDs = Property::where('is_parent_property', $request['property_id'])->pluck('id');
+
+            if ($share_holders_count > 0) {
+                $share_hoders_details = DividendRule::where([
+                    'property_id' => $request['property_id'],
+                    'status' => 1,
+                    'landlord_property_contract_id' => $request['landlord_contract_id']
+                ])->get();
+
+                foreach ($share_hoders_details as $details) {
+                    ShareHolderAccount::create(
+                        [
+                            'property_id' => $request['property_id'], 'ledger_id' => $request['ledger_id'],
+                            'share_holder_id' => $details->share_holder_id,
+                            'landlord_property_contract_id' => $request['landlord_contract_id'],
+                            'reference' => 1,
+                            'applied_percentage' => $details->percentage,
+                            'applied_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'debit' => ($request['amount'] * $details->percentage) / 100,
+                            'date' => Carbon::now()->toDateString(),
+                            'reference_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'ledger_amount' => $request['amount'],
+                            'status' => 1,
+                        ],
+                    );
+                }
+            }
 
             if (count($unit_IDs) > 0) {
                 foreach ($unit_IDs as $id) {
@@ -173,6 +289,31 @@ class ExpenseManageController extends Controller
                     'status' => 1,
                 ],
             );
+            if ($share_holders_count > 0) {
+                $share_hoders_details = DividendRule::where([
+                    'property_id' => $request['property_id'],
+                    'status' => 1,
+                    'landlord_property_contract_id' => $request['landlord_contract_id']
+                ])->get();
+
+                foreach ($share_hoders_details as $details) {
+                    ShareHolderAccount::create(
+                        [
+                            'property_id' => $request['property_id'], 'ledger_id' => $request['ledger_id'],
+                            'share_holder_id' => $details->share_holder_id,
+                            'landlord_property_contract_id' => $request['landlord_contract_id'],
+                            'reference' => 0,
+                            'applied_percentage' => $details->percentage,
+                            'applied_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'credit' => ($request['amount'] * $details->percentage) / 100,
+                            'date' => Carbon::now()->toDateString(),
+                            'reference_amount' => ($request['amount'] * $details->percentage) / 100,
+                            'ledger_amount' => $request['amount'],
+                            'status' => 1,
+                        ],
+                    );
+                }
+            }
             // daybook::create([
             //     'property_id' => $request['property_id'],
             //     'landlord_property_contract_id' => $request['landlord_contract_id'],
@@ -312,6 +453,23 @@ class ExpenseManageController extends Controller
             'head' =>  Ledger::find($expense_data->ledger_id)->title,
             'debit' =>  $expense_data->amount,
         ]);
+        $parent_property_id = Property::find($expense_data->property_id)->is_parent_property;
+        landlordIncome::create(
+            [
+                'property_id' => $parent_property_id,
+                'landlord_id' => landlordPropertyContract::where(['property_id' => $parent_property_id, 'is_withdraw' => 0, 'is_published' => 1])->first()->landlord_id,
+                'landlord_property_contract_id' => landlordPropertyContract::where(['property_id' => $parent_property_id, 'is_withdraw' => 0, 'is_published' => 1])->first()->id,
+                'ledger_id' =>  $expense_data->ledger_id,
+                'income_date' =>  $expense_data->expense_date,
+                'date' => Carbon::now()->toDateString(),
+                'name' =>  $expense_data->name,
+                'amount' =>  $expense_data->amount,
+                'reference' =>  $expense_data->reference,
+                'payment_type_id' =>  $expense_data->payment_type_id,
+                'description' =>  $expense_data->description,
+                'status' => 1,
+            ],
+        );
         $flash = array('type' => 'success', 'msg' => 'added successfully.');
         session()->flash('flash', $flash);
         return back();

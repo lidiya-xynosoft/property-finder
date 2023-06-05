@@ -12,12 +12,12 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="{{ Request::is('admin/sliders*') ? 'active' : '' }}">
+                {{-- <li class="{{ Request::is('admin/sliders*') ? 'active' : '' }}">
                     <a href="{{ route('admin.sliders.index') }}">
                         <i class="material-icons">slideshow</i>
                         <span>Sliders</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="{{ Request::is('admin/settings*') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="menu-toggle">
@@ -40,6 +40,12 @@
                                 <span>Units</span>
                             </a>
                         </li> --}}
+                        <li class="{{ Request::is('admin/share-holder*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.share-holder.index') }}">
+                                {{-- <i class="material-icons">abc</i> --}}
+                                <span>Share Holder</span>
+                            </a>
+                        </li>
                         <li class="{{ Request::is('admin/types*') ? 'active' : '' }}">
                             <a href="{{ route('admin.types.index') }}">
                                 {{-- <i class="material-icons">abc</i> --}}
@@ -144,7 +150,7 @@
                     </a>
                 </li> --}}
 
-                <li class="header">BLOG & WEB SITE</li>
+                {{-- <li class="header">BLOG & WEB SITE</li>
                 <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
                     <a href="{{ route('admin.categories.index') }}">
                         <i class="material-icons">category</i>
@@ -176,7 +182,7 @@
                         <i class="material-icons">format_quote</i>
                         <span>Testimonials</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="header"> </li>
                 {{-- <li class="{{ Request::is('admin/galleries*') ? 'active' : '' }}">
                     <a href="{{ route('admin.album') }}">

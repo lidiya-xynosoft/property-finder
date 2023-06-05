@@ -74,4 +74,8 @@ class Property extends Model
     {
         return $this->hasMany(PropertyAgreement::class);
     }
+    public function shareHolderAccount()
+    {
+        return $this->hasMany(ShareHolderAccount::class);
+    }
 }

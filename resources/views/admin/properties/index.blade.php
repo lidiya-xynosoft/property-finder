@@ -1,5 +1,7 @@
 @extends('backend.layouts.app')
-
+<?php 
+use App\Property;
+?>
 @section('title', 'Properties')
 @push('head')
     <link rel="stylesheet" href="{{ asset('backend/plugins/bootstrap-select/css/bootstrap-select.css') }}">
@@ -33,7 +35,7 @@
                                     {{-- <th>Beds</th>
                                     <th>Baths</th> --}}
                                     <th>Parent</th>
-                                    <th><i class="material-icons small">comment</i></th>
+                                    {{-- <th><i class="material-icons small">comment</i></th> --}}
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -57,12 +59,20 @@
                                         <td>{{ $property->user->name }}</td>
                                         <td>{{ $property->type }}</td>
                                         <td>{{ $property->purpose }}</td>
-                                        {{-- <td>{{ $property->bedroom }}</td>--}}
-                                        <td>@if( $property->is_parent_property == -1) <i class="material-icons small">star</i> @endif</td> 
-
+                                        {{-- <td>{{ $property->bedroom }}</td> --}}
                                         <td>
-                                            <span class="badge bg-indigo">{{ $property->comments_count }}</span>
+                                            @if ($property->is_parent_property == -1)
+                                                <i class="material-icons small">star</i>
+                                            @else
+                                            <?php $parent_name = Property::find($property->is_parent_property)->title; ?>
+                                                <span class="badge bg-indigo">  
+                                               <?php echo $parent_name; ?></span>
+                                            @endif
                                         </td>
+
+                                        {{-- <td>
+                                            <span class="badge bg-indigo">{{ $property->comments_count }}</span>
+                                        </td> --}}
 
                                         <td class="text-center">
                                             @if ($property->is_parent_property == -1)

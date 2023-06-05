@@ -29,4 +29,8 @@ class Ledger extends Model
     {
         return $this->hasMany(PropertyIncome::class);
     }
+    public function shareHolderAccount()
+    {
+        return $this->hasMany(ShareHolderAccount::class);
+    }
 }

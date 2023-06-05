@@ -99,7 +99,7 @@
                         <li><a data-toggle="tab" href="#rent">Recursive Rentals</a></li>
                         <li><a data-toggle="tab" href="#fixed_expenses">Expenses</a></li>
                         <li><a data-toggle="tab" href="#income">Income</a></li>
-                        <li><a data-toggle="tab" href="#divident">Divident</a></li>
+                        <li><a data-toggle="tab" href="#dividend">Divident Rule</a></li>
                         <li><a data-toggle="tab" href="#document">Documents</a></li>
                         <li><a data-toggle="tab" href="#history">History</a></li>
                     </ul>
@@ -118,7 +118,7 @@
 
                         @include('admin.properties.partials.income')
 
-                        @include('admin.properties.partials.divident')
+                        @include('admin.properties.partials.dividend')
 
                         @include('admin.properties.partials.rentals')
 

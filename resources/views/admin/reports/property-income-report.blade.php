@@ -96,8 +96,8 @@
                                         <th>Tenant</th>
                                     @endif
                                     <th>date</th>
-                                    <th>Ledger Type</th>
-                                    <th>name</th>
+                                    <th>Ledger</th>
+                                    <th>Name</th>
                                     <th>Income Amount</th>
 
                                 </tr>

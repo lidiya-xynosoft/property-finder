@@ -1,10 +1,10 @@
-     <div id="dividend_rule" class="tab-pane fade">
+     <div id="dividend" class="tab-pane fade">
          <div class="header" id="dividend_rule">
 
              <div class="body">
                  @if (!empty($rows))
 
-                     @if ($rows['share_holders'] > 0)
+                     @if ($rows['people_share'] > 0)
                          <div class="col-md-12">
 
                              {{-- <div class="card"> --}}
@@ -19,8 +19,8 @@
                                          <input id="property_id" type="hidden" name="property_id"
                                              value="{{ isset($property) ? $property->id : '' }}">
 
-                                         <input name="landlord_contract_id" value="{{ $rows['id'] }}" hidden>
-                                         <input name="share_holders" value="{{ $rows['share_holders'] }}" hidden>
+                                         <input name="property_agreement_id" value="{{ $rows['id'] }}" hidden>
+                                         <input name="share_holders" value="{{ $rows['people_share'] }}" hidden>
 
                                          <div class="nearby-info mb-4 repeater">
                                              <div data-repeater-list="dividend_persons">
@@ -28,7 +28,7 @@
 
                                                      <div class="col-md-4">
                                                          <p> List down your
-                                                             {{ isset($rows) ? $rows['share_holders'] : '0' }}
+                                                             {{ isset($rows) ? $rows['people_share'] : '0' }}
                                                              share
                                                              holders</p>
                                                      </div>

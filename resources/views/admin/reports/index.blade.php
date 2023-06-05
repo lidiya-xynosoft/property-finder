@@ -96,7 +96,21 @@
                             </a>
 
                         </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <a href="{{ url('admin/share-holder-account-report') }}">
 
+                                <div class="info-box bg-pink hover-expand-effect">
+                                    <div class="icon">
+                                        <i class="material-icons">summarize</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">SHARE HOLDER REPORT</div>
+                                        {{-- <div class="number count-to" data-from="0" data-to="{{ $propertycount }}" data-speed="15" data-fresh-interval="20">{{ $propertycount }}</div> --}}
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
                     </div>
                     <!-- #END# Widgets -->
                 </div>

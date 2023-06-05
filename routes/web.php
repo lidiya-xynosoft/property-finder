@@ -94,6 +94,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::post('property-expense-report', 'ReportController@propertyExpenseReport')->name('property-expense-report');
     Route::post('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');
     Route::get('property-income-report', 'ReportController@propertyIncomeReport')->name('property-income-report');
+    Route::post('/landlord/save-dividend-rule', 'DividendController@store')->name('dividend-save');
+    Route::post('landlord/dividend-rule/delete', 'DividendController@dividendRuleDelete')->name('dividend-rule-delete');
+    Route::post('share-holder-account-report', 'ReportController@shareHolderAccountsReport')->name('share-holder-report');
+    Route::get('share-holder-account-report', 'ReportController@shareHolderAccountsReport')->name('share-holder-report');
 
     Route::post('agreement-income-report', 'ReportController@agreementIncomeReport')->name('agreement-income-report');
     Route::get('agreement-income-report', 'ReportController@agreementIncomeReport')->name('agreement-income-report');
@@ -105,7 +109,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('cities', 'CityController');
     Route::resource('countries', 'CountryController');
     Route::resource('tenants', 'TenantController');
-    Route::resource('landlords', 'landlordController');
+    Route::resource('landlords', 'LandlordController');
+    Route::resource('share-holder', 'ShareHolderController');
     Route::resource('tenant-service', 'TenantServiceController');
     Route::resource('cancellation-reason', 'CancellationReasonController');
     Route::resource('handyman', 'HandymanController');
