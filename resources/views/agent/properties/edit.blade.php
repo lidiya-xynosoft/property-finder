@@ -197,7 +197,8 @@
                                             <option>--Select-- </option>
                                             @foreach ($types as $type)
                                                 <option value="{{ $type->id }}"
-                                                    {{ $type->id == $property->type_id ? 'selected' : '' }} class="option">
+                                                    {{ $type->id == $property->type_id ? 'selected' : '' }}
+                                                    class="option">
                                                     {{ $type->name }}
                                                 </option>
                                             @endforeach
@@ -356,19 +357,18 @@
 
                                         </p>
                                     </div>
-
-                                    <div class="col-lg-6 col-md-12">
-                                        <p>
-                                            <label for="address">Address line1</label>
-                                            <input type="text" id="address" name="address"
-                                                value="{{ $property->address }}" placeholder="Enter Your Address">
-                                        </p>
-                                    </div>
                                     <div class="col-lg-6 col-md-12">
                                         <p>
                                             <label for="address">Find Property</label>
                                             <input type="text" name="autocomplete" id="autocomplete"
                                                 class="form-control" placeholder="Enter your location">
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <p>
+                                            <label for="address">Address line1</label>
+                                            <input type="text" id="address" name="address"
+                                                value="{{ $property->address }}" placeholder="Enter Your Address">
                                         </p>
                                     </div>
                                     <div class="col-lg-6 col-md-12">

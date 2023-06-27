@@ -416,18 +416,19 @@
                                         </p>
                                     </div>
 
-                                    <div class="col-lg-6 col-md-12">
-                                        <p>
-                                            <label for="address">Address line1</label>
-                                            <input type="text" id="address" name="address"
-                                                placeholder="Enter Your Address">
-                                        </p>
-                                    </div>
+                                  
                                     <div class="col-lg-6 col-md-12">
                                         <p>
                                             <label for="address">Find Property</label>
                                             <input type="text" name="autocomplete" id="autocomplete"
                                                 class="form-control" placeholder="Enter your location">
+                                        </p>
+                                    </div>
+                                      <div class="col-lg-6 col-md-12">
+                                        <p>
+                                            <label for="address">Address line1</label>
+                                            <input type="text" id="address" name="address"
+                                                placeholder="Enter Your Address">
                                         </p>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
