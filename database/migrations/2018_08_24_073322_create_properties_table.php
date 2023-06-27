@@ -31,14 +31,14 @@ class CreatePropertiesTable extends Migration
             $table->string('street_no')->nullable();
             $table->string('zone_no')->nullable();
             $table->string('building_no')->nullable();
-            $table->integer('bedroom');
-            $table->integer('bathroom');
+            $table->integer('bedroom')->default(0);
+            $table->integer('bathroom')->default(0);
             $table->string('city');
             $table->string('type');
             $table->string('purpose');
             $table->string('city_slug');
-            $table->string('garage');
-            $table->string('built_year');
+            $table->string('garage')->default(0)->nullable();
+            $table->string('built_year')->default(0)->nullable();
             $table->string('address');
             $table->integer('area');
             $table->integer('agent_id');
