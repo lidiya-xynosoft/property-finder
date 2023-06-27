@@ -182,7 +182,7 @@ class ExpenseManageController extends Controller
         $request->validate([
             'name' => 'required',
             'date' => 'required',
-            'amount' => 'required|numeric|integer',
+            'amount' => 'required|numeric',
             'landlord_contract_id' => 'required',
             'ledger_id' => 'required',
             'payment_type_id' => 'required',
@@ -392,6 +392,14 @@ class ExpenseManageController extends Controller
     }
     public function landlordRentPayment(Request $request)
     {
+        $request->validate([
+            'landlord_contract_id' => 'required',
+            'date' => 'required',
+            'amount' => 'required',
+            'ledger_id' => 'required',
+            'name' => 'required',
+            'payment_type_id' => 'required',
+        ]);
         $id = $request['rent_id'];
         $expense_rent = landlordRent::findOrFail($id);
         if ($expense_rent) {

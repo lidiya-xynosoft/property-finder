@@ -27,7 +27,8 @@
                 <div class="header bg-indigo">
                     <input id="property_id" value="{{ $property->id }}" hidden>
                     <h2> {{ $property->title }}</h2>
-                    <h2 class="text-right"> Main Property -{{ $main_property }}</h2>
+                    <h2 class="text-right">  <a style="color: white" href="{{ url('admin/landlord-property/manage/?property_id=' . $property->is_parent_property) }}"> Main Property -{{ $main_property }} </></h2>
+                    
                     <small>Posted By <strong>{{ $property->user->name }}</strong> on
                         {{ $property->created_at->toFormattedDateString() }}</small>
                 </div>

@@ -16,6 +16,7 @@ class CreatePropertyDocumentsTable extends Migration
         Schema::create('property_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
+            $table->foreignId('property_agreement_id')->constrained('property_agreements');
             $table->foreignId('document_type_id')->constrained('document_types');
             $table->tinyInteger('status')->default(1);
             $table->string('file')->nullable();

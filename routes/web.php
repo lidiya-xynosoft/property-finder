@@ -8,10 +8,10 @@ use App\Http\Controllers\Admin\ExpenseManageController;
 use App\Http\Controllers\Admin\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', 'FrontPageController@index')->name('home');
-Route::get('/', function () {
-    return view('auth.login');
-})->name('home');
+Route::get('/', 'FrontPageController@index')->name('home');
+// Route::get('/', function () {
+//     return view('auth.login');
+// })->name('home');
 
 Route::get('/slider', 'FrontPageController@slider')->name('slider.index');
 

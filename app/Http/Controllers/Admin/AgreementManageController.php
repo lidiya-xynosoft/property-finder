@@ -76,7 +76,7 @@ class AgreementManageController extends Controller
             'lease_commencement' => 'required',
             'lease_expiry' => 'required',
             'monthly_rent' => 'required',
-            'utilities' => 'required',
+            // 'utilities' => 'required',
             'payment_mode' => 'required',
             'security_deposit' => 'required',
             'payment_commencement' => 'required',
@@ -126,11 +126,11 @@ class AgreementManageController extends Controller
         $currentDate = Carbon::now()->toDateString();
         $agreement_count = PropertyAgreement::withTrashed()->count() + 1;
 
-        $property->agreement_id = 'agreement-' . $agreement_count;
+        $property->agreement_id = 'agreement-' . $agreement_count . PropertyAgreement::latest()->first()->id;
         $property->property_id = $request->input('property_id');
         $property->customer_id = $customer_id;
         $property->tenant_name = trim($request->input('tenant_name'));
-        $property->people_share = $request->input('people_share');
+        $property->people_share = $request->input('people_share') ? $request->input('people_share') : 0;
         $property->tenant_name_arabic = trim($request->input('tenant_name_arabic'));
         $property->tenant_no = trim($request->input('tenant_no'));
         $property->po_box = trim($request->input('po_box'));
@@ -157,7 +157,7 @@ class AgreementManageController extends Controller
         $property->lease_commencement_arabic = trim($request->input('lease_commencement_arabic'));
         $property->lease_expiry_arabic = trim($request->input('lease_expiry_arabic'));
         $property->monthly_rent = trim($request->input('monthly_rent'));
-        $property->utilities = trim($request->input('utilities'));
+        $property->utilities = $request->input('utilities') ? trim($request->input('utilities')) : '.';
         $property->payment_mode = $mode_value;
         $property->payment_mode_arabic = $request->input('post_dated_check_value_arabic');
         $property->security_deposit = trim($request->input('security_deposit'));

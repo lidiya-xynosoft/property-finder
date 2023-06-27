@@ -152,7 +152,7 @@
                                                 class="btn btn-info btn-sm waves-effect">
                                                 <i class="material-icons">history</i>
                                             </a>
-                                          @if (count($complaint['invoice'])>0)
+                                          @if (isset($complaint['invoice']) && count($complaint['invoice'])>0)
                                                 <a href="{{ route('admin.complaint.invoice', $complaint['id']) }}"
                                                     class="btn btn-warning btn-sm waves-effect">
                                                Invoice

@@ -111,7 +111,7 @@
                                                 </td>
                                          <td>{{ $income['ledger']['title'] }}</td>
                                          <td>{{ $income['applied_percentage'] }} %</td>
-                                         <td>{{ $income['reference_amount'] }}</td>
+                                         <td>{{ $income['ledger_amount'] }}</td>
 
                                          <td>{{ $income['applied_amount'] }}</td>
 

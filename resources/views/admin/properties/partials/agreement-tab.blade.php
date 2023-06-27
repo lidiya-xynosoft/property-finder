@@ -521,7 +521,7 @@
                             <div class="form-line">
                                 <label for="people_share">Peoples share:</label>
                                 <input id="people_share" type="text" class="form-control " name="people_share"
-                                    value="{{ isset($update_data) ? $update_data->people_share : '' }}"
+                                    value="{{ isset($update_data) ? $update_data->people_share : '0' }}"
                                     placeholder="Enter how many peoples share">
                                 <div class="help-block with-errors"></div>
 
@@ -613,7 +613,7 @@
                         <th>{{ __('Mode Of Pay') }}</th>
                         <th>{{ __('PDF') }}</th>
                         <th>{{ __('Status') }}</th>
-                        <th>{{ __('Actions') }}</th>
+                        {{-- <th>{{ __('Actions') }}</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -659,11 +659,11 @@
                                         <i class="material-icons">delete</i></button>
                                 </a> --}}
 
-                                <a href="{{ url('admin/property/manage/?update_id=') . $rows['id'] }}">
+                                {{-- <a href="{{ url('admin/property/manage/?update_id=') . $rows['id'] }}">
                                     <button data-repeater-create type="button"
                                         class="btn btn-success btn-icon ml-2 mb-2"> <i
                                             class="material-icons">edit</i></button>
-                                </a>
+                                </a> --}}
 
                             </div>
                         </td>

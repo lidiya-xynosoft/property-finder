@@ -120,7 +120,7 @@
                                     <div class="col-lg-6 col-md-12">
                                         <p class="no-mb last">
                                             <label for="area">Floor Area</label>
-                                            <input type="text" name="area" placeholder="Sqft"
+                                            <input type="text" name="area" placeholder="Sqft" value="0"
                                                 class="form-control @error('area') is-invalid @enderror" id="area">
                                         </p>
                                         @error('area')
@@ -135,7 +135,7 @@
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">No of bedroom</label>
-                                            <input type="text" id="bedroom" name="bedroom" type="number"
+                                            <input type="text" id="bedroom" name="bedroom" type="number" value="0"
                                                 class="form-control @error('bedroom') is-invalid @enderror">
                                         </p>
                                         @error('bedroom')
@@ -147,7 +147,7 @@
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb last">
                                             <label for="area">No of bathroom</label>
-                                            <input type="text" id="bathroom" name="bathroom" type="number"
+                                            <input type="text" id="bathroom" name="bathroom" type="number" value="0"
                                                 class="form-control @error('bathroom') is-invalid @enderror">
                                         </p>
                                         @error('bathroom')
@@ -160,7 +160,7 @@
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">No of Garage</label>
-                                            <input type="text" id="garage" name="garage" type="number"
+                                            <input type="text" id="garage" name="garage" type="number" value="0"
                                                 class="form-control @error('garage') is-invalid @enderror">
                                         </p>
                                         @error('garage')
@@ -175,7 +175,7 @@
                                     <div class="col-lg-4 col-md-12">
                                         <p class="no-mb">
                                             <label for="price">Built Year</label>
-                                            <input type="text" id="built_year" name="built_year" type="number"
+                                            <input type="text" id="built_year" name="built_year" type="number" value="0"
                                                 class="form-control @error('built_year') is-invalid @enderror">
                                         </p>
                                         @error('built_year')

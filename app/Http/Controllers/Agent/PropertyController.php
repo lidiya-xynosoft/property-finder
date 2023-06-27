@@ -117,8 +117,8 @@ class PropertyController extends Controller
         $property->price    = $request->price;
         $property->purpose  = Purpose::find($request->purpose_id)->name;
         $property->type     = Type::find($request->type_id)->name;
-        $property->garage     = $request->garage;
-        $property->built_year     = $request->built_year;
+        $property->garage     = $request->garage ? $request->garage : 0;
+        $property->built_year     = $request->built_year ? $request->built_year : 0;
         $property->image    = $imagename;
         $property->bedroom  = $request->bedroom;
         $property->bathroom = $request->bathroom;
